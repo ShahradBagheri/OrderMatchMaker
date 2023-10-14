@@ -34,7 +34,7 @@ public class Expert{
     @OneToMany(mappedBy = "expert")
     private List<Offer> offers;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "experts")
     private List<SubService> subServices;
 
     @OneToOne(cascade = CascadeType.ALL)
