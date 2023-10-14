@@ -6,7 +6,6 @@ import com.example.maktabproject.repository.UserRepository;
 import com.example.maktabproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 @Service
 @RequiredArgsConstructor
