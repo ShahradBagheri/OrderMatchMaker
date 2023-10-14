@@ -14,6 +14,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer register(Customer customer) {
-        return null;
+        try{
+            return customerRepository.save(customer);
+        } catch (Exception e){
+            return null;
+        }
     }
 }
