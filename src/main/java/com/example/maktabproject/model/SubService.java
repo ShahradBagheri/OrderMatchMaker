@@ -25,10 +25,10 @@ public class SubService {
 
     private String comment;
 
-    @OneToMany(fetch = FetchType.LAZY ,mappedBy = "subService")
+    @ManyToMany
     private List<Expert> experts;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "main_service_id")
     private MainService mainService;
 }

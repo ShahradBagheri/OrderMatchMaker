@@ -34,8 +34,8 @@ public class Expert{
     @OneToMany(mappedBy = "expert")
     private List<Offer> offers;
 
-    @ManyToOne
-    private SubService subService;
+    @ManyToMany
+    private List<SubService> subServices;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_Id")
