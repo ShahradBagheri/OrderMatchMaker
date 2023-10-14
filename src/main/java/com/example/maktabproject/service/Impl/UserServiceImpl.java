@@ -16,9 +16,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(String email, String password) throws IncorrectCrudencialException {
-        User user = userRepository.findByEmail(email).orElseThrow(
+        return userRepository.findByEmail(email).orElseThrow(
                 () -> new IncorrectCrudencialException("incorrect email or password")
         );
-        return null;
     }
 }
