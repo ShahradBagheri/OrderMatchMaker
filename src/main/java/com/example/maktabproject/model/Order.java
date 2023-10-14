@@ -1,5 +1,6 @@
 package com.example.maktabproject.model;
 
+import com.example.maktabproject.model.enumeration.OrderState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
