@@ -13,11 +13,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public User register(User user) {
-        try {
-            return userRepository.save(user);
-        }catch (Exception e){
-            return null;
-        }
+    public User login(String username, String password) {
+        return null;
     }
 }
