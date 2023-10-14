@@ -5,7 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -21,16 +24,12 @@ public class Offer {
     @JoinColumn(name = "expert_id")
     private Expert expert;
 
-    private LocalDate creationDate;
+    @CreationTimestamp
+    private LocalDateTime creationDate;
 
     private LocalDate startingDate;
 
     private LocalDate completionDate;
 
     private Double suggestedPrice;
-
-    @PrePersist
-    private void onCreate(){
-        creationDate = LocalDate.now();
-    }
 }
