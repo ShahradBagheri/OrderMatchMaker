@@ -1,6 +1,7 @@
 package com.example.maktabproject.model;
 
 import com.example.maktabproject.model.enumeration.ExpertStatus;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,6 +38,7 @@ public class Expert{
     @ManyToMany(mappedBy = "experts")
     private List<SubService> subServices;
 
+    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_Id")
     private User user;
