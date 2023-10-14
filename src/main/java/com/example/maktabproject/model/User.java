@@ -1,6 +1,9 @@
 package com.example.maktabproject.model;
 
 import com.example.maktabproject.model.enumeration.Role;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,9 +26,13 @@ public class User {
     private Long id;
 
     @Column(unique = true)
-    //@Pattern
+    @NotNull
+    @Email
     private String email;
 
+    @NotNull
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d).{8,}$",
+            message = "password must be 8 characters minimum and include numbers and letters")
     private String password;
 
     private String firstname;
