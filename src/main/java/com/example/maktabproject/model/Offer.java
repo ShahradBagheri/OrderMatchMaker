@@ -27,9 +27,9 @@ public class Offer {
     @CreationTimestamp
     private LocalDateTime creationDate;
 
-    private LocalDate startingDate;
+    private LocalDateTime startingDate;
 
-    private LocalDate completionDate;
+    private LocalDateTime completionDate;
 
     private Double suggestedPrice;
 }

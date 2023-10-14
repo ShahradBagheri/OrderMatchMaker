@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -36,7 +37,7 @@ public class Order {
 
     private String details;
 
-    private LocalDate startingDate;
+    private LocalDateTime startingDate;
 
     private String address;
 
