@@ -51,11 +51,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer findByUser(User user) throws CustomerNotFoundException {
+    public Customer findByUser(User user) {
 
-        return customerRepository.findByUser(user).orElseThrow(
-                CustomerNotFoundException::new
-        );
+        return customerRepository.findByUser(user).orElseThrow();
     }
 
     @Override
