@@ -1,5 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
+import com.example.maktabproject.exception.CustomerNotFoundException;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.repository.CustomerRepository;
@@ -17,6 +18,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer register(Customer customer) {
+
         try{
             return customerRepository.save(customer);
         } catch (Exception e){
@@ -28,25 +30,36 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void delete(Customer customer) {
 
+        customerRepository.delete(customer);
     }
 
     @Override
-    public Customer findById(Long id) {
-        return null;
+    public Customer findById(Long id) throws CustomerNotFoundException {
+
+        return customerRepository.findById(id).orElseThrow(
+                CustomerNotFoundException::new
+        );
     }
 
     @Override
     public List<Customer> findAll() {
-        return null;
+
+        return customerRepository.findAll();
     }
 
     @Override
-    public Customer findByUser(User user) {
-        return null;
+    public Customer findByUser(User user) throws CustomerNotFoundException {
+
+        return customerRepository.findByUser(user).orElseThrow(
+                CustomerNotFoundException::new
+        );
     }
 
     @Override
     public Customer changePassword(Customer customer, String password) {
-        return null;
+
+        Customer customer1 = customerRepository.findById(customer.getId()).orElseThrow();
+        customer1.getUser().setPassword(password);
+        return register(customer1);
     }
 }

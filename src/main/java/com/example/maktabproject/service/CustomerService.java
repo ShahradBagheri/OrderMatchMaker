@@ -1,5 +1,6 @@
 package com.example.maktabproject.service;
 
+import com.example.maktabproject.exception.CustomerNotFoundException;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.User;
 
@@ -11,11 +12,11 @@ public interface CustomerService {
 
     void delete(Customer customer);
 
-    Customer findById(Long id);
+    Customer findById(Long id) throws CustomerNotFoundException;
 
     List<Customer> findAll();
 
-    Customer findByUser(User user);
+    Customer findByUser(User user) throws CustomerNotFoundException;
 
     Customer changePassword(Customer customer,String password);
 }
