@@ -49,4 +49,36 @@ class CustomerServiceImplSpringTest {
         customerService.register(customer);
         assertThat(customer.getId()).isNull();
     }
+
+    @Test
+    void invalidPasswordShouldNotSave(){
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("shahrad2@gmaill.com")
+                .password("qweasdqwe")
+                .build();
+        Customer customer = Customer.builder()
+                .user(user)
+                .build();
+
+        customerService.register(customer);
+        assertThat(customer.getId()).isNull();
+    }
+
+    @Test
+    void invalidEmailShouldNotSave(){
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("shahrad2gmaill.com")
+                .password("qweasd123")
+                .build();
+        Customer customer = Customer.builder()
+                .user(user)
+                .build();
+
+        customerService.register(customer);
+        assertThat(customer.getId()).isNull();
+    }
 }
