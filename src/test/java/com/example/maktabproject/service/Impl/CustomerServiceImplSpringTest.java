@@ -15,7 +15,7 @@ class CustomerServiceImplSpringTest {
     private CustomerServiceImpl customerService;
 
     @Test
-    void register() {
+    void validCustomerRegisterShouldSave() {
 
         User user = User.builder()
                 .firstname("shahrad")
