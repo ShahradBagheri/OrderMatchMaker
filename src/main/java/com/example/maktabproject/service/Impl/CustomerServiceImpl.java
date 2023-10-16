@@ -5,9 +5,14 @@ import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.repository.CustomerRepository;
 import com.example.maktabproject.service.CustomerService;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -21,7 +26,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         try{
             return customerRepository.save(customer);
-        } catch (Exception e){
+        } catch (ConstraintViolationException | DataAccessException e){
             System.err.println(e.getMessage());
             return null;
         }
@@ -34,11 +39,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer findById(Long id) throws CustomerNotFoundException {
+    public Customer findById(Long id) {
 
-        return customerRepository.findById(id).orElseThrow(
-                CustomerNotFoundException::new
-        );
+        return customerRepository.findById(id).orElseThrow();
     }
 
     @Override
