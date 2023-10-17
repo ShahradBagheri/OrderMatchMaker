@@ -39,9 +39,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer findById(Long id) {
+    public Customer findById(Long id) throws CustomerNotFoundException {
 
-        return customerRepository.findById(id).orElseThrow();
+        return customerRepository.findById(id).orElseThrow(
+                CustomerNotFoundException::new
+        );
     }
 
     @Override
@@ -51,9 +53,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer findByUser(User user) {
+    public Customer findByUser(User user) throws CustomerNotFoundException {
 
-        return customerRepository.findByUser(user).orElseThrow();
+        return customerRepository.findByUser(user).orElseThrow(
+                CustomerNotFoundException::new
+        );
     }
 
     @Override
