@@ -32,6 +32,7 @@ public class ExpertServiceImpl implements ExpertService {
     @Override
     public void delete(Expert expert) {
 
+        expertRepository.delete(expert);
     }
 
     @Override
