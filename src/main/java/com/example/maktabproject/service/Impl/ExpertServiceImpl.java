@@ -5,7 +5,9 @@ import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.repository.ExpertRepository;
 import com.example.maktabproject.service.ExpertService;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +20,13 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Override
     public Expert register(Expert expert) {
-        return null;
+
+        try{
+            return expertRepository.save(expert);
+        } catch (ConstraintViolationException | DataAccessException e){
+            System.err.println(e.getMessage());
+            return null;
+        }
     }
 
     @Override
