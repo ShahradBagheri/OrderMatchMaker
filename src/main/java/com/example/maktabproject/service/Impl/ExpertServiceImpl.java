@@ -45,7 +45,8 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Override
     public List<Expert> findAll() {
-        return null;
+
+        return expertRepository.findAll();
     }
 
     @Override
