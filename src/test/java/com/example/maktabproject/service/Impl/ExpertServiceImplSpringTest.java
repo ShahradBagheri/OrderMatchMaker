@@ -1,6 +1,7 @@
 package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.exception.CustomerNotFoundException;
+import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.User;
@@ -91,7 +92,7 @@ class ExpertServiceImplSpringTest {
     }
 
     @Test
-    void expertShouldBeFound() throws CustomerNotFoundException {
+    void expertShouldBeFound() throws ExpertNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -128,7 +129,7 @@ class ExpertServiceImplSpringTest {
     }
 
     @Test
-    void CustomerShouldGetDeleted() throws CustomerNotFoundException {
+    void CustomerShouldGetDeleted() throws ExpertNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -141,11 +142,11 @@ class ExpertServiceImplSpringTest {
 
         Expert registerdExpert = expertService.register(expert);
         expertService.delete(expertService.findById(registerdExpert.getId()));
-        assertThatThrownBy(() -> expertService.findById(registerdExpert.getId())).isInstanceOf(CustomerNotFoundException.class);
+        assertThatThrownBy(() -> expertService.findById(registerdExpert.getId())).isInstanceOf(ExpertNotFoundException.class);
     }
 
     @Test
-    void CustomerPasswordShouldChange() throws CustomerNotFoundException {
+    void CustomerPasswordShouldChange() throws ExpertNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -163,7 +164,7 @@ class ExpertServiceImplSpringTest {
     }
 
     @Test
-    void CustomerFoundByUser() throws CustomerNotFoundException {
+    void CustomerFoundByUser() throws ExpertNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")

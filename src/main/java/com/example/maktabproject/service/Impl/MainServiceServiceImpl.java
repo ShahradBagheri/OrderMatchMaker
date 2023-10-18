@@ -29,11 +29,13 @@ public class MainServiceServiceImpl implements MainServiceService {
     @Override
     public void delete(MainService mainService) {
 
+        mainServiceRepository.delete(mainService);
     }
 
     @Override
     public MainService findById(Long id) {
-        return null;
+
+        return mainServiceRepository.findById(id).orElseThrow();
     }
 
     @Override

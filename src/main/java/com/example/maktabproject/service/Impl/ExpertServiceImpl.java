@@ -1,6 +1,7 @@
 package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.exception.CustomerNotFoundException;
+import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.repository.ExpertRepository;
@@ -37,10 +38,10 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public Expert findById(Long id) throws CustomerNotFoundException {
+    public Expert findById(Long id) throws ExpertNotFoundException {
 
         return expertRepository.findById(id).orElseThrow(
-                CustomerNotFoundException::new
+                ExpertNotFoundException::new
         );
     }
 
@@ -51,10 +52,10 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public Expert findByUser(User user) throws CustomerNotFoundException {
+    public Expert findByUser(User user) throws ExpertNotFoundException {
 
         return expertRepository.findByUser(user).orElseThrow(
-                CustomerNotFoundException::new
+                ExpertNotFoundException::new
         );
     }
 
