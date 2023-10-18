@@ -40,15 +40,20 @@ class CustomerServiceImplSpringTest {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
-                .email("shahrad2@gmaill.com")
+                .email("first@gmaill.com")
                 .password("qweasd123")
                 .build();
         Customer customer = Customer.builder()
                 .user(user)
                 .build();
 
+        Customer dupCustomer = Customer.builder()
+                .user(user)
+                .build();
+
         customerService.register(customer);
-        assertThat(customer.getId()).isNull();
+        customerService.register(dupCustomer);
+        assertThat(dupCustomer.getId()).isNull();
     }
 
     @Test
