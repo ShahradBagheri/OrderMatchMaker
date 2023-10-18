@@ -78,4 +78,14 @@ class MainServiceServiceImplTest {
         mainServiceService.delete(mainService);
         assertThatThrownBy( () -> mainServiceService.findById(id) ).isInstanceOf(MainServiceNotFoundException.class);
     }
+
+    @Test
+    void allMainServicesShouldBeFound(){
+        MainService mainService = MainService.builder()
+                .name("add_to_all")
+                .build();
+
+        mainServiceService.register(mainService);
+        assertThat(mainServiceService.findAll()).isNotNull();
+    }
 }
