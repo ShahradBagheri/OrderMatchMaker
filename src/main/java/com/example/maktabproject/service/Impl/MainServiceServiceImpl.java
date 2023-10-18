@@ -3,7 +3,9 @@ package com.example.maktabproject.service.Impl;
 import com.example.maktabproject.model.MainService;
 import com.example.maktabproject.repository.MainServiceRepository;
 import com.example.maktabproject.service.MainServiceService;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,13 +17,13 @@ public class MainServiceServiceImpl implements MainServiceService {
     private final MainServiceRepository mainServiceRepository;
 
     @Override
-    public MainService create(MainService mainService) {
-        return null;
-    }
-
-    @Override
-    public MainService update(MainService mainService) {
-        return null;
+    public MainService register(MainService mainService) {
+        try{
+            return mainServiceRepository.save(mainService);
+        } catch (ConstraintViolationException | DataAccessException e){
+            System.err.println(e.getMessage());
+            return null;
+        }
     }
 
     @Override

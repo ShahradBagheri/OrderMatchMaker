@@ -6,9 +6,7 @@ import java.util.List;
 
 public interface MainServiceService {
 
-    MainService create(MainService mainService);
-
-    MainService update(MainService mainService);
+    MainService register(MainService mainService);
 
     void delete(MainService mainService);
 
