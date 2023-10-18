@@ -3,9 +3,11 @@ package com.example.maktabproject.service.Impl;
 import com.example.maktabproject.exception.CustomerNotFoundException;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
@@ -36,7 +38,7 @@ class CustomerServiceImplSpringTest {
     }
 
     @Test
-    void duplicateEmailShouldNotSave(){
+    void duplicateEmailShouldNotSave() {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -52,7 +54,7 @@ class CustomerServiceImplSpringTest {
     }
 
     @Test
-    void invalidPasswordShouldNotSave(){
+    void invalidPasswordShouldNotSave() {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -68,7 +70,7 @@ class CustomerServiceImplSpringTest {
     }
 
     @Test
-    void invalidEmailShouldNotSave(){
+    void invalidEmailShouldNotSave() {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -102,7 +104,7 @@ class CustomerServiceImplSpringTest {
     }
 
     @Test
-    void customersShouldBeFound(){
+    void customersShouldBeFound() {
         List<Customer> all = customerService.findAll();
 
         assertThat(all).isNotNull();
@@ -122,11 +124,11 @@ class CustomerServiceImplSpringTest {
 
         Customer registerdCustomer = customerService.register(customer);
         customerService.delete(customerService.findById(registerdCustomer.getId()));
-        assertThatThrownBy(() ->  customerService.findById(registerdCustomer.getId())).isInstanceOf(CustomerNotFoundException.class);
+        assertThatThrownBy(() -> customerService.findById(registerdCustomer.getId())).isInstanceOf(CustomerNotFoundException.class);
     }
 
     @Test
-    void CustomerPasswordShouldChange() throws CustomerNotFoundException {{
+    void CustomerPasswordShouldChange() throws CustomerNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -138,9 +140,27 @@ class CustomerServiceImplSpringTest {
                 .build();
 
         customer = customerService.register(customer);
-        customerService.changePassword(customer,"changed123");
+        customerService.changePassword(customer, "changed123");
         Customer changedCustomer = customerService.findById(customer.getId());
         assertThat(changedCustomer.getUser().getPassword()).isEqualTo("changed123");
     }
+
+    @Test
+    void CustomerFoundByUser() throws CustomerNotFoundException {
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("findUserTest@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Customer customer = Customer.builder()
+                .user(user)
+                .orders(null)
+                .build();
+
+        customer = customerService.register(customer);
+        Customer foundCustomer = customerService.findByUser(customer.getUser());
+        assertThat(customer.getUser()).isEqualTo(foundCustomer.getUser());
     }
+
 }
