@@ -1,5 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
+import com.example.maktabproject.exception.OfferNotFoundException;
 import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.repository.OfferRepository;
 import com.example.maktabproject.service.OfferService;
@@ -30,15 +31,20 @@ public class OfferServiceImpl implements OfferService {
     @Override
     public void delete(Offer offer) {
 
+        offerRepository.delete(offer);
     }
 
     @Override
-    public Offer findById(Long id) {
-        return null;
+    public Offer findById(Long id) throws OfferNotFoundException {
+
+        return offerRepository.findById(id).orElseThrow(
+                OfferNotFoundException::new
+        );
     }
 
     @Override
     public List<Offer> findAll() {
-        return null;
+
+        return offerRepository.findAll();
     }
 }
