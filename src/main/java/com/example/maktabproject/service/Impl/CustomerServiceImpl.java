@@ -8,11 +8,8 @@ import com.example.maktabproject.service.CustomerService;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
