@@ -60,8 +60,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer changePassword(Customer customer, String password) {
 
-        Customer customer1 = customerRepository.findById(customer.getId()).orElseThrow();
-        customer1.getUser().setPassword(password);
-        return register(customer1);
+        Customer findCustomer = customerRepository.findById(customer.getId()).orElseThrow();
+        findCustomer.getUser().setPassword(password);
+        return register(findCustomer);
     }
 }

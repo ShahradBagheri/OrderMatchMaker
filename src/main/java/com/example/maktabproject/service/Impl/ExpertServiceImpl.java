@@ -59,6 +59,9 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Override
     public Expert changePassword(Expert expert, String password) {
-        return null;
+
+        Expert findExpert = expertRepository.findById(expert.getId()).orElseThrow();
+        findExpert.getUser().setPassword(password);
+        return register(findExpert);
     }
 }
