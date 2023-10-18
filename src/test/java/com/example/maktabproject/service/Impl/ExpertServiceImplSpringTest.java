@@ -1,5 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
+import com.example.maktabproject.exception.CustomerNotFoundException;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.User;
@@ -84,5 +85,23 @@ class ExpertServiceImplSpringTest {
 
         expertService.register(expert);
         assertThat(expert.getId()).isNull();
+    }
+
+    @Test
+    void expertShouldBeFound() throws CustomerNotFoundException {
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("shahradFindExpert@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Expert expert = Expert.builder()
+                .user(user)
+                .build();
+
+        expertService.register(expert);
+        Expert foundExpert = expertService.findById(expert.getId());
+
+        assertThat(foundExpert).isNotNull();
     }
 }
