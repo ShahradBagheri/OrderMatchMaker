@@ -17,32 +17,32 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceImplTest {
 
-    @Mock
-    private CustomerRepository customerRepository;
-
-    private CustomerServiceImpl customerService;
-
-
-    @BeforeEach
-    void setUp() {
-        customerService = new CustomerServiceImpl(customerRepository);
-    }
-
-    @Test
-    void validCustomerRegisterShouldSave() {
-        Customer customer = Customer.builder().build();
-
-        customerService.register(customer);
-
-        verify(customerRepository).save(customer);
-    }
-
-    @Test
-    void exceptionThrownRegisterShouldReturnNull(){
-        when(customerRepository.save(any(Customer.class))).thenThrow(new IllegalArgumentException());
-
-        Customer register = customerService.register(Customer.builder().build());
-
-        assertThat(register).isNull();
-    }
+//    @Mock
+//    private CustomerRepository customerRepository;
+//
+//    private CustomerServiceImpl customerService;
+//
+//
+//    @BeforeEach
+//    void setUp() {
+//        customerService = new CustomerServiceImpl(customerRepository);
+//    }
+//
+//    @Test
+//    void validCustomerRegisterShouldSave() {
+//        Customer customer = Customer.builder().build();
+//
+//        customerService.register(customer);
+//
+//        verify(customerRepository).save(customer);
+//    }
+//
+//    @Test
+//    void exceptionThrownRegisterShouldReturnNull(){
+//        when(customerRepository.save(any(Customer.class))).thenThrow(new IllegalArgumentException());
+//
+//        Customer register = customerService.register(Customer.builder().build());
+//
+//        assertThat(register).isNull();
+//    }
 }

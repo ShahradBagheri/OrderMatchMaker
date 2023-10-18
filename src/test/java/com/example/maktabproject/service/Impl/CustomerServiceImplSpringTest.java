@@ -100,7 +100,7 @@ class CustomerServiceImplSpringTest {
         customerService.register(customer);
         Customer foundCustomer = customerService.findById(customer.getId());
 
-        assertThat(customer).isNotNull();
+        assertThat(foundCustomer).isNotNull();
     }
 
     @Test
