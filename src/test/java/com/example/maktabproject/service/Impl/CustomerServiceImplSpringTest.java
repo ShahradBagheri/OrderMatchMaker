@@ -1,15 +1,16 @@
 package com.example.maktabproject.service.Impl;
 
+import com.example.maktabproject.exception.CustomerNotFoundException;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.User;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class CustomerServiceImplSpringTest {
@@ -55,7 +56,7 @@ class CustomerServiceImplSpringTest {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
-                .email("shahrad2@gmaill.com")
+                .email("shahrad21@gmaill.com")
                 .password("qweasdqwe")
                 .build();
         Customer customer = Customer.builder()
@@ -80,5 +81,66 @@ class CustomerServiceImplSpringTest {
 
         customerService.register(customer);
         assertThat(customer.getId()).isNull();
+    }
+
+    @Test
+    void customerShouldBeFound() throws CustomerNotFoundException {
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("shahradFind@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Customer customer = Customer.builder()
+                .user(user)
+                .build();
+
+        customerService.register(customer);
+        Customer foundCustomer = customerService.findById(customer.getId());
+
+        assertThat(customer).isNotNull();
+    }
+
+    @Test
+    void customersShouldBeFound(){
+        List<Customer> all = customerService.findAll();
+
+        assertThat(all).isNotNull();
+    }
+
+    @Test
+    void CustomerShouldGetDeleted() throws CustomerNotFoundException {
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("shahrad34534534@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Customer customer = Customer.builder()
+                .user(user)
+                .build();
+
+        Customer registerdCustomer = customerService.register(customer);
+        customerService.delete(customerService.findById(registerdCustomer.getId()));
+        assertThatThrownBy(() ->  customerService.findById(registerdCustomer.getId())).isInstanceOf(CustomerNotFoundException.class);
+    }
+
+    @Test
+    void CustomerPasswordShouldChange() throws CustomerNotFoundException {{
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("shahradchanged@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Customer customer = Customer.builder()
+                .user(user)
+                .build();
+
+        customer = customerService.register(customer);
+        customerService.changePassword(customer,"changed123");
+        Customer changedCustomer = customerService.findById(customer.getId());
+        assertThat(changedCustomer.getUser().getPassword()).isEqualTo("changed123");
+    }
     }
 }
