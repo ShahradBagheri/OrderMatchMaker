@@ -53,4 +53,36 @@ class ExpertServiceImplSpringTest {
         expertService.register(dupExpert);
         assertThat(dupExpert.getId()).isNull();
     }
+
+    @Test
+    void invalidPasswordShouldNotSave() {
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("somethingasdasdasd@gmaill.com")
+                .password("qweasdqwe")
+                .build();
+        Expert expert = Expert.builder()
+                .user(user)
+                .build();
+
+        expertService.register(expert);
+        assertThat(expert.getId()).isNull();
+    }
+
+    @Test
+    void invalidEmailShouldNotSave() {
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("shahrad2gmaill.com")
+                .password("qweasd123")
+                .build();
+        Expert expert = Expert.builder()
+                .user(user)
+                .build();
+
+        expertService.register(expert);
+        assertThat(expert.getId()).isNull();
+    }
 }
