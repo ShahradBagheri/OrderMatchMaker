@@ -1,11 +1,13 @@
 package com.example.maktabproject.service.Impl;
 
+import com.example.maktabproject.exception.MainServiceNotFoundException;
 import com.example.maktabproject.model.MainService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -16,6 +18,7 @@ class MainServiceServiceImplTest {
 
     @Test
     void mainServiceShouldRegister(){
+
         MainService mainService = MainService.builder()
                 .name("registerTest")
                 .build();
@@ -26,6 +29,7 @@ class MainServiceServiceImplTest {
 
     @Test
     void duplicateMainServiceShouldNotSave(){
+
         MainService mainService = MainService.builder()
                 .name("duplicateName")
                 .build();
@@ -37,5 +41,18 @@ class MainServiceServiceImplTest {
         mainServiceService.register(dupMainService);
         assertThat(dupMainService.getId()).isNull();
 
+    }
+
+    @Test
+    void mainServiceShouldGetDeleted(){
+
+        MainService mainService = MainService.builder()
+                .name("deleteTest")
+                .build();
+
+        mainServiceService.register(mainService);
+        Long id = mainService.getId();
+        mainServiceService.delete(mainService);
+        assertThatThrownBy( () -> mainServiceService.findById(id) ).isInstanceOf(MainServiceNotFoundException.class);
     }
 }
