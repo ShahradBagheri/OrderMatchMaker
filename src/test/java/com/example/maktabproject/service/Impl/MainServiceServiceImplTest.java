@@ -55,4 +55,14 @@ class MainServiceServiceImplTest {
         mainServiceService.delete(mainService);
         assertThatThrownBy( () -> mainServiceService.findById(id) ).isInstanceOf(MainServiceNotFoundException.class);
     }
+
+    @Test
+    void mainServiceShouldBeFound() throws MainServiceNotFoundException {
+        MainService mainService = MainService.builder()
+                .name("findById test")
+                .build();
+
+        mainServiceService.register(mainService);
+        assertThat(mainServiceService.findById(mainService.getId())).isNotNull();
+    }
 }
