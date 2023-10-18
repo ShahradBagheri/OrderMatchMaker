@@ -105,6 +105,18 @@ class CustomerServiceImplSpringTest {
 
     @Test
     void customersShouldBeFound() {
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("shahradTestingAll@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Customer customer = Customer.builder()
+                .user(user)
+                .build();
+
+        customerService.register(customer);
+
         List<Customer> all = customerService.findAll();
 
         assertThat(all).isNotNull();
