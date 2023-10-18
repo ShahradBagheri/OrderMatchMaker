@@ -51,7 +51,10 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Override
     public Expert findByUser(User user) throws CustomerNotFoundException {
-        return null;
+
+        return expertRepository.findByUser(user).orElseThrow(
+                CustomerNotFoundException::new
+        );
     }
 
     @Override
