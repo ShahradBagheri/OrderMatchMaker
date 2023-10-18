@@ -1,5 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
+import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.repository.SubServiceRepository;
 import com.example.maktabproject.service.SubServiceService;
@@ -30,15 +31,20 @@ public class SubServiceServiceImpl implements SubServiceService {
     @Override
     public void delete(SubService subService) {
 
+        subServiceRepository.delete(subService);
     }
 
     @Override
-    public SubService findById(Long id) {
-        return null;
+    public SubService findById(Long id) throws SubServiceNotFoundException {
+
+        return subServiceRepository.findById(id).orElseThrow(
+                SubServiceNotFoundException::new
+        );
     }
 
     @Override
     public List<SubService> findAll() {
-        return null;
+
+        return subServiceRepository.findAll();
     }
 }
