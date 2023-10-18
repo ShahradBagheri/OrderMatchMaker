@@ -3,11 +3,9 @@ package com.example.maktabproject.service.Impl;
 import com.example.maktabproject.exception.CustomerNotFoundException;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.User;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
