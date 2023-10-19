@@ -2,8 +2,10 @@ package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.exception.CustomerNotFoundException;
 import com.example.maktabproject.exception.ExpertNotFoundException;
+import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
+import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.model.enumeration.ExpertStatus;
 import org.junit.jupiter.api.Test;
@@ -21,6 +23,9 @@ class ExpertServiceImplSpringTest {
 
     @Autowired
     private ExpertServiceImpl expertService;
+
+    @Autowired
+    private SubServiceServiceImpl subServiceService;
 
     @Test
     void validExpertRegisterShouldSave() {
@@ -198,5 +203,30 @@ class ExpertServiceImplSpringTest {
 
         expert = expertService.updateStatus(expert,updatedStatus);
         assertThat(expert.getExpertStatus()).isEqualTo(updatedStatus);
+    }
+
+    @Test
+    void subServiceShouldGetAdded() throws ExpertNotFoundException, SubServiceNotFoundException {
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("addSubService@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Expert expert = Expert.builder()
+                .user(user)
+                .expertStatus(ExpertStatus.NEW)
+                .build();
+        expert = expertService.register(expert);
+
+        SubService subService = SubService.builder()
+                .name("addingSubToExpertTest")
+                .build();
+
+        subService = subServiceService.register(subService);
+
+
+        expert = expertService.addSubService(expert,subService);
+        assertThat(expert.getSubServices()).isNotNull();
     }
 }
