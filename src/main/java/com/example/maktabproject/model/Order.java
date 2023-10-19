@@ -1,6 +1,7 @@
 package com.example.maktabproject.model;
 
 import com.example.maktabproject.model.enumeration.OrderState;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class Order {
     private SubService subService;
 
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
