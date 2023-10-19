@@ -2,6 +2,7 @@ package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.exception.MainServiceNotFoundException;
 import com.example.maktabproject.exception.SubServiceNotFoundException;
+import com.example.maktabproject.exception.SubServiceTwoMainServiceException;
 import com.example.maktabproject.model.MainService;
 import com.example.maktabproject.model.SubService;
 import org.junit.jupiter.api.Test;
@@ -95,7 +96,7 @@ class SubServiceServiceImplTest {
     }
 
     @Test
-    void mainServiceShouldGetAdded(){
+    void mainServiceShouldGetAdded() throws SubServiceTwoMainServiceException, SubServiceNotFoundException {
         SubService subService = SubService.builder()
                 .name("testAddingMain")
                 .build();
@@ -110,6 +111,32 @@ class SubServiceServiceImplTest {
 
         subService = subServiceService.addMainService(subService,mainService);
         assertThat(subService.getMainService()).isNotNull();
+    }
+
+    @Test
+    void canNotAddTwoMainServices() throws SubServiceTwoMainServiceException, SubServiceNotFoundException {
+        SubService subService = SubService.builder()
+                .name("testAddingDouble")
+                .build();
+
+        subService = subServiceService.register(subService);
+
+        MainService mainService1 = MainService.builder()
+                .name("testAddingDouble1")
+                .build();
+
+        mainService1 = mainServiceService.register(mainService1);
+
+        MainService mainService2 = MainService.builder()
+                .name("testAddingDouble2")
+                .build();
+
+        mainService2 = mainServiceService.register(mainService2);
+
+        subServiceService.addMainService(subService,mainService1);
+        SubService finalSubService = subService;
+        MainService finalMainService = mainService2;
+        assertThatThrownBy(() -> subServiceService.addMainService(finalSubService, finalMainService)).isInstanceOf(SubServiceTwoMainServiceException.class);
     }
 
 }

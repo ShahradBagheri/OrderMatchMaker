@@ -52,6 +52,7 @@ public class SubServiceServiceImpl implements SubServiceService {
 
     @Override
     public SubService addMainService(SubService subService, MainService mainService) throws SubServiceNotFoundException, SubServiceTwoMainServiceException {
+
         subService = findById(subService.getId());
 
         if(subService.getMainService() != null)
