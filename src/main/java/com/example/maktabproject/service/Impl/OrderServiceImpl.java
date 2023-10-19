@@ -67,6 +67,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean dateValidation(LocalDateTime localDateTime) {
-        return localDateTime.compareTo(LocalDateTime.now()) > 0;
+        return localDateTime.isAfter(LocalDateTime.now());
     }
 }
