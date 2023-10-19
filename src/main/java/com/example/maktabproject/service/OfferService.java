@@ -3,6 +3,7 @@ package com.example.maktabproject.service;
 import com.example.maktabproject.exception.InvalidPriceException;
 import com.example.maktabproject.exception.InvalidTimeException;
 import com.example.maktabproject.exception.OfferNotFoundException;
+import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.model.Order;
 
@@ -18,6 +19,10 @@ public interface OfferService {
     Offer findById(Long id) throws OfferNotFoundException;
 
     List<Offer> findAll();
+
+    List<Offer> findByCustomerPriceOrder(Customer customer);
+
+    List<Offer> findByCustomerScoreOrder(Customer customer);
 
     boolean priceValidation(Offer offer);
 

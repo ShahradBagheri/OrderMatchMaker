@@ -3,6 +3,7 @@ package com.example.maktabproject.service.Impl;
 import com.example.maktabproject.exception.InvalidPriceException;
 import com.example.maktabproject.exception.InvalidTimeException;
 import com.example.maktabproject.exception.OfferNotFoundException;
+import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.repository.OfferRepository;
 import com.example.maktabproject.repository.OrderRepository;
@@ -55,6 +56,16 @@ public class OfferServiceImpl implements OfferService {
     public List<Offer> findAll() {
 
         return offerRepository.findAll();
+    }
+
+    @Override
+    public List<Offer> findByCustomerPriceOrder(Customer customer) {
+        return offerRepository.findByOrder_CustomerOrderBySuggestedPrice(customer);
+    }
+
+    @Override
+    public List<Offer> findByCustomerScoreOrder(Customer customer) {
+        return offerRepository.findByOrder_CustomerOrderByExpert_Score(customer);
     }
 
     @Override
