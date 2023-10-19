@@ -5,6 +5,7 @@ import com.example.maktabproject.exception.InvalidTimeException;
 import com.example.maktabproject.exception.OfferNotFoundException;
 import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.repository.OfferRepository;
+import com.example.maktabproject.repository.OrderRepository;
 import com.example.maktabproject.service.OfferService;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 public class OfferServiceImpl implements OfferService {
 
     private final OfferRepository offerRepository;
+    private final OrderRepository orderRepository;
 
     @Override
     public Offer register(Offer offer) throws InvalidTimeException, InvalidPriceException {

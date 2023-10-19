@@ -26,7 +26,7 @@ public class Offer {
     @JoinColumn(name = "expert_id")
     private Expert expert;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "order_id")
     private Order order;
 
