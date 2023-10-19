@@ -2,6 +2,7 @@ package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.exception.MainServiceNotFoundException;
 import com.example.maktabproject.model.MainService;
+import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.repository.MainServiceRepository;
 import com.example.maktabproject.service.MainServiceService;
 import jakarta.validation.ConstraintViolationException;
@@ -46,5 +47,11 @@ public class MainServiceServiceImpl implements MainServiceService {
     public List<MainService> findAll() {
 
         return mainServiceRepository.findAll();
+    }
+
+    @Override
+    public MainService addSubService(MainService mainService, SubService subService) {
+        mainService.getSubServices().add(subService);
+        return register(mainService);
     }
 }
