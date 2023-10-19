@@ -18,6 +18,9 @@ class SubServiceServiceImplTest {
     @Autowired
     private SubServiceServiceImpl subServiceService;
 
+    @Autowired
+    private MainServiceServiceImpl mainServiceService;
+
     @Test
     void subServiceShouldRegister(){
 
@@ -89,6 +92,24 @@ class SubServiceServiceImplTest {
 
         subServiceService.register(subService);
         assertThat(subServiceService.findAll()).isNotNull();
+    }
+
+    @Test
+    void mainServiceShouldGetAdded(){
+        SubService subService = SubService.builder()
+                .name("testAddingMain")
+                .build();
+
+        subService = subServiceService.register(subService);
+
+        MainService mainService = MainService.builder()
+                .name("testAddingMain")
+                .build();
+
+        mainService = mainServiceService.register(mainService);
+
+        subService = subServiceService.addMainService(subService,mainService);
+        assertThat(subService.getMainService()).isNotNull();
     }
 
 }
