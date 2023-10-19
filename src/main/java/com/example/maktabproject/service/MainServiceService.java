@@ -15,6 +15,4 @@ public interface MainServiceService {
     MainService findById(Long id) throws MainServiceNotFoundException;
 
     List<MainService> findAll();
-
-    MainService addSubService(MainService mainService, SubService subService);
 }

@@ -48,10 +48,4 @@ public class MainServiceServiceImpl implements MainServiceService {
 
         return mainServiceRepository.findAll();
     }
-
-    @Override
-    public MainService addSubService(MainService mainService, SubService subService) {
-        mainService.getSubServices().add(subService);
-        return register(mainService);
-    }
 }
