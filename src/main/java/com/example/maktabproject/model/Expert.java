@@ -35,7 +35,7 @@ public class Expert{
     @OneToMany(mappedBy = "expert")
     private List<Offer> offers;
 
-    @ManyToMany(mappedBy = "experts")
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<SubService> subServices;
 
     @NotNull

@@ -25,7 +25,7 @@ public class SubService {
 
     private String comment;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "subServices")
     private List<Expert> experts;
 
     @ManyToOne(cascade = CascadeType.MERGE)
