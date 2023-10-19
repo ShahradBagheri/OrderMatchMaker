@@ -1,5 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
+import com.example.maktabproject.exception.InvalidPriceException;
 import com.example.maktabproject.exception.OrderNotFoundException;
 import com.example.maktabproject.model.Order;
 import com.example.maktabproject.repository.OrderRepository;
@@ -18,9 +19,11 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
     @Override
-    public Order register(Order order) {
+    public Order register(Order order) throws InvalidPriceException {
         try{
-            return orderRepository.save(order);
+            if(priceValidation(order))
+                return orderRepository.save(order);
+            throw new InvalidPriceException();
         } catch (ConstraintViolationException | DataAccessException e){
             System.err.println(e.getMessage());
             return null;
