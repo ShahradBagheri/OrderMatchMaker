@@ -21,7 +21,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
     @Override
-    public Order register(Order order) throws InvalidPriceException {
+    public Order register(Order order) throws InvalidPriceException, InvalidTimeException {
         try{
             if(priceValidation(order))
                 if(dateValidation(order.getStartingDate()))
@@ -29,11 +29,10 @@ public class OrderServiceImpl implements OrderService {
                 else
                     throw new InvalidTimeException();
             throw new InvalidPriceException();
+
         } catch (ConstraintViolationException | DataAccessException e){
             System.err.println(e.getMessage());
             return null;
-        } catch (InvalidTimeException e) {
-            throw new RuntimeException(e);
         }
     }
 

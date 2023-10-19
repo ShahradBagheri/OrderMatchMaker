@@ -1,6 +1,7 @@
 package com.example.maktabproject.service;
 
 import com.example.maktabproject.exception.InvalidPriceException;
+import com.example.maktabproject.exception.InvalidTimeException;
 import com.example.maktabproject.exception.OrderNotFoundException;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Order;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    Order register(Order order) throws InvalidPriceException;
+    Order register(Order order) throws InvalidPriceException, InvalidTimeException;
 
     void delete(Order order);
 
