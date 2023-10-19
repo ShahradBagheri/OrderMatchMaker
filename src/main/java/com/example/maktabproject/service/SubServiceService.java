@@ -1,5 +1,6 @@
 package com.example.maktabproject.service;
 
+import com.example.maktabproject.exception.MainServiceNotFoundException;
 import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.exception.SubServiceTwoMainServiceException;
 import com.example.maktabproject.model.MainService;
@@ -18,4 +19,6 @@ public interface SubServiceService {
     List<SubService> findAll();
 
     SubService addMainService(SubService subService, MainService mainService) throws SubServiceNotFoundException, SubServiceTwoMainServiceException;
+
+    SubService removeMainService(SubService subService) throws SubServiceNotFoundException, MainServiceNotFoundException;
 }
