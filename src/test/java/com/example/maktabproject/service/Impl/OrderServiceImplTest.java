@@ -1,11 +1,9 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.exception.ExpertNotFoundException;
-import com.example.maktabproject.exception.InvalidPriceException;
-import com.example.maktabproject.exception.InvalidTimeException;
-import com.example.maktabproject.exception.OrderNotFoundException;
+import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.*;
 import com.example.maktabproject.model.enumeration.OrderState;
+import com.example.maktabproject.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,6 +26,9 @@ class OrderServiceImplTest {
 
     @Autowired
     private CustomerServiceImpl customerService;
+
+    @Autowired
+    private ExpertServiceImpl expertService;
 
     @Test
     void orderShouldSave() throws InvalidPriceException, InvalidTimeException {
@@ -270,5 +271,84 @@ class OrderServiceImplTest {
                 .build();
 
         assertThatThrownBy(() -> orderService.register(order)).isInstanceOf(InvalidPriceException.class);
+    }
+
+    @Test
+    void findOrdersForExpert() throws SubServiceNotFoundException, InvalidPriceException, InvalidTimeException, ExpertNotFoundException {
+        SubService subService = SubService.builder()
+                .name("ExpertFindingSubService")
+                .basePrice(100.0)
+                .build();
+
+        subServiceService.register(subService);
+
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("ExpertFindingEmail@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Customer customer = Customer.builder()
+                .user(user)
+                .build();
+
+        customer = customerService.register(customer);
+
+        Order order = Order.builder()
+                .orderState(OrderState.WAITING_FOR_SUGGESTIONS)
+                .address("Some address")
+                .subService(subService)
+                .customer(customer)
+                .suggestedPrice(200.0)
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .build();
+
+        order = orderService.register(order);
+
+        SubService subService2 = SubService.builder()
+                .name("orderShouldSaveTest2")
+                .basePrice(100.0)
+                .build();
+
+        subServiceService.register(subService2);
+
+        User user2 = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("registerOrderTest2@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Customer customer2 = Customer.builder()
+                .user(user2)
+                .build();
+
+        customer2 = customerService.register(customer2);
+
+        Order order2 = Order.builder()
+                .orderState(OrderState.WAITING_TO_SELECT_SUGGESTION)
+                .address("Some address")
+                .subService(subService)
+                .customer(customer)
+                .suggestedPrice(200.0)
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .build();
+
+        order = orderService.register(order2);
+
+        User user3 = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("expertOrderFinder@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Expert expert = Expert.builder()
+                .user(user3)
+                .build();
+
+        expert = expertService.register(expert);
+        expert = expertService.addSubService(expert,subService);
+        expert = expertService.addSubService(expert,subService2);
+
+        assertThat(orderService.findOrdersForExpert(expert).size()).isGreaterThan(1);
     }
 }
