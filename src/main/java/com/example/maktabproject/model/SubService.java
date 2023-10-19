@@ -28,7 +28,7 @@ public class SubService {
     @ManyToMany
     private List<Expert> experts;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "main_service_id")
     private MainService mainService;
 }

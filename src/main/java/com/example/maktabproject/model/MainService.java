@@ -20,6 +20,6 @@ public class MainService {
     @Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "mainService")
+    @OneToMany(mappedBy = "mainService", cascade = CascadeType.MERGE)
     private List<SubService> subServices;
 }
