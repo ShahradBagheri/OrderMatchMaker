@@ -27,7 +27,7 @@ public class OrderServiceImpl implements OrderService {
         try{
 
             if(order.getOffers() != null)
-                if(order.getOrderState() == OrderState.WAITING_FOR_SUGGESTIONS && order.getOffers().size() != 0)
+                if(order.getOrderState() == OrderState.WAITING_FOR_SUGGESTIONS)
                     order.setOrderState(OrderState.WAITING_TO_SELECT_SUGGESTION);
 
             if(priceValidation(order))
@@ -82,9 +82,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void updateOrderStatus(Order order) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException {
+    public Order updateOrderStatus(Order order) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException {
 
         order = findById(order.getId());
-        register(order);
+        return register(order);
     }
 }

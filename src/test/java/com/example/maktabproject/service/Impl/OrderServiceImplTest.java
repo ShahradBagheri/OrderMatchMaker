@@ -30,6 +30,9 @@ class OrderServiceImplTest {
     @Autowired
     private ExpertServiceImpl expertService;
 
+    @Autowired
+    private OfferServiceImpl offerService;
+
     @Test
     void orderShouldSave() throws InvalidPriceException, InvalidTimeException {
 
@@ -350,5 +353,62 @@ class OrderServiceImplTest {
         expert = expertService.addSubService(expert,subService2);
 
         assertThat(orderService.findOrdersForExpert(expert).size()).isGreaterThan(1);
+    }
+
+    @Test
+    void orderStatusChangeAfterOneOffer() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException {
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("orderstatuschangeoffer@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Expert expert = Expert.builder()
+                .user(user)
+                .build();
+
+        expert = expertService.register(expert);
+
+        SubService subService = SubService.builder()
+                .name("orderstatuschangeoffer")
+                .basePrice(100.0)
+                .build();
+
+        subServiceService.register(subService);
+
+        User user2 = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("orderstatuschangeoffer2@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Customer customer = Customer.builder()
+                .user(user2)
+                .build();
+
+        customer = customerService.register(customer);
+
+        Order order = Order.builder()
+                .orderState(OrderState.WAITING_FOR_SUGGESTIONS)
+                .address("Some address")
+                .subService(subService)
+                .customer(customer)
+                .suggestedPrice(200.0)
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .build();
+
+        orderService.register(order);
+
+        Offer offer = Offer.builder()
+                .expert(expert)
+                .order(order)
+                .suggestedPrice(200.0)
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .completionDate(LocalDateTime.now().plusDays(3))
+                .build();
+
+        offer = offerService.register(offer);
+        order = orderService.updateOrderStatus(order);
+        assertThat(order.getOrderState()).isEqualTo(OrderState.WAITING_TO_SELECT_SUGGESTION);
     }
 }
