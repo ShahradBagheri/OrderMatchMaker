@@ -25,6 +25,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order register(Order order) throws InvalidPriceException, InvalidTimeException {
         try{
+
+            if(order.getOrderState() == OrderState.WAITING_FOR_SUGGESTIONS && order.getOffers().size() != 0)
+                order.setOrderState(OrderState.WAITING_TO_SELECT_SUGGESTION);
+
             if(priceValidation(order))
                 if(dateValidation(order.getStartingDate()))
                     return orderRepository.save(order);
