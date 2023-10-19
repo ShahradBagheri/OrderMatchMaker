@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
@@ -168,6 +170,46 @@ class SubServiceServiceImplTest {
         subService = subServiceService.register(subService);
         SubService finalSubService = subService;
         assertThatThrownBy(() -> subServiceService.removeMainService(finalSubService)).isInstanceOf(MainServiceNotFoundException.class);
+    }
+
+    @Test
+    void shouldFindAllByMainService() throws MainServiceNotFoundException {
+
+        MainService mainService1 = MainService.builder()
+                .name("testingFindAllByMainService1")
+                .build();
+
+        mainService1 = mainServiceService.register(mainService1);
+
+        MainService mainService2 = MainService.builder()
+                .name("testingFindAllByMainService2")
+                .build();
+
+        mainService2 = mainServiceService.register(mainService2);
+
+        SubService subService1 = SubService.builder()
+                .name("testingAll1")
+                .mainService(mainService1)
+                .build();
+
+        subService1 = subServiceService.register(subService1);
+
+        SubService subService2 = SubService.builder()
+                .name("testingAll2")
+                .mainService(mainService2)
+                .build();
+
+        subService2 = subServiceService.register(subService2);
+
+        SubService subService3 = SubService.builder()
+                .name("testingAll3")
+                .mainService(mainService1)
+                .build();
+
+        subService3 = subServiceService.register(subService3);
+
+        List<SubService> byMainService = subServiceService.findByMainService(mainService1);
+        assertThat(byMainService.size()).isEqualTo(2);
     }
 
 }
