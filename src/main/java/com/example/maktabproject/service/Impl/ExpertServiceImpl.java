@@ -2,7 +2,9 @@ package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.exception.CustomerNotFoundException;
 import com.example.maktabproject.exception.ExpertNotFoundException;
+import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.Expert;
+import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.model.enumeration.ExpertStatus;
 import com.example.maktabproject.repository.ExpertRepository;
@@ -20,6 +22,7 @@ import java.util.List;
 public class ExpertServiceImpl implements ExpertService {
 
     private final ExpertRepository expertRepository;
+    private final SubServiceServiceImpl subServiceService;
 
     @Override
     public Expert register(Expert expert) {
@@ -74,5 +77,20 @@ public class ExpertServiceImpl implements ExpertService {
         Expert findExpert = findById(expert.getId());
         findExpert.setExpertStatus(expertStatus);
         return register(findExpert);
+    }
+
+    @Override
+    public Expert addSubService(Expert expert, SubService subService) throws ExpertNotFoundException, SubServiceNotFoundException {
+
+        expert = findById(expert.getId());
+        subService = subServiceService.findById(subService.getId());
+
+        if (expert.getSubServices() == null){
+            List<SubService> subServices = List.of(subService);
+            expert.setSubServices(subServices);
+        }else
+            expert.getSubServices().add(subService);
+
+        return register(expert);
     }
 }
