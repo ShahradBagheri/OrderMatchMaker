@@ -1,5 +1,7 @@
 package com.example.maktabproject.service.Impl;
 
+import com.example.maktabproject.exception.InvalidPriceException;
+import com.example.maktabproject.exception.InvalidTimeException;
 import com.example.maktabproject.exception.OfferNotFoundException;
 import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.repository.OfferRepository;
@@ -19,10 +21,15 @@ public class OfferServiceImpl implements OfferService {
     private final OfferRepository offerRepository;
 
     @Override
-    public Offer register(Offer offer) {
+    public Offer register(Offer offer) throws InvalidTimeException, InvalidPriceException {
 
         try{
-            return offerRepository.save(offer);
+            if(priceValidation(offer))
+                if(dateValidation(offer.getStartingDate()))
+                    return offerRepository.save(offer);
+                else
+                    throw new InvalidTimeException();
+            throw new InvalidPriceException();
         } catch (ConstraintViolationException | DataAccessException e){
             System.err.println(e.getMessage());
             return null;
