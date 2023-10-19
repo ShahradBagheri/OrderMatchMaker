@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -34,6 +35,9 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "expert_id")
     private Expert expert;
+
+    @OneToMany(mappedBy = "order")
+    private List<Offer> offers;
 
     private Double suggestedPrice;
 

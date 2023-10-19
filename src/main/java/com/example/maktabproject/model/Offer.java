@@ -24,6 +24,10 @@ public class Offer {
     @JoinColumn(name = "expert_id")
     private Expert expert;
 
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
     @CreationTimestamp
     private LocalDateTime creationDate;
 

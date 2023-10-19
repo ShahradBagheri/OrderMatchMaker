@@ -131,7 +131,7 @@ class ExpertServiceImplSpringTest {
 
         List<Expert> all = expertService.findAll();
 
-        assertThat(all).isNotNull();
+        assertThat(all.size()).isGreaterThan(0);
     }
 
     @Test

@@ -122,7 +122,7 @@ class CustomerServiceImplSpringTest {
 
         List<Customer> all = customerService.findAll();
 
-        assertThat(all).isNotNull();
+        assertThat(all.size()).isGreaterThan(0);
     }
 
     @Test

@@ -87,6 +87,6 @@ class MainServiceServiceImplTest {
                 .build();
 
         mainServiceService.register(mainService);
-        assertThat(mainServiceService.findAll()).isNotNull();
+        assertThat(mainServiceService.findAll().size()).isGreaterThan(0);
     }
 }

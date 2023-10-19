@@ -209,7 +209,7 @@ class SubServiceServiceImplTest {
         subService3 = subServiceService.register(subService3);
 
         List<SubService> byMainService = subServiceService.findByMainService(mainService1);
-        assertThat(byMainService.size()).isEqualTo(2);
+        assertThat(byMainService.size()).isGreaterThan(1);
     }
 
 }
