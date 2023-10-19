@@ -139,4 +139,35 @@ class SubServiceServiceImplTest {
         assertThatThrownBy(() -> subServiceService.addMainService(finalSubService, finalMainService)).isInstanceOf(SubServiceTwoMainServiceException.class);
     }
 
+    @Test
+    void mainServiceShouldGetRemoved() throws SubServiceTwoMainServiceException, SubServiceNotFoundException, MainServiceNotFoundException {
+        SubService subService = SubService.builder()
+                .name("testRemoveMain")
+                .build();
+
+        subService = subServiceService.register(subService);
+
+        MainService mainService = MainService.builder()
+                .name("testRemoveMain")
+                .build();
+
+        mainService = mainServiceService.register(mainService);
+
+        subService = subServiceService.addMainService(subService,mainService);
+        subService = subServiceService.removeMainService(subService);
+        assertThat(subService.getMainService()).isNull();
+    }
+
+    @Test
+    void removeNullMainServiceShouldThrow() throws SubServiceTwoMainServiceException, SubServiceNotFoundException, MainServiceNotFoundException {
+
+        SubService subService = SubService.builder()
+                .name("testRemoveMainNull")
+                .build();
+
+        subService = subServiceService.register(subService);
+        SubService finalSubService = subService;
+        assertThatThrownBy(() -> subServiceService.removeMainService(finalSubService)).isInstanceOf(MainServiceNotFoundException.class);
+    }
+
 }
