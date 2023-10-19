@@ -24,7 +24,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     private SubService subService;
 
     @ManyToOne
