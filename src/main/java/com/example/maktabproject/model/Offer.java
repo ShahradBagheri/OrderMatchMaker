@@ -1,5 +1,6 @@
 package com.example.maktabproject.model;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class Offer {
 
     @ManyToOne
     @JoinColumn(name = "expert_id")
+    @NotNull
     private Expert expert;
 
     @ManyToOne(cascade = CascadeType.MERGE)

@@ -20,7 +20,6 @@ import java.util.List;
 public class OfferServiceImpl implements OfferService {
 
     private final OfferRepository offerRepository;
-    private final OrderRepository orderRepository;
 
     @Override
     public Offer register(Offer offer) throws InvalidTimeException, InvalidPriceException {
