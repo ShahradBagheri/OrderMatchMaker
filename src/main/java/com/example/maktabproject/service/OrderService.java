@@ -14,4 +14,6 @@ public interface OrderService {
     Order findById(Long id) throws OrderNotFoundException;
 
     List<Order> findAll();
+
+    boolean priceValidation(Order order);
 }

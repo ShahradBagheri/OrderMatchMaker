@@ -46,4 +46,12 @@ public class OrderServiceImpl implements OrderService {
 
         return orderRepository.findAll();
     }
+
+    @Override
+    public boolean priceValidation(Order order) {
+
+        if(order.getSuggestedPrice() != null && order.getSubService() != null)
+            return order.getSuggestedPrice() < order.getSubService().getBasePrice();
+        return false;
+    }
 }
