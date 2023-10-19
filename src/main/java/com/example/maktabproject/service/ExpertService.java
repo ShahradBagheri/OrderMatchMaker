@@ -3,6 +3,7 @@ package com.example.maktabproject.service;
 import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.User;
+import com.example.maktabproject.model.enumeration.ExpertStatus;
 
 import java.util.List;
 
@@ -18,5 +19,7 @@ public interface ExpertService {
 
     Expert findByUser(User user) throws ExpertNotFoundException;
 
-    Expert changePassword(Expert expert,String password);
+    Expert changePassword(Expert expert,String password) throws ExpertNotFoundException;
+
+    Expert updateStatus(Expert expert, ExpertStatus expertStatus) throws ExpertNotFoundException;
 }

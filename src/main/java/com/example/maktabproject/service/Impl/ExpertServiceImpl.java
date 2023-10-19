@@ -4,6 +4,7 @@ import com.example.maktabproject.exception.CustomerNotFoundException;
 import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.User;
+import com.example.maktabproject.model.enumeration.ExpertStatus;
 import com.example.maktabproject.repository.ExpertRepository;
 import com.example.maktabproject.service.ExpertService;
 import jakarta.validation.ConstraintViolationException;
@@ -60,10 +61,18 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public Expert changePassword(Expert expert, String password) {
+    public Expert changePassword(Expert expert, String password) throws ExpertNotFoundException {
 
-        Expert findExpert = expertRepository.findById(expert.getId()).orElseThrow();
+        Expert findExpert = findById(expert.getId());
         findExpert.getUser().setPassword(password);
+        return register(findExpert);
+    }
+
+    @Override
+    public Expert updateStatus(Expert expert, ExpertStatus expertStatus) throws ExpertNotFoundException {
+
+        Expert findExpert = findById(expert.getId());
+        findExpert.setExpertStatus(expertStatus);
         return register(findExpert);
     }
 }
