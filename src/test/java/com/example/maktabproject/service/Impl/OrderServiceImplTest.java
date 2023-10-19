@@ -260,4 +260,15 @@ class OrderServiceImplTest {
         List<Order> all = orderService.findAll();
         assertThat(all.size()).isGreaterThan(0);
     }
+
+    @Test
+    void orderWithNoTimeOrPriceShouldNotSave() throws InvalidPriceException, InvalidTimeException {
+        Order order = Order.builder()
+                .orderState(OrderState.STARTED)
+                .address("Some address")
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .build();
+
+        assertThatThrownBy(() -> orderService.register(order)).isInstanceOf(InvalidPriceException.class);
+    }
 }
