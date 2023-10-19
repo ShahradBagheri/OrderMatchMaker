@@ -501,4 +501,83 @@ class OfferServiceImplTest {
         offer2 = offerService.register(offer2);
         assertThat(offerService.findByCustomerPriceOrder(customer).stream().map(Offer::getId)).isEqualTo(List.of(offer.getId(),offer2.getId()));
     }
+
+    @Test
+    void findAllByCustomerOrderByScore() throws InvalidPriceException, InvalidTimeException {
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("somethingsomethingtest1@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Expert expert = Expert.builder()
+                .user(user)
+                .score(3F)
+                .build();
+
+        expert = expertService.register(expert);
+
+        User user3 = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("somethingsomethingtest12@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Expert expert2 = Expert.builder()
+                .user(user3)
+                .score(1F)
+                .build();
+
+        expert2 = expertService.register(expert2);
+
+        SubService subService = SubService.builder()
+                .name("somethingsomethingtest13")
+                .basePrice(100.0)
+                .build();
+
+        subServiceService.register(subService);
+
+        User user2 = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("somethingsomethingtest14@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Customer customer = Customer.builder()
+                .user(user2)
+                .build();
+
+        customer = customerService.register(customer);
+
+        Order order = Order.builder()
+                .orderState(OrderState.WAITING_FOR_SUGGESTIONS)
+                .address("Some address")
+                .subService(subService)
+                .customer(customer)
+                .suggestedPrice(200.0)
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .build();
+
+        orderService.register(order);
+
+        Offer offer = Offer.builder()
+                .expert(expert)
+                .order(order)
+                .suggestedPrice(200.0)
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .completionDate(LocalDateTime.now().plusDays(3))
+                .build();
+
+        Offer offer2 = Offer.builder()
+                .expert(expert2)
+                .order(order)
+                .suggestedPrice(250.0)
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .completionDate(LocalDateTime.now().plusDays(3))
+                .build();
+
+        offer = offerService.register(offer);
+        offer2 = offerService.register(offer2);
+        assertThat(offerService.findByCustomerScoreOrder(customer).stream().map(Offer::getId)).isEqualTo(List.of(offer2.getId(),offer.getId()));
+    }
 }
