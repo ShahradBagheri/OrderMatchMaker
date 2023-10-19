@@ -1,6 +1,7 @@
 package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.exception.SubServiceNotFoundException;
+import com.example.maktabproject.model.MainService;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.repository.SubServiceRepository;
 import com.example.maktabproject.service.SubServiceService;
@@ -46,5 +47,11 @@ public class SubServiceServiceImpl implements SubServiceService {
     public List<SubService> findAll() {
 
         return subServiceRepository.findAll();
+    }
+
+    @Override
+    public SubService addMainService(SubService subService, MainService mainService) {
+        subService.setMainService(mainService);
+        return register(subService);
     }
 }
