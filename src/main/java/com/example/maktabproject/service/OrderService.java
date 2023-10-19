@@ -4,6 +4,7 @@ import com.example.maktabproject.exception.InvalidPriceException;
 import com.example.maktabproject.exception.InvalidTimeException;
 import com.example.maktabproject.exception.OrderNotFoundException;
 import com.example.maktabproject.model.Customer;
+import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Order;
 
 import java.time.LocalDateTime;
@@ -18,6 +19,8 @@ public interface OrderService {
     Order findById(Long id) throws OrderNotFoundException;
 
     List<Order> findAll();
+
+    List<Order> findOrdersForExpert(Expert expert);
 
     boolean priceValidation(Order order);
 

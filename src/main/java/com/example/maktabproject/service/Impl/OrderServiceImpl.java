@@ -3,7 +3,9 @@ package com.example.maktabproject.service.Impl;
 import com.example.maktabproject.exception.InvalidPriceException;
 import com.example.maktabproject.exception.InvalidTimeException;
 import com.example.maktabproject.exception.OrderNotFoundException;
+import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Order;
+import com.example.maktabproject.model.enumeration.OrderState;
 import com.example.maktabproject.repository.OrderRepository;
 import com.example.maktabproject.service.OrderService;
 import jakarta.validation.ConstraintViolationException;
@@ -54,6 +56,11 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> findAll() {
 
         return orderRepository.findAll();
+    }
+
+    @Override
+    public List<Order> findOrdersForExpert(Expert expert) {
+        return orderRepository.findBySubServiceInAndOrderStateOrOrderState(expert.getSubServices(), OrderState.WAITING_FOR_SUGGESTIONS,OrderState.WAITING_TO_SELECT_SUGGESTION);
     }
 
     @Override
