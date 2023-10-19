@@ -5,6 +5,7 @@ import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.User;
+import com.example.maktabproject.model.enumeration.ExpertStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -129,7 +130,7 @@ class ExpertServiceImplSpringTest {
     }
 
     @Test
-    void CustomerShouldGetDeleted() throws ExpertNotFoundException {
+    void customerShouldGetDeleted() throws ExpertNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -146,7 +147,7 @@ class ExpertServiceImplSpringTest {
     }
 
     @Test
-    void CustomerPasswordShouldChange() throws ExpertNotFoundException {
+    void customerPasswordShouldChange() throws ExpertNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -164,7 +165,7 @@ class ExpertServiceImplSpringTest {
     }
 
     @Test
-    void CustomerFoundByUser() throws ExpertNotFoundException {
+    void customerFoundByUser() throws ExpertNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -178,5 +179,24 @@ class ExpertServiceImplSpringTest {
         expert = expertService.register(expert);
         Expert foundExpert = expertService.findByUser(expert.getUser());
         assertThat(expert.getUser()).isEqualTo(foundExpert.getUser());
+    }
+
+    @Test
+    void statusShouldUpdate() throws ExpertNotFoundException {
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("statusUpdate@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Expert expert = Expert.builder()
+                .user(user)
+                .expertStatus(ExpertStatus.NEW)
+                .build();
+        expert = expertService.register(expert);
+        ExpertStatus updatedStatus = ExpertStatus.APPROVED;
+
+        expert = expertService.updateStatus(expert,updatedStatus);
+        assertThat(expert.getExpertStatus()).isEqualTo(updatedStatus);
     }
 }
