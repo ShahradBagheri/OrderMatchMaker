@@ -207,6 +207,7 @@ class ExpertServiceImplSpringTest {
 
     @Test
     void subServiceShouldGetAdded() throws ExpertNotFoundException, SubServiceNotFoundException {
+
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -228,5 +229,39 @@ class ExpertServiceImplSpringTest {
 
         expert = expertService.addSubService(expert,subService);
         assertThat(expert.getSubServices()).isNotNull();
+    }
+
+    @Test
+    void addSecondSubServiceToGetAdded() throws ExpertNotFoundException, SubServiceNotFoundException {
+
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("addingMoreThanOne@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Expert expert = Expert.builder()
+                .user(user)
+                .expertStatus(ExpertStatus.NEW)
+                .build();
+        expert = expertService.register(expert);
+
+        SubService subService = SubService.builder()
+                .name("firstOneToGetAdded")
+                .build();
+
+        subService = subServiceService.register(subService);
+
+        SubService subService2 = SubService.builder()
+                .name("secondOneToGetAdded")
+                .build();
+
+        subService2 = subServiceService.register(subService2);
+
+
+        expert = expertService.addSubService(expert,subService);
+        expert = expertService.addSubService(expert,subService2);
+
+        assertThat(expert.getSubServices().size()).isEqualTo(2);
     }
 }

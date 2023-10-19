@@ -27,9 +27,9 @@ public class ExpertServiceImpl implements ExpertService {
     @Override
     public Expert register(Expert expert) {
 
-        try{
+        try {
             return expertRepository.save(expert);
-        } catch (ConstraintViolationException | DataAccessException e){
+        } catch (ConstraintViolationException | DataAccessException e) {
             System.err.println(e.getMessage());
             return null;
         }
@@ -85,11 +85,7 @@ public class ExpertServiceImpl implements ExpertService {
         expert = findById(expert.getId());
         subService = subServiceService.findById(subService.getId());
 
-        if (expert.getSubServices() == null){
-            List<SubService> subServices = List.of(subService);
-            expert.setSubServices(subServices);
-        }else
-            expert.getSubServices().add(subService);
+        expert.getSubServices().add(subService);
 
         return register(expert);
     }
