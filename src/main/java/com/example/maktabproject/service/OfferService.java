@@ -2,7 +2,9 @@ package com.example.maktabproject.service;
 
 import com.example.maktabproject.exception.OfferNotFoundException;
 import com.example.maktabproject.model.Offer;
+import com.example.maktabproject.model.Order;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OfferService {
@@ -14,4 +16,8 @@ public interface OfferService {
     Offer findById(Long id) throws OfferNotFoundException;
 
     List<Offer> findAll();
+
+    boolean priceValidation(Offer offer);
+
+    boolean dateValidation(LocalDateTime localDateTime);
 }

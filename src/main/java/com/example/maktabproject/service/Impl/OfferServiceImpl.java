@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -46,5 +47,15 @@ public class OfferServiceImpl implements OfferService {
     public List<Offer> findAll() {
 
         return offerRepository.findAll();
+    }
+
+    @Override
+    public boolean priceValidation(Offer offer) {
+        return offer.getSuggestedPrice() > offer.getOrder().getSubService().getBasePrice();
+    }
+
+    @Override
+    public boolean dateValidation(LocalDateTime localDateTime) {
+        return localDateTime.isAfter(LocalDateTime.now());
     }
 }
