@@ -19,6 +19,7 @@ import java.util.List;
 public class SubServiceServiceImpl implements SubServiceService {
 
     private final SubServiceRepository subServiceRepository;
+    private final MainServiceServiceImpl mainServiceService;
 
     @Override
     public SubService register(SubService subService) {
@@ -73,5 +74,13 @@ public class SubServiceServiceImpl implements SubServiceService {
 
         subService.setMainService(null);
         return register(subService);
+    }
+
+    @Override
+    public List<SubService> findByMainService(MainService mainService) throws MainServiceNotFoundException {
+
+        mainService = mainServiceService.findById(mainService.getId());
+
+        return subServiceRepository.findAllByMainService(mainService);
     }
 }

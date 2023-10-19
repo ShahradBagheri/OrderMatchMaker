@@ -21,4 +21,6 @@ public interface SubServiceService {
     SubService addMainService(SubService subService, MainService mainService) throws SubServiceNotFoundException, SubServiceTwoMainServiceException;
 
     SubService removeMainService(SubService subService) throws SubServiceNotFoundException, MainServiceNotFoundException;
+
+    List<SubService> findByMainService(MainService mainService) throws MainServiceNotFoundException;
 }
