@@ -80,4 +80,11 @@ public class OrderServiceImpl implements OrderService {
     public boolean dateValidation(LocalDateTime localDateTime) {
         return localDateTime.isAfter(LocalDateTime.now());
     }
+
+    @Override
+    public void updateOrderStatus(Order order) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException {
+
+        order = findById(order.getId());
+        register(order);
+    }
 }
