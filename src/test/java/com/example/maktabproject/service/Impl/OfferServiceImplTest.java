@@ -452,7 +452,7 @@ class OfferServiceImplTest {
         expert2 = expertService.register(expert2);
 
         SubService subService = SubService.builder()
-                .name("testingfindAllforOffer")
+                .name("testingfindAllforOffer123")
                 .basePrice(100.0)
                 .build();
 
