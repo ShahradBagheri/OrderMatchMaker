@@ -32,7 +32,7 @@ class ExpertServiceImplSpringTest {
     @Test
     void validExpertRegisterShouldSave() throws ImageToBigException {
 
-        byte[] bytes = imageProcessing.imageToBytes("C:\\Users\\Shahrad\\IdeaProjects\\maktabProject\\src\\main\\resources\\pictures\\Screenshot_20231020_044910.png");
+        byte[] bytes = imageProcessing.imageToBytes("C:\\Users\\Shahrad\\IdeaProjects\\maktabProject\\src\\main\\resources\\pictures\\Screenshot_20231020_092009.png");
 
         User user = User.builder()
                 .firstname("shahrad")
@@ -267,6 +267,6 @@ class ExpertServiceImplSpringTest {
         expert = expertService.addSubService(expert,subService);
         expert = expertService.addSubService(expert,subService2);
 
-        assertThat(expert.getSubServices().size()).isEqualTo(2);
+        assertThat(expert.getSubServices()).hasSize(2);
     }
 }

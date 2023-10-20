@@ -46,6 +46,6 @@ public class ImageProcessing {
         long sizeLimit = 300 * 1024;
         File file = new File(filepath);
 
-        return  file.length() > sizeLimit;
+        return  file.length() <= sizeLimit;
     }
 }

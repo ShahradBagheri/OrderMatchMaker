@@ -69,7 +69,7 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public boolean priceValidation(Offer offer) {
-        return offer.getSuggestedPrice() > offer.getOrder().getSubService().getBasePrice();
+        return offer.getSuggestedPrice() >= offer.getOrder().getSubService().getBasePrice();
     }
 
     @Override
