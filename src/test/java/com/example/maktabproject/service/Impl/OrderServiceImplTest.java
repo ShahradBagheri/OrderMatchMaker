@@ -411,4 +411,119 @@ class OrderServiceImplTest {
         order = orderService.updateOrderStatus(order);
         assertThat(order.getOrderState()).isEqualTo(OrderState.WAITING_TO_SELECT_SUGGESTION);
     }
+
+    @Test
+    void expertShouldGetAddedToOrder() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException, ExpertHasNoOfferForOfferException {
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("ihopePas213@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Expert expert = Expert.builder()
+                .user(user)
+                .build();
+
+        expert = expertService.register(expert);
+
+        SubService subService = SubService.builder()
+                .name("pleaseAddex123123pert")
+                .basePrice(100.0)
+                .build();
+
+        subServiceService.register(subService);
+
+        User user2 = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("ihopePas243@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Customer customer = Customer.builder()
+                .user(user2)
+                .build();
+
+        customer = customerService.register(customer);
+
+        Order order = Order.builder()
+                .orderState(OrderState.WAITING_FOR_SUGGESTIONS)
+                .address("Some address")
+                .subService(subService)
+                .customer(customer)
+                .suggestedPrice(200.0)
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .build();
+
+        orderService.register(order);
+
+        Offer offer = Offer.builder()
+                .expert(expert)
+                .order(order)
+                .suggestedPrice(200.0)
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .completionDate(LocalDateTime.now().plusDays(3))
+                .build();
+
+        offer = offerService.register(offer);
+
+        order = orderService.choseExpert(expert,order);
+        assertThat(order.getExpert()).isNotNull();
+    }
+
+    @Test
+    void expertWithNoOfferShouldNotGetAdded() throws InvalidPriceException, InvalidTimeException {
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("onelasttesth@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Expert expert = Expert.builder()
+                .user(user)
+                .build();
+
+        expert = expertService.register(expert);
+
+        SubService subService = SubService.builder()
+                .name("onelasttesth2")
+                .basePrice(100.0)
+                .build();
+
+        subServiceService.register(subService);
+
+        User user2 = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("onelasttesth6@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Customer customer = Customer.builder()
+                .user(user2)
+                .build();
+
+        customer = customerService.register(customer);
+
+        Order order = Order.builder()
+                .orderState(OrderState.WAITING_FOR_SUGGESTIONS)
+                .address("Some address")
+                .subService(subService)
+                .customer(customer)
+                .suggestedPrice(200.0)
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .build();
+
+        orderService.register(order);
+
+        Offer offer = Offer.builder()
+                .order(order)
+                .suggestedPrice(200.0)
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .completionDate(LocalDateTime.now().plusDays(3))
+                .build();
+
+        offer = offerService.register(offer);
+
+        Expert finalExpert = expert;
+        assertThatThrownBy(() -> orderService.choseExpert(finalExpert,order)).isInstanceOf(ExpertHasNoOfferForOfferException.class);
+    }
 }
