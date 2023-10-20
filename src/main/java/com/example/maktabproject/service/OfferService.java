@@ -1,13 +1,10 @@
 package com.example.maktabproject.service;
 
-import com.example.maktabproject.exception.ExpertHasNoOfferForOfferException;
 import com.example.maktabproject.exception.InvalidPriceException;
 import com.example.maktabproject.exception.InvalidTimeException;
 import com.example.maktabproject.exception.OfferNotFoundException;
 import com.example.maktabproject.model.Customer;
-import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Offer;
-import com.example.maktabproject.model.Order;
 
 import java.time.LocalDateTime;
 import java.util.List;

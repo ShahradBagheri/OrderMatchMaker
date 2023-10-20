@@ -1,9 +1,7 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.exception.CustomerNotFoundException;
 import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.exception.SubServiceNotFoundException;
-import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.User;
@@ -16,7 +14,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ExpertServiceImplSpringTest {

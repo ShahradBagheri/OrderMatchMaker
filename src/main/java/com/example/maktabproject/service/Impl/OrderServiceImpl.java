@@ -2,7 +2,6 @@ package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.Expert;
-import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.enumeration.OrderState;
 import com.example.maktabproject.repository.OfferRepository;
@@ -10,7 +9,6 @@ import com.example.maktabproject.repository.OrderRepository;
 import com.example.maktabproject.service.OrderService;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.ast.tree.expression.Star;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
