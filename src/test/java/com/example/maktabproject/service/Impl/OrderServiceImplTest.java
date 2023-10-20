@@ -18,6 +18,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class OrderServiceImplTest {
 
     @Autowired
+    private OfferServiceImpl offerService;
+
+    @Autowired
     private OrderServiceImpl orderService;
 
     @Autowired
@@ -28,9 +31,6 @@ class OrderServiceImplTest {
 
     @Autowired
     private ExpertServiceImpl expertService;
-
-    @Autowired
-    private OfferServiceImpl offerService;
 
     @Test
     void orderShouldSave() throws InvalidPriceException, InvalidTimeException {
@@ -598,5 +598,67 @@ class OrderServiceImplTest {
         order = orderService.register(order);
         Order finalOrder = order;
         assertThatThrownBy( () -> orderService.statusToFinished(finalOrder)).isInstanceOf(NotTheCorrectTimeToChangeStatusException.class);
+    }
+
+    @Test
+    void orderStateShouldNotChangeFromWaitingToStartedBeforeCorrectTime() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException, ExpertHasNoOfferForOfferException {
+
+        SubService subService = SubService.builder()
+                .name("theginalginaltests")
+                .basePrice(100.0)
+                .build();
+
+        subServiceService.register(subService);
+
+        User user2 = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("askdjh@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Expert expert = Expert.builder()
+                .user(user2)
+                .build();
+
+        expert = expertService.register(expert);
+
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("asdasd234@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Customer customer = Customer.builder()
+                .user(user)
+                .build();
+
+        customer = customerService.register(customer);
+
+        Order order = Order.builder()
+                .orderState(OrderState.STARTED)
+                .address("Some address")
+                .subService(subService)
+                .customer(customer)
+                .orderState(OrderState.WAITING_FOR_EXPERT)
+                .suggestedPrice(200.0)
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .build();
+
+        order = orderService.register(order);
+
+        Offer offer = Offer.builder()
+                .expert(expert)
+                .order(order)
+                .suggestedPrice(200.0)
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .completionDate(LocalDateTime.now().plusDays(3))
+                .build();
+
+        offer = offerService.register(offer);
+
+        order = orderService.findById(order.getId());
+        order = orderService.choseExpert(expert,order);
+        Order finalOrder = order;
+        assertThatThrownBy( () ->  orderService.statusToStarted(finalOrder)).isInstanceOf(NotTheCorrectTimeToChangeStatusException.class);
     }
 }
