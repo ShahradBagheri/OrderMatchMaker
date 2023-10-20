@@ -1,5 +1,6 @@
 package com.example.maktabproject.util;
 
+import com.example.maktabproject.exception.ImageToBigException;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
@@ -13,9 +14,12 @@ import java.nio.file.Paths;
 @Component
 public class ImageProcessing {
 
-    public byte[] imageToBytes(String filepath){
+    public byte[] imageToBytes(String filepath) throws ImageToBigException {
         try{
-            return Files.readAllBytes(Paths.get(filepath));
+            if(validImageSize(filepath))
+                return Files.readAllBytes(Paths.get(filepath));
+            else
+                throw new ImageToBigException();
         }catch (IOException e){
             System.err.println(e.getMessage());
             return null;
