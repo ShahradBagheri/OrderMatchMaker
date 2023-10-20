@@ -73,8 +73,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order choseExpert(Expert expert, Order order) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertHasNoOfferForOfferException {
         order = findById(order.getId());
-        if (order.getOffers().stream().map(offer -> offer.getExpert().getId()).toList().contains(expert.getId())) {
+        if (order.getOffers().stream().map(offer -> offer.getExpert().getId()).toList().contains(expert.getId()) && order.getExpert() == null) {
             order.setExpert(expert);
+            order.setOrderState(OrderState.WAITING_FOR_EXPERT);
             return register(order);
         }
         throw new  ExpertHasNoOfferForOfferException();

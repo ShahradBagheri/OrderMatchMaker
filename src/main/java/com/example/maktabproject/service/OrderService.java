@@ -31,4 +31,6 @@ public interface OrderService {
     boolean dateValidation(LocalDateTime localDateTime);
 
     Order updateOrderStatus(Order order) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException;
+
+    Order
 }
