@@ -1,11 +1,8 @@
 package com.example.maktabproject.service;
 
 import com.example.maktabproject.exception.*;
-import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
-import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.model.Order;
-import org.aspectj.weaver.ast.Or;
 
 import java.time.LocalDateTime;
 import java.util.List;
