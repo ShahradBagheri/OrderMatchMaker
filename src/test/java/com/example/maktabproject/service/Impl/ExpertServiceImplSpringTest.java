@@ -1,6 +1,7 @@
 package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.exception.ExpertNotFoundException;
+import com.example.maktabproject.exception.ImageToBigException;
 import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.SubService;
@@ -29,7 +30,7 @@ class ExpertServiceImplSpringTest {
     private ImageProcessing imageProcessing;
 
     @Test
-    void validExpertRegisterShouldSave() {
+    void validExpertRegisterShouldSave() throws ImageToBigException {
 
         byte[] bytes = imageProcessing.imageToBytes("C:\\Users\\Shahrad\\IdeaProjects\\maktabProject\\src\\main\\resources\\pictures\\Screenshot_20231020_044910.png");
 
