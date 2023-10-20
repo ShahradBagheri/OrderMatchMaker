@@ -11,8 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -525,5 +524,79 @@ class OrderServiceImplTest {
 
         Expert finalExpert = expert;
         assertThatThrownBy(() -> orderService.choseExpert(finalExpert,order)).isInstanceOf(ExpertHasNoOfferForOfferException.class);
+    }
+
+    @Test
+    void orderStateShouldChangeFromStartedToFinished() throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException {
+
+        SubService subService = SubService.builder()
+                .name("statechangetofinish")
+                .basePrice(100.0)
+                .build();
+
+        subServiceService.register(subService);
+
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("statechangetofinish1@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Customer customer = Customer.builder()
+                .user(user)
+                .build();
+
+        customer = customerService.register(customer);
+
+        Order order = Order.builder()
+                .orderState(OrderState.STARTED)
+                .address("Some address")
+                .subService(subService)
+                .customer(customer)
+                .orderState(OrderState.STARTED)
+                .suggestedPrice(200.0)
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .build();
+
+        order = orderService.register(order);
+        order = orderService.statusToFinished(order);
+        assertThat(order.getOrderState()).isEqualTo(OrderState.FINISHED);
+    }
+
+    @Test
+    void notStartedOrdersShouldNotFinish() throws InvalidPriceException, InvalidTimeException {
+
+        SubService subService = SubService.builder()
+                .name("thisDoesntend")
+                .basePrice(100.0)
+                .build();
+
+        subServiceService.register(subService);
+
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("thisDoesntend@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Customer customer = Customer.builder()
+                .user(user)
+                .build();
+
+        customer = customerService.register(customer);
+
+        Order order = Order.builder()
+                .orderState(OrderState.STARTED)
+                .address("Some address")
+                .subService(subService)
+                .customer(customer)
+                .orderState(OrderState.WAITING_FOR_EXPERT)
+                .suggestedPrice(200.0)
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .build();
+
+        order = orderService.register(order);
+        Order finalOrder = order;
+        assertThatThrownBy( () -> orderService.statusToFinished(finalOrder)).isInstanceOf(NotTheCorrectTimeToChangeStatusException.class);
     }
 }
