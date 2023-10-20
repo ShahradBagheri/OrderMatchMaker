@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 @Component
 public class ImageProcessing {
 
-    public static byte[] imageToBytes(String filepath){
+    public byte[] imageToBytes(String filepath){
         try{
             return Files.readAllBytes(Paths.get(filepath));
         }catch (IOException e){
@@ -22,7 +22,7 @@ public class ImageProcessing {
         }
     }
 
-    public static void bytesToImage(byte[] imageData){
+    public void bytesToImage(byte[] imageData){
         try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(imageData);
 
@@ -38,7 +38,7 @@ public class ImageProcessing {
         }
     }
 
-    public static boolean validImageSize(String filepath){
+    public boolean validImageSize(String filepath){
         long sizeLimit = 300 * 1024;
         File file = new File(filepath);
 
