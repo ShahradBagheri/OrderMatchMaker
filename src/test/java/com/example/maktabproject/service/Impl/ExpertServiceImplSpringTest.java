@@ -6,6 +6,7 @@ import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.model.enumeration.ExpertStatus;
+import com.example.maktabproject.util.ImageProcessing;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,8 +25,13 @@ class ExpertServiceImplSpringTest {
     @Autowired
     private SubServiceServiceImpl subServiceService;
 
+    @Autowired
+    private ImageProcessing imageProcessing;
+
     @Test
     void validExpertRegisterShouldSave() {
+
+        byte[] bytes = imageProcessing.imageToBytes("C:\\Users\\Shahrad\\IdeaProjects\\maktabProject\\src\\main\\resources\\pictures\\Screenshot_20231020_044910.png");
 
         User user = User.builder()
                 .firstname("shahrad")
@@ -35,6 +41,7 @@ class ExpertServiceImplSpringTest {
                 .build();
         Expert expert = Expert.builder()
                 .user(user)
+                .imageData(bytes)
                 .build();
 
         expert = expertService.register(expert);
