@@ -1,13 +1,11 @@
 package com.example.maktabproject.service;
 
-import com.example.maktabproject.exception.ExpertHasNoOfferForOfferException;
-import com.example.maktabproject.exception.InvalidPriceException;
-import com.example.maktabproject.exception.InvalidTimeException;
-import com.example.maktabproject.exception.OrderNotFoundException;
+import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.model.Order;
+import org.aspectj.weaver.ast.Or;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,5 +30,7 @@ public interface OrderService {
 
     Order updateOrderStatus(Order order) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException;
 
-    Order
+    Order statusToStarted(Order order) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException;
+
+    Order statusToFinished(Order order) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException;
 }

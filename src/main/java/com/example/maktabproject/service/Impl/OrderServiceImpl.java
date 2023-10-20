@@ -1,17 +1,16 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.exception.ExpertHasNoOfferForOfferException;
-import com.example.maktabproject.exception.InvalidPriceException;
-import com.example.maktabproject.exception.InvalidTimeException;
-import com.example.maktabproject.exception.OrderNotFoundException;
+import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.enumeration.OrderState;
+import com.example.maktabproject.repository.OfferRepository;
 import com.example.maktabproject.repository.OrderRepository;
 import com.example.maktabproject.service.OrderService;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.ast.tree.expression.Star;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +22,7 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final OfferRepository offerRepository;
 
     @Override
     public Order register(Order order) throws InvalidPriceException, InvalidTimeException {
@@ -99,5 +99,23 @@ public class OrderServiceImpl implements OrderService {
 
         order = findById(order.getId());
         return register(order);
+    }
+
+    @Override
+    public Order statusToStarted(Order order) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException {
+        if(LocalDateTime.now().isAfter(offerRepository.findByExpertAndOrder(order.getExpert(),order).getStartingDate())){
+            order.setOrderState(OrderState.STARTED);
+            return register(order);
+        }
+        throw new NotTheCorrectTimeToChangeStatusException();
+    }
+
+    @Override
+    public Order statusToFinished(Order order) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException {
+        if (order.getOrderState() == OrderState.STARTED) {
+            order.setOrderState(OrderState.FINISHED);
+            return register(order);
+        }
+        throw new NotTheCorrectTimeToChangeStatusException();
     }
 }
