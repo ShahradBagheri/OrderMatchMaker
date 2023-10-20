@@ -36,7 +36,7 @@ public class Order {
     @JoinColumn(name = "expert_id")
     private Expert expert;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private List<Offer> offers;
 
     private Double suggestedPrice;

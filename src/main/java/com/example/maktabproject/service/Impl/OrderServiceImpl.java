@@ -1,9 +1,11 @@
 package com.example.maktabproject.service.Impl;
 
+import com.example.maktabproject.exception.ExpertHasNoOfferForOfferException;
 import com.example.maktabproject.exception.InvalidPriceException;
 import com.example.maktabproject.exception.InvalidTimeException;
 import com.example.maktabproject.exception.OrderNotFoundException;
 import com.example.maktabproject.model.Expert;
+import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.enumeration.OrderState;
 import com.example.maktabproject.repository.OrderRepository;
@@ -66,6 +68,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findOrdersForExpert(Expert expert) {
         return orderRepository.findBySubServiceInAndOrderStateOrOrderState(expert.getSubServices(), OrderState.WAITING_FOR_SUGGESTIONS,OrderState.WAITING_TO_SELECT_SUGGESTION);
+    }
+
+    @Override
+    public Order choseExpert(Expert expert, Order order) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertHasNoOfferForOfferException {
+        order = findById(order.getId());
+        if (order.getOffers().stream().map(offer -> offer.getExpert().getId()).toList().contains(expert.getId())) {
+            order.setExpert(expert);
+            return register(order);
+        }
+        throw new  ExpertHasNoOfferForOfferException();
     }
 
     @Override
