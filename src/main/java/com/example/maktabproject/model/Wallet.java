@@ -12,5 +12,5 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double credit;
+    private Double credit = 0.0;
 }
