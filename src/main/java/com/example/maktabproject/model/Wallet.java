@@ -3,8 +3,10 @@ package com.example.maktabproject.model;
 import lombok.Data;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Entity
 public class Wallet {
 
