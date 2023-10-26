@@ -18,5 +18,5 @@ public interface CustomerService {
 
     Customer findByUser(User user) throws CustomerNotFoundException;
 
-    Customer changePassword(Customer customer,String password);
+    Customer changePassword(Long customerId,String password) throws CustomerNotFoundException;
 }

@@ -58,10 +58,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer changePassword(Customer customer, String password) {
+    public Customer changePassword(Long customerId, String password) throws CustomerNotFoundException {
 
-        Customer findCustomer = customerRepository.findById(customer.getId()).orElseThrow();
-        findCustomer.getUser().setPassword(password);
-        return register(findCustomer);
+        Customer customer = findById(customerId);
+        customer.getUser().setPassword(password);
+        return register(customer);
     }
 }
