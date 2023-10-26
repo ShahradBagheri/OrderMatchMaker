@@ -6,12 +6,14 @@ import com.example.maktabproject.repository.MainServiceRepository;
 import com.example.maktabproject.service.MainServiceService;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class MainServiceServiceImpl implements MainServiceService {
 
@@ -23,7 +25,7 @@ public class MainServiceServiceImpl implements MainServiceService {
         try{
             return mainServiceRepository.save(mainService);
         } catch (ConstraintViolationException | DataAccessException e){
-            System.err.println(e.getMessage());
+            log.error(e.getMessage());
             return null;
         }
     }

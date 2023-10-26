@@ -7,12 +7,14 @@ import com.example.maktabproject.repository.CustomerRepository;
 import com.example.maktabproject.service.CustomerService;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
@@ -24,7 +26,7 @@ public class CustomerServiceImpl implements CustomerService {
         try{
             return customerRepository.save(customer);
         } catch (ConstraintViolationException | DataAccessException e){
-            System.err.println(e.getMessage());
+            log.error(e.getMessage());
             return null;
         }
     }

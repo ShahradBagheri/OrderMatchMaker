@@ -9,12 +9,14 @@ import com.example.maktabproject.repository.SubServiceRepository;
 import com.example.maktabproject.service.SubServiceService;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class SubServiceServiceImpl implements SubServiceService {
 
@@ -27,7 +29,7 @@ public class SubServiceServiceImpl implements SubServiceService {
         try{
             return subServiceRepository.save(subService);
         } catch (ConstraintViolationException | DataAccessException e){
-            System.err.println(e.getMessage());
+            log.error(e.getMessage());
             return null;
         }
     }

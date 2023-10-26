@@ -10,6 +10,7 @@ import com.example.maktabproject.service.ExpertService;
 import com.example.maktabproject.service.OrderService;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
@@ -36,7 +38,7 @@ public class OrderServiceImpl implements OrderService {
             throw new InvalidPriceException();
 
         } catch (ConstraintViolationException | DataAccessException e){
-            System.err.println(e.getMessage());
+            log.error(e.getMessage());
             return null;
         }
     }
