@@ -1,4 +1,4 @@
 package com.example.maktabproject.service;
 
-public class AdminService {
+public interface AdminService {
 }

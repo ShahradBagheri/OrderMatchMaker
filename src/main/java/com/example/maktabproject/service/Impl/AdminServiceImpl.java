@@ -1,4 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
-public class AdminServiceImpl {
+import com.example.maktabproject.service.AdminService;
+
+public class AdminServiceImpl implements AdminService {
 }
