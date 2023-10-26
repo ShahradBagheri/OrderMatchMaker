@@ -19,11 +19,11 @@ public interface ExpertService {
 
     List<Expert> findAll();
 
-    Expert findByUser(User user) throws ExpertNotFoundException;
+    Expert findByUser(Long userId) throws ExpertNotFoundException;
 
-    Expert changePassword(Expert expert,String password) throws ExpertNotFoundException;
+    Expert changePassword(Long expertId,String password) throws ExpertNotFoundException;
 
-    Expert updateStatus(Expert expert, ExpertStatus expertStatus) throws ExpertNotFoundException;
+    Expert updateStatus(Long expertId, ExpertStatus expertStatus) throws ExpertNotFoundException;
 
-    Expert addSubService(Expert expert, SubService subService) throws ExpertNotFoundException, SubServiceNotFoundException;
+    Expert addSubService(Long expertId, SubService subService) throws ExpertNotFoundException, SubServiceNotFoundException;
 }

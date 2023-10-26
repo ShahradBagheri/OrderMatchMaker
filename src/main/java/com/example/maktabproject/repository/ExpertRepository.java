@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface ExpertRepository extends JpaRepository<Expert, Long> {
 
-    Optional<Expert> findByUser(User user);
+    Optional<Expert> findByUser_Id(Long userId);
 }

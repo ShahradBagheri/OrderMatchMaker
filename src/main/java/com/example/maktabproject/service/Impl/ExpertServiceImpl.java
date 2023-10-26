@@ -54,33 +54,33 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public Expert findByUser(User user) throws ExpertNotFoundException {
+    public Expert findByUser(Long userId) throws ExpertNotFoundException {
 
-        return expertRepository.findByUser(user).orElseThrow(
+        return expertRepository.findByUser_Id(userId).orElseThrow(
                 ExpertNotFoundException::new
         );
     }
 
     @Override
-    public Expert changePassword(Expert expert, String password) throws ExpertNotFoundException {
+    public Expert changePassword(Long expertId, String password) throws ExpertNotFoundException {
 
-        Expert findExpert = findById(expert.getId());
-        findExpert.getUser().setPassword(password);
-        return register(findExpert);
+        Expert expert = findById(expertId);
+        expert.getUser().setPassword(password);
+        return register(expert);
     }
 
     @Override
-    public Expert updateStatus(Expert expert, ExpertStatus expertStatus) throws ExpertNotFoundException {
+    public Expert updateStatus(Long expertId, ExpertStatus expertStatus) throws ExpertNotFoundException {
 
-        Expert findExpert = findById(expert.getId());
-        findExpert.setExpertStatus(expertStatus);
-        return register(findExpert);
+        Expert expert = findById(expertId);
+        expert.setExpertStatus(expertStatus);
+        return register(expert);
     }
 
     @Override
-    public Expert addSubService(Expert expert, SubService subService) throws ExpertNotFoundException, SubServiceNotFoundException {
+    public Expert addSubService(Long expertId, SubService subService) throws ExpertNotFoundException, SubServiceNotFoundException {
 
-        expert = findById(expert.getId());
+        Expert expert = findById(expertId);
         subService = subServiceService.findById(subService.getId());
 
         expert.getSubServices().add(subService);
