@@ -1,5 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
+import com.example.maktabproject.exception.CustomerNotFoundException;
 import com.example.maktabproject.exception.InvalidPriceException;
 import com.example.maktabproject.exception.InvalidTimeException;
 import com.example.maktabproject.exception.OfferNotFoundException;
@@ -423,7 +424,7 @@ class OfferServiceImplTest {
     }
 
     @Test
-    void findAllByCustomerOrderByPrice() throws InvalidPriceException, InvalidTimeException {
+    void findAllByCustomerOrderByPrice() throws InvalidPriceException, InvalidTimeException, CustomerNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -498,11 +499,11 @@ class OfferServiceImplTest {
 
         offer = offerService.register(offer);
         offer2 = offerService.register(offer2);
-        assertThat(offerService.findByCustomerPriceOrder(customer).stream().map(Offer::getId)).isEqualTo(List.of(offer.getId(),offer2.getId()));
+        assertThat(offerService.findByCustomerPriceOrder(customer.getId()).stream().map(Offer::getId)).isEqualTo(List.of(offer.getId(),offer2.getId()));
     }
 
     @Test
-    void findAllByCustomerOrderByScore() throws InvalidPriceException, InvalidTimeException {
+    void findAllByCustomerOrderByScore() throws InvalidPriceException, InvalidTimeException, CustomerNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -577,6 +578,6 @@ class OfferServiceImplTest {
 
         offer = offerService.register(offer);
         offer2 = offerService.register(offer2);
-        assertThat(offerService.findByCustomerScoreOrder(customer).stream().map(Offer::getId)).isEqualTo(List.of(offer2.getId(),offer.getId()));
+        assertThat(offerService.findByCustomerScoreOrder(customer.getId()).stream().map(Offer::getId)).isEqualTo(List.of(offer2.getId(),offer.getId()));
     }
 }

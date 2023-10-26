@@ -169,7 +169,7 @@ class ExpertServiceImplSpringTest {
                 .build();
 
         expert = expertService.register(expert);
-        expertService.changePassword(expert, "changed123");
+        expertService.changePassword(expert.getId(), "changed123");
         Expert changedExpert = expertService.findById(expert.getId());
         assertThat(changedExpert.getUser().getPassword()).isEqualTo("changed123");
     }
@@ -187,7 +187,7 @@ class ExpertServiceImplSpringTest {
                 .build();
 
         expert = expertService.register(expert);
-        Expert foundExpert = expertService.findByUser(expert.getUser());
+        Expert foundExpert = expertService.findByUser(expert.getUser().getId());
         assertThat(expert.getUser()).isEqualTo(foundExpert.getUser());
     }
 
@@ -206,7 +206,7 @@ class ExpertServiceImplSpringTest {
         expert = expertService.register(expert);
         ExpertStatus updatedStatus = ExpertStatus.APPROVED;
 
-        expert = expertService.updateStatus(expert,updatedStatus);
+        expert = expertService.updateStatus(expert.getId(),updatedStatus);
         assertThat(expert.getExpertStatus()).isEqualTo(updatedStatus);
     }
 
@@ -232,7 +232,7 @@ class ExpertServiceImplSpringTest {
         subService = subServiceService.register(subService);
 
 
-        expert = expertService.addSubService(expert,subService);
+        expert = expertService.addSubService(expert.getId(),subService.getId());
         assertThat(expert.getSubServices()).isNotNull();
     }
 
@@ -264,8 +264,8 @@ class ExpertServiceImplSpringTest {
         subService2 = subServiceService.register(subService2);
 
 
-        expert = expertService.addSubService(expert,subService);
-        expert = expertService.addSubService(expert,subService2);
+        expert = expertService.addSubService(expert.getId(),subService.getId());
+        expert = expertService.addSubService(expert.getId(),subService2.getId());
 
         assertThat(expert.getSubServices()).hasSize(2);
     }

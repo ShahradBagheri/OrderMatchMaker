@@ -155,7 +155,7 @@ class CustomerServiceImplSpringTest {
                 .build();
 
         customer = customerService.register(customer);
-        customerService.changePassword(customer, "changed123");
+        customerService.changePassword(customer.getId(), "changed123");
         Customer changedCustomer = customerService.findById(customer.getId());
         assertThat(changedCustomer.getUser().getPassword()).isEqualTo("changed123");
     }
@@ -174,7 +174,7 @@ class CustomerServiceImplSpringTest {
                 .build();
 
         customer = customerService.register(customer);
-        Customer foundCustomer = customerService.findByUser(customer.getUser());
+        Customer foundCustomer = customerService.findByUser(customer.getUser().getId());
         assertThat(customer.getUser()).isEqualTo(foundCustomer.getUser());
     }
 

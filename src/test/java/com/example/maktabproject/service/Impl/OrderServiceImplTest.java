@@ -347,10 +347,10 @@ class OrderServiceImplTest {
                 .build();
 
         expert = expertService.register(expert);
-        expert = expertService.addSubService(expert,subService);
-        expert = expertService.addSubService(expert,subService2);
+        expert = expertService.addSubService(expert.getId(),subService.getId());
+        expert = expertService.addSubService(expert.getId(),subService2.getId());
 
-        assertThat(orderService.findOrdersForExpert(expert).size()).isGreaterThan(1);
+        assertThat(orderService.findOrdersForExpert(expert.getId()).size()).isGreaterThan(1);
     }
 
     @Test
@@ -406,12 +406,12 @@ class OrderServiceImplTest {
                 .build();
 
         offer = offerService.register(offer);
-        order = orderService.updateOrderStatus(order);
+        order = orderService.updateOrderStatus(order.getId());
         assertThat(order.getOrderState()).isEqualTo(OrderState.WAITING_TO_SELECT_SUGGESTION);
     }
 
     @Test
-    void expertShouldGetAddedToOrder() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException, ExpertHasNoOfferForOfferException {
+    void expertShouldGetAddedToOrder() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException, ExpertHasNoOfferForOfferException, ExpertNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -464,7 +464,7 @@ class OrderServiceImplTest {
 
         offer = offerService.register(offer);
 
-        order = orderService.choseExpert(expert,order);
+        order = orderService.choseExpert(expert.getId(),order.getId());
         assertThat(order.getExpert()).isNotNull();
     }
 
@@ -522,11 +522,11 @@ class OrderServiceImplTest {
         offer = offerService.register(offer);
 
         Expert finalExpert = expert;
-        assertThatThrownBy(() -> orderService.choseExpert(finalExpert,order)).isInstanceOf(ExpertHasNoOfferForOfferException.class);
+        assertThatThrownBy(() -> orderService.choseExpert(finalExpert.getId(),order.getId())).isInstanceOf(ExpertHasNoOfferForOfferException.class);
     }
 
     @Test
-    void orderStateShouldChangeFromStartedToFinished() throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException {
+    void orderStateShouldChangeFromStartedToFinished() throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException, OrderNotFoundException {
 
         SubService subService = SubService.builder()
                 .name("statechangetofinish")
@@ -558,7 +558,7 @@ class OrderServiceImplTest {
                 .build();
 
         order = orderService.register(order);
-        order = orderService.statusToFinished(order);
+        order = orderService.statusToFinished(order.getId());
         assertThat(order.getOrderState()).isEqualTo(OrderState.FINISHED);
     }
 
@@ -596,11 +596,11 @@ class OrderServiceImplTest {
 
         order = orderService.register(order);
         Order finalOrder = order;
-        assertThatThrownBy( () -> orderService.statusToFinished(finalOrder)).isInstanceOf(NotTheCorrectTimeToChangeStatusException.class);
+        assertThatThrownBy( () -> orderService.statusToFinished(finalOrder.getId())).isInstanceOf(NotTheCorrectTimeToChangeStatusException.class);
     }
 
     @Test
-    void orderStateShouldNotChangeFromWaitingToStartedBeforeCorrectTime() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException, ExpertHasNoOfferForOfferException {
+    void orderStateShouldNotChangeFromWaitingToStartedBeforeCorrectTime() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException, ExpertHasNoOfferForOfferException, ExpertNotFoundException {
 
         SubService subService = SubService.builder()
                 .name("theginalginaltests")
@@ -656,8 +656,8 @@ class OrderServiceImplTest {
         offer = offerService.register(offer);
 
         order = orderService.findById(order.getId());
-        order = orderService.choseExpert(expert,order);
+        order = orderService.choseExpert(expert.getId(),order.getId());
         Order finalOrder = order;
-        assertThatThrownBy( () ->  orderService.statusToStarted(finalOrder)).isInstanceOf(NotTheCorrectTimeToChangeStatusException.class);
+        assertThatThrownBy( () ->  orderService.statusToStarted(finalOrder.getId())).isInstanceOf(NotTheCorrectTimeToChangeStatusException.class);
     }
 }

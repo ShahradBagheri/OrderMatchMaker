@@ -97,7 +97,7 @@ class SubServiceServiceImplTest {
     }
 
     @Test
-    void mainServiceShouldGetAdded() throws SubServiceTwoMainServiceException, SubServiceNotFoundException {
+    void mainServiceShouldGetAdded() throws SubServiceTwoMainServiceException, SubServiceNotFoundException, MainServiceNotFoundException {
         SubService subService = SubService.builder()
                 .name("testAddingMain")
                 .build();
@@ -110,12 +110,12 @@ class SubServiceServiceImplTest {
 
         mainService = mainServiceService.register(mainService);
 
-        subService = subServiceService.addMainService(subService,mainService);
+        subService = subServiceService.addMainService(subService.getId(),mainService.getId());
         assertThat(subService.getMainService()).isNotNull();
     }
 
     @Test
-    void canNotAddTwoMainServices() throws SubServiceTwoMainServiceException, SubServiceNotFoundException {
+    void canNotAddTwoMainServices() throws SubServiceTwoMainServiceException, SubServiceNotFoundException, MainServiceNotFoundException {
         SubService subService = SubService.builder()
                 .name("testAddingDouble")
                 .build();
@@ -134,10 +134,10 @@ class SubServiceServiceImplTest {
 
         mainService2 = mainServiceService.register(mainService2);
 
-        subServiceService.addMainService(subService,mainService1);
+        subServiceService.addMainService(subService.getId(),mainService1.getId());
         SubService finalSubService = subService;
         MainService finalMainService = mainService2;
-        assertThatThrownBy(() -> subServiceService.addMainService(finalSubService, finalMainService)).isInstanceOf(SubServiceTwoMainServiceException.class);
+        assertThatThrownBy(() -> subServiceService.addMainService(finalSubService.getId(), finalMainService.getId())).isInstanceOf(SubServiceTwoMainServiceException.class);
     }
 
     @Test
@@ -154,8 +154,8 @@ class SubServiceServiceImplTest {
 
         mainService = mainServiceService.register(mainService);
 
-        subService = subServiceService.addMainService(subService,mainService);
-        subService = subServiceService.removeMainService(subService);
+        subService = subServiceService.addMainService(subService.getId(),mainService.getId());
+        subService = subServiceService.removeMainService(subService.getId());
         assertThat(subService.getMainService()).isNull();
     }
 
@@ -168,7 +168,7 @@ class SubServiceServiceImplTest {
 
         subService = subServiceService.register(subService);
         SubService finalSubService = subService;
-        assertThatThrownBy(() -> subServiceService.removeMainService(finalSubService)).isInstanceOf(MainServiceNotFoundException.class);
+        assertThatThrownBy(() -> subServiceService.removeMainService(finalSubService.getId())).isInstanceOf(MainServiceNotFoundException.class);
     }
 
     @Test
@@ -207,7 +207,7 @@ class SubServiceServiceImplTest {
 
         subService3 = subServiceService.register(subService3);
 
-        List<SubService> byMainService = subServiceService.findByMainService(mainService1);
+        List<SubService> byMainService = subServiceService.findByMainService(mainService1.getId());
         assertThat(byMainService.size()).isGreaterThan(1);
     }
 
