@@ -18,11 +18,11 @@ public interface SubServiceService {
 
     List<SubService> findAll();
 
-    SubService addMainService(SubService subService, MainService mainService) throws SubServiceNotFoundException, SubServiceTwoMainServiceException;
+    SubService addMainService(Long subServiceId, Long mainServiceId) throws SubServiceNotFoundException, SubServiceTwoMainServiceException, MainServiceNotFoundException;
 
-    SubService removeMainService(SubService subService) throws SubServiceNotFoundException, MainServiceNotFoundException;
+    SubService removeMainService(Long subServiceId) throws SubServiceNotFoundException, MainServiceNotFoundException;
 
-    List<SubService> findByMainService(MainService mainService) throws MainServiceNotFoundException;
+    List<SubService> findByMainService(Long mainServiceId) throws MainServiceNotFoundException;
 
     SubService editPrice(Long subServiceId, Double newBasePrice) throws SubServiceNotFoundException;
 

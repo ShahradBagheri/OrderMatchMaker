@@ -53,21 +53,23 @@ public class SubServiceServiceImpl implements SubServiceService {
     }
 
     @Override
-    public SubService addMainService(SubService subService, MainService mainService) throws SubServiceNotFoundException, SubServiceTwoMainServiceException {
+    public SubService addMainService(Long subServiceId, Long mainServiceId) throws SubServiceNotFoundException, SubServiceTwoMainServiceException, MainServiceNotFoundException {
 
-        subService = findById(subService.getId());
+        SubService subService = findById(subServiceId);
 
         if(subService.getMainService() != null)
             throw new SubServiceTwoMainServiceException();
+
+        MainService mainService = mainServiceService.findById(mainServiceId);
 
         subService.setMainService(mainService);
         return register(subService);
     }
 
     @Override
-    public SubService removeMainService(SubService subService) throws SubServiceNotFoundException, MainServiceNotFoundException {
+    public SubService removeMainService(Long subServiceId) throws SubServiceNotFoundException, MainServiceNotFoundException {
 
-        subService = findById(subService.getId());
+        SubService subService = findById(subServiceId);
 
         if(subService.getMainService() == null)
             throw new MainServiceNotFoundException();
@@ -77,9 +79,9 @@ public class SubServiceServiceImpl implements SubServiceService {
     }
 
     @Override
-    public List<SubService> findByMainService(MainService mainService) throws MainServiceNotFoundException {
+    public List<SubService> findByMainService(Long mainServiceId) throws MainServiceNotFoundException {
 
-        mainService = mainServiceService.findById(mainService.getId());
+        MainService mainService = mainServiceService.findById(mainServiceId);
 
         return subServiceRepository.findAllByMainService(mainService);
     }
