@@ -25,8 +25,6 @@ public interface OrderService {
 
     boolean dateValidation(LocalDateTime localDateTime);
 
-    Order updateOrderStatus(Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException;
-
     Order statusToStarted(Long orderId) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException, OrderNotFoundException;
 
     Order statusToFinished(Long orderId) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException, OrderNotFoundException;

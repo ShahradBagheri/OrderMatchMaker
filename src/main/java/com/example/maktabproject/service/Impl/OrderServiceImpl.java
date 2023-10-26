@@ -96,13 +96,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order updateOrderStatus(Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException {
-
-        Order order = findById(orderId);
-        return register(order);
-    }
-
-    @Override
     public Order statusToStarted(Long orderId) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException, OrderNotFoundException {
 
         Order order = findById(orderId);
