@@ -28,10 +28,6 @@ public class OrderServiceImpl implements OrderService {
     public Order register(Order order) throws InvalidPriceException, InvalidTimeException {
         try{
 
-            if(order.getOffers() != null)
-                if(order.getOrderState() == OrderState.WAITING_FOR_SUGGESTIONS)
-                    order.setOrderState(OrderState.WAITING_TO_SELECT_SUGGESTION);
-
             if(priceValidation(order))
                 if(dateValidation(order.getStartingDate()))
                     return orderRepository.save(order);
@@ -126,5 +122,13 @@ public class OrderServiceImpl implements OrderService {
             return register(order);
         }
         throw new NotTheCorrectTimeToChangeStatusException();
+    }
+
+    @Override
+    public Order statusToWaitingToSelect(Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException {
+
+        Order order = findById(orderId);
+        order.setOrderState(OrderState.WAITING_TO_SELECT_SUGGESTION);
+        return register(order);
     }
 }
