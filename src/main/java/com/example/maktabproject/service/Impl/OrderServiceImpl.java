@@ -68,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findOrdersForExpert(Long expertId) throws ExpertNotFoundException {
 
-        Expert expert = expertService.findByUser(expertId);
+        Expert expert = expertService.findById(expertId);
         return orderRepository.findBySubServiceInAndOrderStateOrOrderState(expert.getSubServices(), OrderState.WAITING_FOR_SUGGESTIONS,OrderState.WAITING_TO_SELECT_SUGGESTION);
     }
 
