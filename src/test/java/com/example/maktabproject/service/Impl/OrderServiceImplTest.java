@@ -406,7 +406,7 @@ class OrderServiceImplTest {
                 .build();
 
         offer = offerService.register(offer);
-        order = orderService.updateOrderStatus(order.getId());
+        order = orderService.findById(order.getId());
         assertThat(order.getOrderState()).isEqualTo(OrderState.WAITING_TO_SELECT_SUGGESTION);
     }
 
@@ -469,7 +469,7 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void expertWithNoOfferShouldNotGetAdded() throws InvalidPriceException, InvalidTimeException {
+    void expertWithNoOfferShouldNotGetAdded() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")

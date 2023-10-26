@@ -1,9 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.exception.CustomerNotFoundException;
-import com.example.maktabproject.exception.InvalidPriceException;
-import com.example.maktabproject.exception.InvalidTimeException;
-import com.example.maktabproject.exception.OfferNotFoundException;
+import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.*;
 import com.example.maktabproject.model.enumeration.OrderState;
 import org.junit.jupiter.api.Test;
@@ -35,7 +32,7 @@ class OfferServiceImplTest {
     private OrderServiceImpl orderService;
 
     @Test
-    void validOfferShouldSave() throws InvalidPriceException, InvalidTimeException {
+    void validOfferShouldSave() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -91,7 +88,7 @@ class OfferServiceImplTest {
     }
 
     @Test
-    void offerWithNoExpertShouldNotSave() throws InvalidPriceException, InvalidTimeException {
+    void offerWithNoExpertShouldNotSave() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException {
 
         SubService subService = SubService.builder()
                 .name("noExpertOfferTest")
@@ -245,7 +242,7 @@ class OfferServiceImplTest {
     }
 
     @Test
-    void shouldFindOffer() throws InvalidPriceException, InvalidTimeException, OfferNotFoundException {
+    void shouldFindOffer() throws InvalidPriceException, InvalidTimeException, OfferNotFoundException, OrderNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -301,7 +298,7 @@ class OfferServiceImplTest {
     }
 
     @Test
-    void offerShouldGetDeleted() throws InvalidPriceException, InvalidTimeException {
+    void offerShouldGetDeleted() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -366,7 +363,7 @@ class OfferServiceImplTest {
     }
 
     @Test
-    void shouldFindAll() throws InvalidPriceException, InvalidTimeException {
+    void shouldFindAll() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -424,7 +421,7 @@ class OfferServiceImplTest {
     }
 
     @Test
-    void findAllByCustomerOrderByPrice() throws InvalidPriceException, InvalidTimeException, CustomerNotFoundException {
+    void findAllByCustomerOrderByPrice() throws InvalidPriceException, InvalidTimeException, CustomerNotFoundException, OrderNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -503,7 +500,7 @@ class OfferServiceImplTest {
     }
 
     @Test
-    void findAllByCustomerOrderByScore() throws InvalidPriceException, InvalidTimeException, CustomerNotFoundException {
+    void findAllByCustomerOrderByScore() throws InvalidPriceException, InvalidTimeException, CustomerNotFoundException, OrderNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")

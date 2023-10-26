@@ -9,6 +9,7 @@ import com.example.maktabproject.service.CustomerService;
 import com.example.maktabproject.service.OfferService;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class OfferServiceImpl implements OfferService {
 
@@ -30,7 +32,8 @@ public class OfferServiceImpl implements OfferService {
             if(priceValidation(offer))
                 if(dateValidation(offer.getStartingDate())){
 
-                    if(offer.getOrder().getOffers().size() == 0)
+                    offer = offerRepository.save(offer);
+                    if(offer.getOrder().getOffers().size() == 1)
                         orderService.statusToWaitingToSelect(offer.getOrder().getId());
 
                     return offerRepository.save(offer);
@@ -39,7 +42,7 @@ public class OfferServiceImpl implements OfferService {
                     throw new InvalidTimeException();
             throw new InvalidPriceException();
         } catch (ConstraintViolationException | DataAccessException e){
-            System.err.println(e.getMessage());
+            log.error(e.getMessage());
             return null;
         }
     }
