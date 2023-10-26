@@ -1,11 +1,14 @@
 package com.example.maktabproject.service.Impl;
 
+import com.example.maktabproject.exception.CustomerNotFoundException;
 import com.example.maktabproject.exception.InvalidPriceException;
 import com.example.maktabproject.exception.InvalidTimeException;
 import com.example.maktabproject.exception.OfferNotFoundException;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Offer;
+import com.example.maktabproject.repository.CustomerRepository;
 import com.example.maktabproject.repository.OfferRepository;
+import com.example.maktabproject.service.CustomerService;
 import com.example.maktabproject.service.OfferService;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,7 @@ import java.util.List;
 public class OfferServiceImpl implements OfferService {
 
     private final OfferRepository offerRepository;
+    private final CustomerService customerService;
 
     @Override
     public Offer register(Offer offer) throws InvalidTimeException, InvalidPriceException {
@@ -58,17 +62,22 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public List<Offer> findByCustomerPriceOrder(Customer customer) {
+    public List<Offer> findByCustomerPriceOrder(Long customerId) throws CustomerNotFoundException {
+
+        Customer customer = customerService.findById(customerId);
         return offerRepository.findByOrder_CustomerOrderBySuggestedPrice(customer);
     }
 
     @Override
-    public List<Offer> findByCustomerScoreOrder(Customer customer) {
+    public List<Offer> findByCustomerScoreOrder(Long customerId) throws CustomerNotFoundException {
+
+        Customer customer = customerService.findById(customerId);
         return offerRepository.findByOrder_CustomerOrderByExpert_Score(customer);
     }
 
     @Override
     public boolean priceValidation(Offer offer) {
+
         return offer.getSuggestedPrice() >= offer.getOrder().getSubService().getBasePrice();
     }
 
