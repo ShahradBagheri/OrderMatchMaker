@@ -19,7 +19,7 @@ public interface OrderService {
 
     List<Order> findOrdersForExpert(Long expertId) throws ExpertNotFoundException;
 
-    Order choseExpert(Long expertId, Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertHasNoOfferForOfferException, ExpertNotFoundException;
+    Order choseOffer(Long offerId, Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertHasNoOfferForOfferException, ExpertNotFoundException, OfferNotFoundException;
 
     boolean priceValidation(Order order);
 

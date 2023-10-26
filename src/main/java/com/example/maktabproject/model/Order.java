@@ -31,9 +31,8 @@ public class Order {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @ManyToOne
-    @JoinColumn(name = "expert_id")
-    private Expert expert;
+    @OneToOne
+    private Offer selectedOffer;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private List<Offer> offers;

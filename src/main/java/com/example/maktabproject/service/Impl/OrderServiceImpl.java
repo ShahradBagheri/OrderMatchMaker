@@ -2,6 +2,7 @@ package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.Expert;
+import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.enumeration.OrderState;
 import com.example.maktabproject.repository.OfferRepository;
@@ -24,6 +25,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final OfferRepository offerRepository;
+    private final OfferServiceImpl offerService;
     private final ExpertService expertService;
 
     @Override
@@ -71,14 +73,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order choseExpert(Long expertId, Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertHasNoOfferForOfferException, ExpertNotFoundException {
+    public Order choseOffer(Long offerId, Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertHasNoOfferForOfferException, OfferNotFoundException {
 
-        Expert expert = expertService.findById(expertId);
+        Offer offer = offerService.findById(offerId);
 
         Order order = findById(orderId);
-        if (order.getOffers().stream().map(offer -> offer.getExpert().getId()).toList().contains(expert.getId()) && order.getExpert() == null) {
-            order.setExpert(expert);
+
+        if (order.getOffers().contains(offer)) {
             order.setOrderState(OrderState.WAITING_FOR_EXPERT);
+            order.setSelectedOffer(offer);
             return register(order);
         }
         throw new  ExpertHasNoOfferForOfferException();
@@ -101,7 +104,7 @@ public class OrderServiceImpl implements OrderService {
     public Order statusToStarted(Long orderId) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException, OrderNotFoundException {
 
         Order order = findById(orderId);
-        if(LocalDateTime.now().isAfter(offerRepository.findByExpertAndOrder(order.getExpert(),order).getStartingDate())){
+        if(LocalDateTime.now().isAfter(offerRepository.findByExpertAndOrder(order.getSelectedOffer().getExpert(), order).getStartingDate())){
             order.setOrderState(OrderState.STARTED);
             return register(order);
         }
