@@ -16,7 +16,7 @@ public interface CustomerService {
 
     List<Customer> findAll();
 
-    Customer findByUser(User user) throws CustomerNotFoundException;
+    Customer findByUser(Long userId) throws CustomerNotFoundException;
 
     Customer changePassword(Long customerId,String password) throws CustomerNotFoundException;
 }
