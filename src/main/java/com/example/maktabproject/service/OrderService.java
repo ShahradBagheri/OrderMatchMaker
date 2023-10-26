@@ -17,17 +17,17 @@ public interface OrderService {
 
     List<Order> findAll();
 
-    List<Order> findOrdersForExpert(Expert expert);
+    List<Order> findOrdersForExpert(Long expertId) throws ExpertNotFoundException;
 
-    Order choseExpert(Expert expert, Order order) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertHasNoOfferForOfferException;
+    Order choseExpert(Long expertId, Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertHasNoOfferForOfferException, ExpertNotFoundException;
 
     boolean priceValidation(Order order);
 
     boolean dateValidation(LocalDateTime localDateTime);
 
-    Order updateOrderStatus(Order order) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException;
+    Order updateOrderStatus(Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException;
 
-    Order statusToStarted(Order order) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException;
+    Order statusToStarted(Long orderId) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException, OrderNotFoundException;
 
-    Order statusToFinished(Order order) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException;
+    Order statusToFinished(Long orderId) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException, OrderNotFoundException;
 }

@@ -6,6 +6,7 @@ import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.enumeration.OrderState;
 import com.example.maktabproject.repository.OfferRepository;
 import com.example.maktabproject.repository.OrderRepository;
+import com.example.maktabproject.service.ExpertService;
 import com.example.maktabproject.service.OrderService;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final OfferRepository offerRepository;
+    private final ExpertService expertService;
 
     @Override
     public Order register(Order order) throws InvalidPriceException, InvalidTimeException {
@@ -64,13 +66,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findOrdersForExpert(Expert expert) {
+    public List<Order> findOrdersForExpert(Long expertId) throws ExpertNotFoundException {
+
+        Expert expert = expertService.findByUser(expertId);
         return orderRepository.findBySubServiceInAndOrderStateOrOrderState(expert.getSubServices(), OrderState.WAITING_FOR_SUGGESTIONS,OrderState.WAITING_TO_SELECT_SUGGESTION);
     }
 
     @Override
-    public Order choseExpert(Expert expert, Order order) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertHasNoOfferForOfferException {
-        order = findById(order.getId());
+    public Order choseExpert(Long expertId, Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertHasNoOfferForOfferException, ExpertNotFoundException {
+
+        Expert expert = expertService.findById(expertId);
+
+        Order order = findById(orderId);
         if (order.getOffers().stream().map(offer -> offer.getExpert().getId()).toList().contains(expert.getId()) && order.getExpert() == null) {
             order.setExpert(expert);
             order.setOrderState(OrderState.WAITING_FOR_EXPERT);
@@ -93,14 +100,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order updateOrderStatus(Order order) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException {
+    public Order updateOrderStatus(Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException {
 
-        order = findById(order.getId());
+        Order order = findById(orderId);
         return register(order);
     }
 
     @Override
-    public Order statusToStarted(Order order) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException {
+    public Order statusToStarted(Long orderId) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException, OrderNotFoundException {
+
+        Order order = findById(orderId);
         if(LocalDateTime.now().isAfter(offerRepository.findByExpertAndOrder(order.getExpert(),order).getStartingDate())){
             order.setOrderState(OrderState.STARTED);
             return register(order);
@@ -109,7 +118,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order statusToFinished(Order order) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException {
+    public Order statusToFinished(Long orderId) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException, OrderNotFoundException {
+
+        Order order = findById(orderId);
         if (order.getOrderState() == OrderState.STARTED) {
             order.setOrderState(OrderState.FINISHED);
             return register(order);
