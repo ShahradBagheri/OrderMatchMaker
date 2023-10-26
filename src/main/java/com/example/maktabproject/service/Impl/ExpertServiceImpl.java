@@ -78,10 +78,10 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public Expert addSubService(Long expertId, SubService subService) throws ExpertNotFoundException, SubServiceNotFoundException {
+    public Expert addSubService(Long expertId, Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
 
         Expert expert = findById(expertId);
-        subService = subServiceService.findById(subService.getId());
+        SubService subService = subServiceService.findById(subServiceId);
 
         expert.getSubServices().add(subService);
 

@@ -25,5 +25,5 @@ public interface ExpertService {
 
     Expert updateStatus(Long expertId, ExpertStatus expertStatus) throws ExpertNotFoundException;
 
-    Expert addSubService(Long expertId, SubService subService) throws ExpertNotFoundException, SubServiceNotFoundException;
+    Expert addSubService(Long expertId, Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException;
 }
