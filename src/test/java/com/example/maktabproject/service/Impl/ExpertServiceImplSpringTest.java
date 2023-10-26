@@ -32,7 +32,7 @@ class ExpertServiceImplSpringTest {
     @Test
     void validExpertRegisterShouldSave() throws ImageToBigException {
 
-        byte[] bytes = imageProcessing.imageToBytes("C:\\Users\\Shahrad\\IdeaProjects\\maktabProject\\src\\main\\resources\\pictures\\Screenshot_20231020_092009.png");
+        byte[] bytes = imageProcessing.imageToBytes("src/main/resources/pictures/Screenshot_20231020_092009.png");
 
         User user = User.builder()
                 .firstname("shahrad")
