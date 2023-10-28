@@ -25,7 +25,6 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final OfferRepository offerRepository;
-    private final OfferServiceImpl offerService;
     private final ExpertService expertService;
 
     @Override
@@ -75,11 +74,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order choseOffer(Long offerId, Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertHasNoOfferForOfferException, OfferNotFoundException {
 
-        Offer offer = offerService.findById(offerId);
+        Offer offer = offerRepository.findById(offerId).orElseThrow(
+                OfferNotFoundException::new
+        );
 
         Order order = findById(orderId);
 
-        if (order.getOffers().contains(offer)) {
+        if (order.getOffers().stream().map(Offer::getId).toList().contains(offerId)) {
             order.setOrderState(OrderState.WAITING_FOR_EXPERT);
             order.setSelectedOffer(offer);
             return register(order);

@@ -411,7 +411,7 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void expertShouldGetAddedToOrder() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException, ExpertHasNoOfferForOfferException, ExpertNotFoundException {
+    void expertShouldGetAddedToOrder() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException, ExpertHasNoOfferForOfferException, ExpertNotFoundException, OfferNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -464,8 +464,8 @@ class OrderServiceImplTest {
 
         offer = offerService.register(offer);
 
-        order = orderService.choseExpert(expert.getId(),order.getId());
-        assertThat(order.getExpert()).isNotNull();
+        order = orderService.choseOffer(offer.getId(),order.getId());
+        assertThat(order.getSelectedOffer()).isNotNull();
     }
 
     @Test
@@ -512,17 +512,40 @@ class OrderServiceImplTest {
 
         orderService.register(order);
 
+        Order order2 = Order.builder()
+                .orderState(OrderState.WAITING_FOR_SUGGESTIONS)
+                .address("Some aasdadddress")
+                .subService(subService)
+                .customer(customer)
+                .suggestedPrice(200.0)
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .build();
+
+        orderService.register(order2);
+
         Offer offer = Offer.builder()
                 .order(order)
                 .suggestedPrice(200.0)
+                .expert(expert)
                 .startingDate(LocalDateTime.now().plusDays(1))
                 .completionDate(LocalDateTime.now().plusDays(3))
                 .build();
 
         offer = offerService.register(offer);
 
+        Offer offer2 = Offer.builder()
+                .order(order2)
+                .suggestedPrice(200.0)
+                .expert(expert)
+                .startingDate(LocalDateTime.now().plusDays(1))
+                .completionDate(LocalDateTime.now().plusDays(3))
+                .build();
+
+        offer = offerService.register(offer2);
+
         Expert finalExpert = expert;
-        assertThatThrownBy(() -> orderService.choseExpert(finalExpert.getId(),order.getId())).isInstanceOf(ExpertHasNoOfferForOfferException.class);
+        Offer finalOffer = offer;
+        assertThatThrownBy(() -> orderService.choseOffer(finalOffer.getId(),order2.getId())).isInstanceOf(ExpertHasNoOfferForOfferException.class);
     }
 
     @Test
@@ -600,7 +623,7 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void orderStateShouldNotChangeFromWaitingToStartedBeforeCorrectTime() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException, ExpertHasNoOfferForOfferException, ExpertNotFoundException {
+    void orderStateShouldNotChangeFromWaitingToStartedBeforeCorrectTime() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException, ExpertHasNoOfferForOfferException, ExpertNotFoundException, OfferNotFoundException {
 
         SubService subService = SubService.builder()
                 .name("theginalginaltests")
@@ -656,7 +679,7 @@ class OrderServiceImplTest {
         offer = offerService.register(offer);
 
         order = orderService.findById(order.getId());
-        order = orderService.choseExpert(expert.getId(),order.getId());
+        order = orderService.choseOffer(offer.getId(),order.getId());
         Order finalOrder = order;
         assertThatThrownBy( () ->  orderService.statusToStarted(finalOrder.getId())).isInstanceOf(NotTheCorrectTimeToChangeStatusException.class);
     }

@@ -3,7 +3,6 @@ package com.example.maktabproject.service.Impl;
 import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Offer;
-import com.example.maktabproject.repository.CustomerRepository;
 import com.example.maktabproject.repository.OfferRepository;
 import com.example.maktabproject.service.CustomerService;
 import com.example.maktabproject.service.OfferService;
@@ -33,10 +32,10 @@ public class OfferServiceImpl implements OfferService {
                 if(dateValidation(offer.getStartingDate())){
 
                     offer = offerRepository.save(offer);
-                    if(offer.getOrder().getOffers().size() == 1)
+                    if(offer.getOrder().getOffers() == null)
                         orderService.statusToWaitingToSelect(offer.getOrder().getId());
 
-                    return offerRepository.save(offer);
+                    return offer;
                     }
                 else
                     throw new InvalidTimeException();
