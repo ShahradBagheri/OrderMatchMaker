@@ -78,26 +78,4 @@ public class ExpertServiceImpl implements ExpertService {
         expert.setExpertStatus(expertStatus);
         return register(expert);
     }
-
-    @Override
-    public Expert addSubService(Long expertId, Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
-
-        Expert expert = findById(expertId);
-        SubService subService = subServiceService.findById(subServiceId);
-
-        expert.getSubServices().add(subService);
-
-        return register(expert);
-    }
-
-    @Override
-    public Expert removeSubService(Long expertId, Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
-
-        Expert expert = findById(expertId);
-        SubService subService = subServiceService.findById(subServiceId);
-
-        expert.getSubServices().remove(subService);
-
-        return register(expert);
-    }
 }

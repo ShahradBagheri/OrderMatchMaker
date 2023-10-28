@@ -24,8 +24,4 @@ public interface ExpertService {
     Expert changePassword(Long expertId,String password) throws ExpertNotFoundException;
 
     Expert updateStatus(Long expertId, ExpertStatus expertStatus) throws ExpertNotFoundException;
-
-    Expert addSubService(Long expertId, Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException;
-
-    Expert removeSubService(Long expertId, Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException;
 }
