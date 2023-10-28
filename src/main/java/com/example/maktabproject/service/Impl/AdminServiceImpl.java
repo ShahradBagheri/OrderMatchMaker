@@ -4,6 +4,7 @@ import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.SubService;
+import com.example.maktabproject.model.enumeration.ExpertStatus;
 import com.example.maktabproject.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,15 @@ public class AdminServiceImpl implements AdminService {
 
         expert.getSubServices().remove(subService);
 
+        return expertService.register(expert);
+    }
+
+
+    @Override
+    public Expert updateExpertStatus(Long expertId, ExpertStatus expertStatus) throws ExpertNotFoundException {
+
+        Expert expert = expertService.findById(expertId);
+        expert.setExpertStatus(expertStatus);
         return expertService.register(expert);
     }
 }

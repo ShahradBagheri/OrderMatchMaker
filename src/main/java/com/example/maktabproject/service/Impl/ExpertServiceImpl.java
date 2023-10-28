@@ -71,11 +71,4 @@ public class ExpertServiceImpl implements ExpertService {
         return register(expert);
     }
 
-    @Override
-    public Expert updateStatus(Long expertId, ExpertStatus expertStatus) throws ExpertNotFoundException {
-
-        Expert expert = findById(expertId);
-        expert.setExpertStatus(expertStatus);
-        return register(expert);
-    }
 }

@@ -22,6 +22,4 @@ public interface ExpertService {
     Expert findByUser(Long userId) throws ExpertNotFoundException;
 
     Expert changePassword(Long expertId,String password) throws ExpertNotFoundException;
-
-    Expert updateStatus(Long expertId, ExpertStatus expertStatus) throws ExpertNotFoundException;
 }
