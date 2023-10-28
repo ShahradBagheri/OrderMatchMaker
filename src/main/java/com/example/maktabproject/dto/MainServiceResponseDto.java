@@ -1,5 +1,7 @@
 package com.example.maktabproject.dto;
 
-public record MainServiceResponseDto(String name,
-                                     String subService) {
+import lombok.Builder;
+
+@Builder
+public record MainServiceResponseDto(String name) {
 }
