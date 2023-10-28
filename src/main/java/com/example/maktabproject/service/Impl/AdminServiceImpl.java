@@ -16,7 +16,7 @@ public class AdminServiceImpl implements AdminService {
     private final ExpertServiceImpl expertService;
 
     @Override
-    public Expert addSubService(Long expertId, Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
+    public Expert addExpertSubService(Long expertId, Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
 
         Expert expert = expertService.findById(expertId);
         SubService subService = subServiceService.findById(subServiceId);
@@ -27,7 +27,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Expert removeSubService(Long expertId, Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
+    public Expert removeExpertSubService(Long expertId, Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
 
         Expert expert = expertService.findById(expertId);
         SubService subService = subServiceService.findById(subServiceId);
