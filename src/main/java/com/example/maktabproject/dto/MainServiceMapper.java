@@ -12,4 +12,10 @@ public class MainServiceMapper {
                 .name(mainService.getName())
                 .build();
     }
+
+    public MainService mainServiceDtoToMainService(MainServiceRequestDto mainServiceRequestDto){
+        return MainService.builder()
+                .name(mainServiceRequestDto.name())
+                .build();
+    }
 }
