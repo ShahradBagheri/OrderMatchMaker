@@ -2,6 +2,7 @@ package com.example.maktabproject.util;
 
 import com.example.maktabproject.exception.ImageToBigException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -14,10 +15,10 @@ import java.nio.file.Paths;
 @Component
 public class ImageProcessing {
 
-    public byte[] imageToBytes(String filepath) throws ImageToBigException {
+    public byte[] imageToBytes(MultipartFile image) throws ImageToBigException {
         try{
-            if(validImageSize(filepath))
-                return Files.readAllBytes(Paths.get(filepath));
+            if(validImageSize(image.getSize()))
+                return image.getBytes();
             else
                 throw new ImageToBigException();
         }catch (IOException e){
@@ -42,10 +43,9 @@ public class ImageProcessing {
         }
     }
 
-    public boolean validImageSize(String filepath){
+    public boolean validImageSize(long fileSize){
         long sizeLimit = 300 * 1024;
-        File file = new File(filepath);
 
-        return  file.length() <= sizeLimit;
+        return  fileSize <= sizeLimit;
     }
 }
