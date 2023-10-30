@@ -1,11 +1,12 @@
 package com.example.maktabproject.dto;
 
-import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.model.Wallet;
 import com.example.maktabproject.model.enumeration.Role;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ExpertMapper {
 
     public Expert dtoToExpert(ExpertRequestDto expertRequestDto){

@@ -13,11 +13,10 @@ import com.example.maktabproject.util.ImageProcessing;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/user")
@@ -25,34 +24,35 @@ import java.io.IOException;
 public class UserController {
 
     private final UserServiceImpl userService;
-    private final UserMapper userMapper;
+    private final CustomerMapper customerMapper;
+    private final ExpertMapper expertMapper;
     private final CustomerServiceImpl customerService;
     private final ExpertServiceImpl expertService;
     private final ImageProcessing imageProcessing;
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponseDto> login(@RequestBody UserLoginDto userLoginDto) throws IncorrectCredentialsException {
+    public ResponseEntity<CustomerResponseDto> login(@RequestBody UserLoginDto userLoginDto) throws IncorrectCredentialsException {
 
         User user = userService.login(userLoginDto.email(), userLoginDto.password());
-        UserResponseDto userResponseDto = userMapper.userToUserDto(user);
-        return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
+        CustomerResponseDto customerResponseDto = customerMapper.customerToDto(user);
+        return new ResponseEntity<>(customerResponseDto, HttpStatus.OK);
     }
 
     @PostMapping("/register/customer")
-    public UserResponseDto customerRegister(@RequestBody @Valid UserRequestDto userRequestDto){
+    public CustomerResponseDto customerRegister(@RequestBody @Valid CustomerRequestDto customerRequestDto){
 
-        Customer customer = userMapper.userDtoToCustomer(userRequestDto);
+        Customer customer = customerMapper.dtoToCustomer(customerRequestDto);
         customer = customerService.register(customer);
-        return userMapper.userToUserDto(customer.getUser());
+        return customerMapper.customerToDto(customer.getUser());
     }
 
-    @PostMapping("/register/expert")
-    public UserResponseDto expertRegister(@RequestBody @Valid UserRequestDto userRequestDto, @RequestPart MultipartFile image) throws IOException, ImageToBigException {
+    @PostMapping(value = "/register/expert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ExpertResponseDto expertRegister(@ModelAttribute ExpertRequestDto expertRequestDto) throws ImageToBigException {
 
-        byte[] imageData = imageProcessing.imageToBytes(image);
-        Expert expert = userMapper.userDtoToExpert(userRequestDto);
+        byte[] imageData = imageProcessing.imageToBytes(expertRequestDto.image());
+        Expert expert = expertMapper.dtoToExpert(expertRequestDto);
         expert.setImageData(imageData);
         expert = expertService.register(expert);
-        return userMapper.userToUserDto(expert.getUser());
+        return expertMapper.expertToDto(expert.getUser());
     }
 }
