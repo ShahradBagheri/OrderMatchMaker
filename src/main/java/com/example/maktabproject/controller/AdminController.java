@@ -1,12 +1,16 @@
 package com.example.maktabproject.controller;
 
-import com.example.maktabproject.dto.MainServiceMapper;
-import com.example.maktabproject.dto.MainServiceRequestDto;
-import com.example.maktabproject.dto.MainServiceResponseDto;
+import com.example.maktabproject.dto.*;
+import com.example.maktabproject.exception.MainServiceNotFoundException;
 import com.example.maktabproject.model.MainService;
+import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.service.AdminService;
 import com.example.maktabproject.service.Impl.MainServiceServiceImpl;
+import com.example.maktabproject.service.Impl.SubServiceServiceImpl;
+import com.example.maktabproject.service.SubServiceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +22,9 @@ public class AdminController {
 
     private final AdminService adminService;
     private final MainServiceServiceImpl mainServiceService;
+    private final SubServiceServiceImpl subServiceService;
     private final MainServiceMapper mainServiceMapper;
+    private final SubServiceMapper subServiceMapper;
 
     @GetMapping("/allMainService")
     public List<MainServiceResponseDto> getMainServices(){
@@ -29,9 +35,19 @@ public class AdminController {
     }
 
     @PostMapping("/register/MainService")
-    public MainServiceResponseDto registerMainService(@RequestBody MainServiceRequestDto mainServiceRequestDto){
+    public ResponseEntity<MainServiceResponseDto> registerMainService(@RequestBody MainServiceRequestDto mainServiceRequestDto){
 
         MainService mainService = mainServiceService.register(mainServiceMapper.mainServiceDtoToMainService(mainServiceRequestDto));
-        return mainServiceMapper.mainServiceToDto(mainService);
+        return new ResponseEntity<>(mainServiceMapper.mainServiceToDto(mainService), HttpStatus.OK) ;
+    }
+
+    @PostMapping("/register/SubService")
+    public ResponseEntity<SubServiceResponseDto> registerSubService(@RequestBody SubServiceRequestDto subServiceRequestDto,
+                                         @RequestParam Long mainServiceId) throws MainServiceNotFoundException {
+
+        SubService subService = subServiceMapper.subServiceDtoToSubService(subServiceRequestDto);
+        subService.setMainService(mainServiceService.findById(mainServiceId));
+
+        return new ResponseEntity<>(subServiceMapper.subServiceToDto(subServiceService.register(subService)), HttpStatus.OK) ;
     }
 }
