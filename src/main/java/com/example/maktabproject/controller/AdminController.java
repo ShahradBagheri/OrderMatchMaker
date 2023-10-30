@@ -7,6 +7,7 @@ import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.MainService;
 import com.example.maktabproject.model.SubService;
+import com.example.maktabproject.model.enumeration.ExpertStatus;
 import com.example.maktabproject.service.AdminService;
 import com.example.maktabproject.service.Impl.MainServiceServiceImpl;
 import com.example.maktabproject.service.Impl.SubServiceServiceImpl;
@@ -81,5 +82,11 @@ public class AdminController {
                                                                    @RequestParam Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
 
         return new ResponseEntity<>(expertMapper.expertToDto(adminService.removeExpertSubService(expertId,subServiceId)),HttpStatus.OK);
+    }
+
+    @PostMapping("/expert/approveExpert")
+    public ResponseEntity<ExpertResponseDto> approveExpert(@RequestParam Long expertId) throws ExpertNotFoundException {
+
+        return new ResponseEntity<>(expertMapper.expertToDto(adminService.updateExpertStatus(expertId, ExpertStatus.APPROVED)),HttpStatus.OK);
     }
 }
