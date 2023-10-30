@@ -25,13 +25,13 @@ public class ExpertMapper {
                 .build();
     }
 
-    public ExpertResponseDto expertToDto(User user){
+    public ExpertResponseDto expertToDto(Expert expert){
         return ExpertResponseDto.builder()
-                .id(user.getId())
-                .firstname(user.getFirstname())
-                .lastname(user.getLastname())
-                .email(user.getEmail())
-                .role(user.getRole())
+                .id(expert.getId())
+                .firstname(expert.getUser().getFirstname())
+                .lastname(expert.getUser().getLastname())
+                .email(expert.getUser().getEmail())
+                .role(expert.getUser().getRole())
                 .build();
     }
 }
