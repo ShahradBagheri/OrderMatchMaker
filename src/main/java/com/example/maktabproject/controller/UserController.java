@@ -6,6 +6,7 @@ import com.example.maktabproject.exception.IncorrectCredentialsException;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.User;
+import com.example.maktabproject.model.enumeration.ExpertStatus;
 import com.example.maktabproject.service.Impl.CustomerServiceImpl;
 import com.example.maktabproject.service.Impl.ExpertServiceImpl;
 import com.example.maktabproject.service.Impl.UserServiceImpl;
@@ -53,7 +54,9 @@ public class UserController {
         byte[] imageData = imageProcessing.imageToBytes(expertRequestDto.image());
         Expert expert = expertMapper.dtoToExpert(expertRequestDto);
         expert.setImageData(imageData);
+        expert.setExpertStatus(ExpertStatus.NEW);
+        expert.setScore(0F);
         expert = expertService.register(expert);
-        return expertMapper.expertToDto(expert.getUser());
+        return expertMapper.expertToDto(expert);
     }
 }

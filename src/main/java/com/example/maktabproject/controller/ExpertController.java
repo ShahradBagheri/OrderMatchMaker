@@ -23,8 +23,8 @@ public class ExpertController {
     private final ExpertMapper expertMapper;
 
     @PostMapping("/changePassword")
-    public ResponseEntity<ExpertResponseDto> changePassword(@RequestParam Long customerId, @RequestParam String newPassword) throws ExpertNotFoundException {
+    public ResponseEntity<ExpertResponseDto> changePassword(@RequestParam Long expertId, @RequestParam String newPassword) throws ExpertNotFoundException {
 
-        return new ResponseEntity<>(expertMapper.expertToDto(expertService.changePassword(customerId,newPassword)), HttpStatus.OK);
+        return new ResponseEntity<>(expertMapper.expertToDto(expertService.changePassword(expertId,newPassword)), HttpStatus.OK);
     }
 }
