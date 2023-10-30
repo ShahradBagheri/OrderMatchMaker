@@ -2,6 +2,7 @@ package com.example.maktabproject.controller;
 
 import com.example.maktabproject.dto.*;
 import com.example.maktabproject.exception.MainServiceNotFoundException;
+import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.MainService;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.service.AdminService;
@@ -34,20 +35,36 @@ public class AdminController {
         return list;
     }
 
-    @PostMapping("/register/MainService")
+    @PostMapping("/register/mainService")
     public ResponseEntity<MainServiceResponseDto> registerMainService(@RequestBody MainServiceRequestDto mainServiceRequestDto){
 
         MainService mainService = mainServiceService.register(mainServiceMapper.mainServiceDtoToMainService(mainServiceRequestDto));
         return new ResponseEntity<>(mainServiceMapper.mainServiceToDto(mainService), HttpStatus.OK) ;
     }
 
-    @PostMapping("/register/SubService")
+    @PostMapping("/register/subService")
     public ResponseEntity<SubServiceResponseDto> registerSubService(@RequestBody SubServiceRequestDto subServiceRequestDto,
-                                         @RequestParam Long mainServiceId) throws MainServiceNotFoundException {
+                                                                    @RequestParam Long mainServiceId) throws MainServiceNotFoundException {
 
         SubService subService = subServiceMapper.subServiceDtoToSubService(subServiceRequestDto);
         subService.setMainService(mainServiceService.findById(mainServiceId));
 
         return new ResponseEntity<>(subServiceMapper.subServiceToDto(subServiceService.register(subService)), HttpStatus.OK) ;
+    }
+
+    @PostMapping("/subService/editComment")
+    public ResponseEntity<SubServiceResponseDto> editSubServiceComment(@RequestParam Long subServiceId,
+                                                                       @RequestParam String newComment) throws SubServiceNotFoundException {
+
+        return new ResponseEntity<>(subServiceMapper.subServiceToDto(adminService.editSubServiceComment(subServiceId,newComment)),HttpStatus.OK);
+
+    }
+
+    @PostMapping("/subService/editBasePrice")
+    public ResponseEntity<SubServiceResponseDto> editSubServiceBasePrice(@RequestParam Long subServiceId,
+                                                                       @RequestParam Double newBasePrice) throws SubServiceNotFoundException {
+
+        return new ResponseEntity<>(subServiceMapper.subServiceToDto(adminService.editSubServicePrice(subServiceId,newBasePrice)),HttpStatus.OK);
+
     }
 }
