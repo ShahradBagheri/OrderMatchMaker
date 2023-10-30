@@ -1,8 +1,10 @@
 package com.example.maktabproject.controller;
 
 import com.example.maktabproject.dto.*;
+import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.exception.MainServiceNotFoundException;
 import com.example.maktabproject.exception.SubServiceNotFoundException;
+import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.MainService;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.service.AdminService;
@@ -26,6 +28,7 @@ public class AdminController {
     private final SubServiceServiceImpl subServiceService;
     private final MainServiceMapper mainServiceMapper;
     private final SubServiceMapper subServiceMapper;
+    private final ExpertMapper expertMapper;
 
     @GetMapping("/allMainService")
     public List<MainServiceResponseDto> getMainServices(){
@@ -57,7 +60,6 @@ public class AdminController {
                                                                        @RequestParam String newComment) throws SubServiceNotFoundException {
 
         return new ResponseEntity<>(subServiceMapper.subServiceToDto(adminService.editSubServiceComment(subServiceId,newComment)),HttpStatus.OK);
-
     }
 
     @PostMapping("/subService/editBasePrice")
@@ -65,6 +67,19 @@ public class AdminController {
                                                                        @RequestParam Double newBasePrice) throws SubServiceNotFoundException {
 
         return new ResponseEntity<>(subServiceMapper.subServiceToDto(adminService.editSubServicePrice(subServiceId,newBasePrice)),HttpStatus.OK);
+    }
 
+    @PostMapping("/expert/addToSubService")
+    public ResponseEntity<ExpertResponseDto> addExpertToSubService(@RequestParam Long expertId,
+                                                                   @RequestParam Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
+
+        return new ResponseEntity<>(expertMapper.expertToDto(adminService.addExpertSubService(expertId,subServiceId)),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/expert/removeToSubService")
+    public ResponseEntity<ExpertResponseDto> removeExpertToSubService(@RequestParam Long expertId,
+                                                                   @RequestParam Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
+
+        return new ResponseEntity<>(expertMapper.expertToDto(adminService.removeExpertSubService(expertId,subServiceId)),HttpStatus.OK);
     }
 }
