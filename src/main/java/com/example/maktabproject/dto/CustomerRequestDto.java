@@ -11,5 +11,5 @@ public record CustomerRequestDto(@NotBlank String firstname,
                                  @NotBlank String lastname,
                                  @Email String email,
                                  @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d).{8,}$")
-                             String password) {
+                                 String password) {
 }

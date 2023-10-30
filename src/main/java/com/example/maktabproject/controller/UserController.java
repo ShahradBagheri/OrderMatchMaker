@@ -29,13 +29,14 @@ public class UserController {
     private final CustomerServiceImpl customerService;
     private final ExpertServiceImpl expertService;
     private final ImageProcessing imageProcessing;
+    private final UserMapper userMapper;
 
     @PostMapping("/login")
-    public ResponseEntity<CustomerResponseDto> login(@RequestBody UserLoginDto userLoginDto) throws IncorrectCredentialsException {
+    public ResponseEntity<UserResponseDto> login(@RequestBody UserLoginDto userLoginDto) throws IncorrectCredentialsException {
 
         User user = userService.login(userLoginDto.email(), userLoginDto.password());
-        CustomerResponseDto customerResponseDto = customerMapper.customerToDto(user);
-        return new ResponseEntity<>(customerResponseDto, HttpStatus.OK);
+        UserResponseDto userResponseDto = userMapper.userToDto(user);
+        return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
     }
 
     @PostMapping("/register/customer")
@@ -43,7 +44,7 @@ public class UserController {
 
         Customer customer = customerMapper.dtoToCustomer(customerRequestDto);
         customer = customerService.register(customer);
-        return customerMapper.customerToDto(customer.getUser());
+        return customerMapper.customerToDto(customer);
     }
 
     @PostMapping(value = "/register/expert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

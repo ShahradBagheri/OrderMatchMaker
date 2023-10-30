@@ -26,13 +26,13 @@ public class CustomerMapper {
                 .build();
     }
 
-    public CustomerResponseDto customerToDto(User user){
+    public CustomerResponseDto customerToDto(Customer customer){
         return CustomerResponseDto.builder()
-                .id(user.getId())
-                .firstname(user.getFirstname())
-                .lastname(user.getLastname())
-                .email(user.getEmail())
-                .role(user.getRole())
+                .id(customer.getId())
+                .firstname(customer.getUser().getFirstname())
+                .lastname(customer.getUser().getLastname())
+                .email(customer.getUser().getEmail())
+                .role(customer.getUser().getRole())
                 .build();
     }
 }
