@@ -7,9 +7,9 @@ import jakarta.validation.constraints.Pattern;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
-public record UserRequestDto(@NotBlank String firstname,
-                             @NotBlank String lastname,
-                             @Email String email,
-                             @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d).{8,}$")
+public record CustomerRequestDto(@NotBlank String firstname,
+                                 @NotBlank String lastname,
+                                 @Email String email,
+                                 @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d).{8,}$")
                              String password) {
 }
