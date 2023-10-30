@@ -23,8 +23,4 @@ public interface SubServiceService {
     SubService removeMainService(Long subServiceId) throws SubServiceNotFoundException, MainServiceNotFoundException;
 
     List<SubService> findByMainService(Long mainServiceId) throws MainServiceNotFoundException;
-
-    SubService editPrice(Long subServiceId, Double newBasePrice) throws SubServiceNotFoundException;
-
-    SubService editComment(Long subServiceId, String newComment) throws SubServiceNotFoundException;
 }

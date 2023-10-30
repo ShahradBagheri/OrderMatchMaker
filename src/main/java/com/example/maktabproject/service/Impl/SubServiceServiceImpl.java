@@ -87,22 +87,4 @@ public class SubServiceServiceImpl implements SubServiceService {
 
         return subServiceRepository.findAllByMainService(mainService);
     }
-
-    @Override
-    public SubService editPrice(Long subServiceId, Double newBasePrice) throws SubServiceNotFoundException {
-
-        SubService subService = findById(subServiceId);
-        subService.setBasePrice(newBasePrice);
-
-        return register(subService);
-    }
-
-    @Override
-    public SubService editComment(Long subServiceId, String newComment) throws SubServiceNotFoundException {
-
-        SubService subService = findById(subServiceId);
-        subService.setComment(newComment);
-
-        return register(subService);
-    }
 }

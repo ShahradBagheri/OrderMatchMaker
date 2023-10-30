@@ -6,6 +6,7 @@ import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.enumeration.ExpertStatus;
 import com.example.maktabproject.service.AdminService;
+import com.example.maktabproject.service.SubServiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -45,5 +46,23 @@ public class AdminServiceImpl implements AdminService {
         Expert expert = expertService.findById(expertId);
         expert.setExpertStatus(expertStatus);
         return expertService.register(expert);
+    }
+
+    @Override
+    public SubService editSubServicePrice(Long subServiceId, Double newBasePrice) throws SubServiceNotFoundException {
+
+        SubService subService = subServiceService.findById(subServiceId);
+        subService.setBasePrice(newBasePrice);
+
+        return subServiceService.register(subService);
+    }
+
+    @Override
+    public SubService editSubServiceComment(Long subServiceId, String newComment) throws SubServiceNotFoundException {
+
+        SubService subService = subServiceService.findById(subServiceId);
+        subService.setComment(newComment);
+
+        return subServiceService.register(subService);
     }
 }
