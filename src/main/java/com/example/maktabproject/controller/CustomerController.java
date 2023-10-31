@@ -35,8 +35,9 @@ public class CustomerController {
     @PostMapping("/order/submit")
     public ResponseEntity<OrderResponseDto> submitOrder(@RequestBody @Valid OrderRequestDto orderRequestDto) throws CustomerNotFoundException, SubServiceNotFoundException, InvalidPriceException, InvalidTimeException {
 
-        Order order = orderService.register(orderMapper.dtoToOrder(orderRequestDto));
+        Order order = orderMapper.dtoToOrder(orderRequestDto);
         order.setOrderState(OrderState.WAITING_FOR_SUGGESTIONS);
+        order = orderService.register(order);
         return new ResponseEntity<>(orderMapper.orderToDto(order),HttpStatus.OK);
     }
 }
