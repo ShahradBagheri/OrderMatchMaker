@@ -31,7 +31,6 @@ public class OrderMapper {
                 .id(order.getId())
                 .subServiceId(order.getSubService().getId())
                 .customerId(order.getCustomer().getId())
-                .selectedOfferId(order.getSelectedOffer().getId())
                 .suggestedPrice(order.getSuggestedPrice())
                 .startingDate(order.getStartingDate())
                 .details(order.getDetails())

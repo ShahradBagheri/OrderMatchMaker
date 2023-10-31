@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 public record OrderResponseDto(Long id,
                                Long subServiceId,
                                Long customerId,
-                               Long selectedOfferId,
                                Double suggestedPrice,
                                String details,
                                LocalDateTime startingDate,
