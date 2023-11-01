@@ -33,4 +33,10 @@ public class OrderController {
 
         orderService.choseOffer(offerId,orderId);
     }
+
+    @PostMapping("/changeState/started")
+    public ResponseEntity<OrderResponseDto> changeStateStarted(@RequestParam Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException {
+
+        return new ResponseEntity<>(orderMapper.orderToDto(orderService.statusToStarted(orderId)),HttpStatus.OK);
+    }
 }
