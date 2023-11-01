@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,12 +32,15 @@ public class OrderServiceImpl implements OrderService {
     public Order register(Order order) throws InvalidPriceException, InvalidTimeException {
         try{
 
-            if(priceValidation(order))
-                if(dateValidation(order.getStartingDate()))
-                    return orderRepository.save(order);
-                else
-                    throw new InvalidTimeException();
-            throw new InvalidPriceException();
+            if(order.getOrderState() == OrderState.WAITING_FOR_SUGGESTIONS) {
+                if (priceValidation(order))
+                    if (dateValidation(order.getStartingDate()))
+                        return orderRepository.save(order);
+                    else
+                        throw new InvalidTimeException();
+                throw new InvalidPriceException();
+            }else
+                return orderRepository.save(order);
 
         } catch (ConstraintViolationException | DataAccessException e){
             log.error(e.getMessage());
@@ -117,7 +121,17 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = findById(orderId);
         if (order.getOrderState() == OrderState.STARTED) {
+
             order.setOrderState(OrderState.FINISHED);
+            if(LocalDateTime.now().isAfter(order.getSelectedOffer().getCompletionDate())){
+
+                Duration duration = Duration.between(LocalDateTime.now(),order.getSelectedOffer().getCompletionDate());
+                long hoursDifference = duration.toHours();
+
+                Expert expert = order.getSelectedOffer().getExpert();
+                expert.setScore(expert.getScore() - hoursDifference);
+                expertService.register(expert);
+            }
             return register(order);
         }
         throw new NotTheCorrectTimeToChangeStatusException();
