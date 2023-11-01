@@ -1,6 +1,8 @@
 package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.exception.ExpertNotFoundException;
+import com.example.maktabproject.exception.OrderNotFoundException;
+import com.example.maktabproject.exception.RatingNotFoundException;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Rating;
 import com.example.maktabproject.repository.RatingRepository;
@@ -11,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -32,5 +36,25 @@ public class RatingServiceImpl implements RatingService {
             log.error(e.getMessage());
             return null;
         }
+    }
+
+    @Override
+    public void delete(Rating rating) {
+
+        ratingRepository.delete(rating);
+    }
+
+    @Override
+    public Rating findById(Long id) throws  RatingNotFoundException {
+
+        return ratingRepository.findById(id).orElseThrow(
+                RatingNotFoundException::new
+        );
+    }
+
+    @Override
+    public List<Rating> findAll() {
+
+        return ratingRepository.findAll();
     }
 }
