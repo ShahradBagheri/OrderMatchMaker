@@ -28,6 +28,8 @@ public class ExpertServiceImpl implements ExpertService {
     public Expert register(Expert expert) {
 
         try {
+            if(expert.getScore() < 0)
+                expert.setExpertStatus(ExpertStatus.INACTIVE);
             return expertRepository.save(expert);
         } catch (ConstraintViolationException | DataAccessException e) {
             log.error(e.getMessage());
