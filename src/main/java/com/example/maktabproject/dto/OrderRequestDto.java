@@ -13,6 +13,6 @@ public record OrderRequestDto(@NotNull Long subServiceId,
                               @NotNull Long customerId,
                               @NotNull Double suggestedPrice,
                               @NotBlank String details,
-                              LocalDateTime startingDate,
+                              @NotNull LocalDateTime startingDate,
                               @NotBlank String address) {
 }

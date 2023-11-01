@@ -6,6 +6,7 @@ import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.repository.OfferRepository;
 import com.example.maktabproject.service.CustomerService;
 import com.example.maktabproject.service.OfferService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,6 +68,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
+    @Transactional
     public List<Offer> findByCustomerPriceOrder(Long customerId) throws CustomerNotFoundException {
 
         Customer customer = customerService.findById(customerId);
@@ -74,6 +76,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
+    @Transactional
     public List<Offer> findByCustomerScoreOrder(Long customerId) throws CustomerNotFoundException {
 
         Customer customer = customerService.findById(customerId);

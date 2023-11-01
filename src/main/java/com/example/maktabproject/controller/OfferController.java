@@ -29,15 +29,15 @@ public class OfferController {
         return new ResponseEntity<>(offerResponseDto, HttpStatus.OK);
     }
 
-    @GetMapping("/findByScore")
-    public ResponseEntity<List<Offer>> findOfferByScore(@RequestParam Long customerId) throws CustomerNotFoundException {
+    @GetMapping("/findAllByScore")
+    public ResponseEntity<List<OfferResponseDto>> findAllOfferByScore(@RequestParam Long customerId) throws CustomerNotFoundException {
 
-        return new ResponseEntity<>(offerService.findByCustomerScoreOrder(customerId),HttpStatus.OK);
+        return new ResponseEntity<>(offerService.findByCustomerScoreOrder(customerId).stream().map(offerMapper::offerToDto).toList(),HttpStatus.OK);
     }
 
-    @GetMapping("/findByPrice")
-    public ResponseEntity<List<Offer>> findOfferByPrice(@RequestParam Long customerId) throws CustomerNotFoundException {
+    @GetMapping("/findAllByPrice")
+    public ResponseEntity<List<OfferResponseDto>> findAllOfferByPrice(@RequestParam Long customerId) throws CustomerNotFoundException {
 
-        return new ResponseEntity<>(offerService.findByCustomerPriceOrder(customerId),HttpStatus.OK);
+        return new ResponseEntity<>(offerService.findByCustomerPriceOrder(customerId).stream().map(offerMapper::offerToDto).toList(),HttpStatus.OK);
     }
 }
