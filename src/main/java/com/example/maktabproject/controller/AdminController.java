@@ -35,8 +35,7 @@ public class AdminController {
     public List<MainServiceResponseDto> getMainServices(){
 
         List<MainService> mainServiceList = mainServiceService.findAll();
-        List<MainServiceResponseDto> list = mainServiceList.stream().map(mainServiceMapper::mainServiceToDto).toList();
-        return list;
+        return mainServiceList.stream().map(mainServiceMapper::mainServiceToDto).toList();
     }
 
     @PostMapping("/register/mainService")
