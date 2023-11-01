@@ -16,6 +16,10 @@ public class Rating {
     @JoinColumn(name = "expert_id")
     private Expert expert;
 
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
     private Double score;
 
     private String comment;
