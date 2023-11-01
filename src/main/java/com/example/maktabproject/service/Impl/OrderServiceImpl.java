@@ -129,7 +129,7 @@ public class OrderServiceImpl implements OrderService {
                 long hoursDifference = duration.toHours();
 
                 Expert expert = order.getSelectedOffer().getExpert();
-                expert.setScore(expert.getScore() - hoursDifference);
+                expert.setScore(expert.getScore() - Math.abs(hoursDifference));
                 expertService.register(expert);
             }
             return register(order);
