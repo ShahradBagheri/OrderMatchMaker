@@ -39,4 +39,10 @@ public class OrderController {
 
         return new ResponseEntity<>(orderMapper.orderToDto(orderService.statusToStarted(orderId)),HttpStatus.OK);
     }
+
+    @PostMapping("/changeState/finished")
+    public ResponseEntity<OrderResponseDto> changeStateFinished(@RequestParam Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException {
+
+        return new ResponseEntity<>(orderMapper.orderToDto(orderService.statusToFinished(orderId)),HttpStatus.OK);
+    }
 }
