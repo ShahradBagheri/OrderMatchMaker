@@ -9,10 +9,7 @@ import com.example.maktabproject.service.Impl.ExpertServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/expert")
@@ -26,5 +23,11 @@ public class ExpertController {
     public ResponseEntity<ExpertResponseDto> changePassword(@RequestParam Long expertId, @RequestParam String newPassword) throws ExpertNotFoundException {
 
         return new ResponseEntity<>(expertMapper.expertToDto(expertService.changePassword(expertId,newPassword)), HttpStatus.OK);
+    }
+
+    @GetMapping("/checkScore")
+    public float checkScore(@RequestParam Long expertId) throws ExpertNotFoundException {
+
+        return expertService.findById(expertId).getScore();
     }
 }
