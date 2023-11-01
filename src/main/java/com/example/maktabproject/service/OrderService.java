@@ -30,4 +30,6 @@ public interface OrderService {
     Order statusToFinished(Long orderId) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException, OrderNotFoundException;
 
     Order statusToWaitingToSelect(Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException;
+
+    Order statusToPaid(Long orderId) throws OrderNotFoundException, InsufficientFundException, CustomerNotFoundException, ExpertNotFoundException, InvalidPriceException, InvalidTimeException;
 }

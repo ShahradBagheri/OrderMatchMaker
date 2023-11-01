@@ -1,6 +1,7 @@
 package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.exception.*;
+import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.model.Order;
@@ -27,6 +28,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OfferRepository offerRepository;
     private final ExpertService expertService;
+    private final CustomerServiceImpl customerService;
 
     @Override
     public Order register(Order order) throws InvalidPriceException, InvalidTimeException {
@@ -142,6 +144,27 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = findById(orderId);
         order.setOrderState(OrderState.WAITING_TO_SELECT_SUGGESTION);
+        return register(order);
+    }
+
+    @Override
+    public Order statusToPaid(Long orderId) throws OrderNotFoundException, InsufficientFundException, CustomerNotFoundException, ExpertNotFoundException, InvalidPriceException, InvalidTimeException {
+
+        Order order = findById(orderId);
+        Customer customer = customerService.findById(order.getCustomer().getId());
+        Expert expert = expertService.findById(order.getSelectedOffer().getExpert().getId());
+        double customerBalance = customer.getUser().getWallet().getCredit();
+        double expertBalance = expert.getUser().getWallet().getCredit();
+
+        if(order.getSelectedOffer().getSuggestedPrice() > customerBalance)
+            throw new InsufficientFundException();
+
+        customer.getUser().getWallet().setCredit(customerBalance - order.getSelectedOffer().getSuggestedPrice());
+        expert.getUser().getWallet().setCredit(expertBalance + order.getSelectedOffer().getSuggestedPrice()*70/100);
+
+        customerService.register(customer);
+        expertService.register(expert);
+        order.setOrderState(OrderState.PAID);
         return register(order);
     }
 }
