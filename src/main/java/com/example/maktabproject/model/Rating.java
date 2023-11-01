@@ -20,7 +20,7 @@ public class Rating {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    private Double score;
+    private Float score;
 
     private String comment;
 }
