@@ -91,8 +91,8 @@ public class AdminController {
         return new ResponseEntity<>(expertMapper.expertToDto(adminService.updateExpertStatus(expertId, ExpertStatus.APPROVED)),HttpStatus.OK);
     }
 
-    @PostMapping("/users/filter")
-    public ResponseEntity<List<UserResponseDto>> filterAllUsers(@RequestParam UserFilterRequestDto userFilterRequestDto) throws SubServiceNotFoundException {
+    @GetMapping("/users/filter")
+    public ResponseEntity<List<UserResponseDto>> filterAllUsers(@RequestBody UserFilterRequestDto userFilterRequestDto) throws SubServiceNotFoundException {
 
         List<User> users = adminService.filterUsers(userMapper.filterRequestToCriteriaDto(userFilterRequestDto));
         return new ResponseEntity<>(users.stream().map(userMapper::userToDto).toList(),HttpStatus.OK);
