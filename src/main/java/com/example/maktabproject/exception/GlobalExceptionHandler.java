@@ -136,4 +136,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<String> nullPointerException(NullPointerException e){
+        log.error(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
 }
