@@ -36,6 +36,14 @@
         <input type="text" class="form-control" placeholder="Amount" id="amount" aria-label="Username"
                aria-describedby="basic-addon1">
     </div>
+
+    <div class="input-group mb-3 align-middle">
+        <img alt="Captcha" id="captchaImage"/>
+        <input type="text" class="form-control" placeholder="Amount" id="captcha-answer" aria-label="Username"
+               aria-describedby="basic-addon1">
+        <input type="hidden", id="captcha-id" name="captcha-id">
+    </div>
+
     <div>
         <button class="btn btn-success" onclick="myFunction()" id="send-button">send</button>
     </div>
@@ -44,6 +52,20 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <script>
+    prepareCaptcha()
+
+    function prepareCaptcha(){
+        let image = document.getElementById('captchaImage');
+        let id = document.getElementById('captcha-id')
+
+        fetch('http://localhost:8080/payment/captcha')
+            .then(response => response.json())
+            .then(json => {
+                id.setAttribute('value', json.id);
+                image.setAttribute('src', json.base64)
+            })
+    }
+
     function myFunction() {
 
         let customerId = $("customer-id").val();
