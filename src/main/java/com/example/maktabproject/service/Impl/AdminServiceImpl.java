@@ -82,8 +82,11 @@ public class AdminServiceImpl implements AdminService {
         Specification<Expert> expertSpecification = Specification.where(null);
         Specification<User> userSpecification = Specification.where(null);
 
-        if(userFilterCriteriaDto.score() != null)
-            expertSpecification = expertSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get("score"), userFilterCriteriaDto.score()));
+        if(userFilterCriteriaDto.scoreHigher() != null)
+            expertSpecification = expertSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get("score"), userFilterCriteriaDto.scoreHigher()));
+
+        if(userFilterCriteriaDto.scoreLower() != null)
+            expertSpecification = expertSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.lessThan(root.get("score"), userFilterCriteriaDto.scoreLower()));
 
         if(userFilterCriteriaDto.subService() != null)
             expertSpecification = expertSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.isMember(userFilterCriteriaDto.subService(),root.get("subServices")));
@@ -104,7 +107,7 @@ public class AdminServiceImpl implements AdminService {
         List<User> allUsers = userRepository.findAll(userSpecification);
         List<User> commonElements = new ArrayList<>();
 
-        if(userFilterCriteriaDto.score() != null || userFilterCriteriaDto.subService() != null){
+        if(userFilterCriteriaDto.scoreLower() != null || userFilterCriteriaDto.scoreHigher() != null || userFilterCriteriaDto.subService() != null){
             for (User expert : expertUsers) {
                 if(allUsers.contains(expert) && !commonElements.contains(expert))
                     commonElements.add(expert);

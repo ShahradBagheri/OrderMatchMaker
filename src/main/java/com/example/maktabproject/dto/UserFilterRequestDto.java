@@ -9,5 +9,6 @@ public record UserFilterRequestDto(Role role,
                                    String lastname,
                                    String email,
                                    Long subServiceId,
-                                   Float score) {
+                                   Float scoreHigher,
+                                   Float scoreLower) {
 }

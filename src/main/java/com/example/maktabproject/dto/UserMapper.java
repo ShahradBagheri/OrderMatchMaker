@@ -35,7 +35,8 @@ public class UserMapper {
                 .lastname(userFilterRequestDto.lastname())
                 .email(userFilterRequestDto.email())
                 .subService(subService)
-                .score(userFilterRequestDto.score())
+                .scoreHigher(userFilterRequestDto.scoreHigher())
+                .scoreLower(userFilterRequestDto.scoreLower())
                 .build();
     }
 }

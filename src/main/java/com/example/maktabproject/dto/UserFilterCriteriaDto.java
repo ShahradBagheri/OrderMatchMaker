@@ -10,5 +10,6 @@ public record UserFilterCriteriaDto(Role role,
                                     String lastname,
                                     String email,
                                     SubService subService,
-                                    Float score) {
+                                    Float scoreHigher,
+                                    Float scoreLower) {
 }
