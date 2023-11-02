@@ -8,7 +8,6 @@ import com.example.maktabproject.service.Impl.UserServiceImpl;
 import com.wf.captcha.SpecCaptcha;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -20,16 +19,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RequiredArgsConstructor
 public class PaymentController {
 
-    private Map<Integer,String> captchaMap = new ConcurrentHashMap<>();
-    private AtomicInteger counter = new AtomicInteger();
+    private final Map<Integer, String> captchaMap = new ConcurrentHashMap<>();
+    private final AtomicInteger counter = new AtomicInteger();
     private final UserServiceImpl userService;
 
     @PostMapping("/submit")
     public String payment(@RequestBody @Valid PaymentRequestDto paymentRequestDto) throws InvalidCaptchaException, UserNotFoundException {
 
         String captchaText = captchaMap.get(paymentRequestDto.captchaId());
-        if(! paymentRequestDto.captcha().toUpperCase().equals(captchaText))
-            throw new  InvalidCaptchaException();
+        if (!paymentRequestDto.captcha().toUpperCase().equals(captchaText))
+            throw new InvalidCaptchaException();
 
         User user = userService.findById(paymentRequestDto.userId());
         user.getWallet().setCredit(user.getWallet().getCredit() + paymentRequestDto.amount());
@@ -40,12 +39,13 @@ public class PaymentController {
     @GetMapping("/captcha")
     public Captcha generateCaptcha() {
 
-        SpecCaptcha captcha = new SpecCaptcha(130,48);
+        SpecCaptcha captcha = new SpecCaptcha(130, 48);
         int id = counter.incrementAndGet();
         captchaMap.put(id, captcha.text().toUpperCase());
 
-        return new Captcha(id,captcha.toBase64());
+        return new Captcha(id, captcha.toBase64());
     }
 
-    record Captcha(Integer id,String base64){}
+    record Captcha(Integer id, String base64) {
+    }
 }

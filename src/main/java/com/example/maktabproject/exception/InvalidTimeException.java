@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class InvalidTimeException extends Exception{
+public class InvalidTimeException extends Exception {
 
     public InvalidTimeException() {
     }

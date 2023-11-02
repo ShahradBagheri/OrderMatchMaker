@@ -1,10 +1,7 @@
 package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.exception.ExpertNotFoundException;
-import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.Expert;
-import com.example.maktabproject.model.SubService;
-import com.example.maktabproject.model.User;
 import com.example.maktabproject.model.enumeration.ExpertStatus;
 import com.example.maktabproject.repository.ExpertRepository;
 import com.example.maktabproject.service.ExpertService;
@@ -28,7 +25,7 @@ public class ExpertServiceImpl implements ExpertService {
     public Expert register(Expert expert) {
 
         try {
-            if(expert.getScore() < 0)
+            if (expert.getScore() < 0)
                 expert.setExpertStatus(ExpertStatus.INACTIVE);
             return expertRepository.save(expert);
         } catch (ConstraintViolationException | DataAccessException e) {

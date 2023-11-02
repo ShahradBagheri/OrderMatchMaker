@@ -1,6 +1,5 @@
 package com.example.maktabproject.dto;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 import java.time.LocalDateTime;

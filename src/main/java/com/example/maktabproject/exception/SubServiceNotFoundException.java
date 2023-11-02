@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class SubServiceNotFoundException extends Exception{
+public class SubServiceNotFoundException extends Exception {
 
     public SubServiceNotFoundException() {
     }

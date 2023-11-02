@@ -9,25 +9,23 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 @Component
 public class ImageProcessing {
 
     public byte[] imageToBytes(MultipartFile image) throws ImageToBigException {
-        try{
-            if(validImageSize(image.getSize()))
+        try {
+            if (validImageSize(image.getSize()))
                 return image.getBytes();
             else
                 throw new ImageToBigException();
-        }catch (IOException e){
+        } catch (IOException e) {
             System.err.println(e.getMessage());
             return null;
         }
     }
 
-    public void bytesToImage(byte[] imageData){
+    public void bytesToImage(byte[] imageData) {
         try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(imageData);
 
@@ -43,9 +41,9 @@ public class ImageProcessing {
         }
     }
 
-    public boolean validImageSize(long fileSize){
+    public boolean validImageSize(long fileSize) {
         long sizeLimit = 300 * 1024;
 
-        return  fileSize <= sizeLimit;
+        return fileSize <= sizeLimit;
     }
 }

@@ -3,7 +3,6 @@ package com.example.maktabproject.service;
 import com.example.maktabproject.exception.MainServiceNotFoundException;
 import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.exception.SubServiceTwoMainServiceException;
-import com.example.maktabproject.model.MainService;
 import com.example.maktabproject.model.SubService;
 
 import java.util.List;

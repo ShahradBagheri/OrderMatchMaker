@@ -22,9 +22,9 @@ public class MainServiceServiceImpl implements MainServiceService {
     @Override
     public MainService register(MainService mainService) {
 
-        try{
+        try {
             return mainServiceRepository.save(mainService);
-        } catch (ConstraintViolationException | DataAccessException e){
+        } catch (ConstraintViolationException | DataAccessException e) {
             log.error(e.getMessage());
             return null;
         }

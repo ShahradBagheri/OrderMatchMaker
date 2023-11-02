@@ -29,20 +29,19 @@ public class OfferServiceImpl implements OfferService {
     @Override
     public Offer register(Offer offer) throws InvalidTimeException, InvalidPriceException, OrderNotFoundException {
 
-        try{
-            if(priceValidation(offer))
-                if(dateValidation(offer.getStartingDate())){
+        try {
+            if (priceValidation(offer))
+                if (dateValidation(offer.getStartingDate())) {
 
                     offer = offerRepository.save(offer);
-                    if(offer.getOrder().getOrderState().equals(OrderState.WAITING_FOR_SUGGESTIONS))
+                    if (offer.getOrder().getOrderState().equals(OrderState.WAITING_FOR_SUGGESTIONS))
                         orderService.statusToWaitingToSelect(offer.getOrder().getId());
 
                     return offer;
-                    }
-                else
+                } else
                     throw new InvalidTimeException();
             throw new InvalidPriceException();
-        } catch (ConstraintViolationException | DataAccessException e){
+        } catch (ConstraintViolationException | DataAccessException e) {
             log.error(e.getMessage());
             return null;
         }

@@ -2,7 +2,6 @@ package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.exception.InvalidScoreException;
-import com.example.maktabproject.exception.OrderNotFoundException;
 import com.example.maktabproject.exception.RatingNotFoundException;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Rating;
@@ -28,16 +27,16 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public Rating register(Rating rating) throws ExpertNotFoundException, InvalidScoreException {
 
-        if(rating.getScore() > 5 || rating.getScore() < 0)
+        if (rating.getScore() > 5 || rating.getScore() < 0)
             throw new InvalidScoreException();
 
         Expert expert = expertService.findById(rating.getExpert().getId());
         expert.setScore(expert.getScore() + rating.getScore());
 
         expertService.register(expert);
-        try{
+        try {
             return ratingRepository.save(rating);
-        } catch (ConstraintViolationException | DataAccessException e){
+        } catch (ConstraintViolationException | DataAccessException e) {
             log.error(e.getMessage());
             return null;
         }
@@ -50,7 +49,7 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public Rating findById(Long id) throws  RatingNotFoundException {
+    public Rating findById(Long id) throws RatingNotFoundException {
 
         return ratingRepository.findById(id).orElseThrow(
                 RatingNotFoundException::new

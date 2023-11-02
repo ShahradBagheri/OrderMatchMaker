@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class InvalidPriceException extends Exception{
+public class InvalidPriceException extends Exception {
 
     public InvalidPriceException() {
     }

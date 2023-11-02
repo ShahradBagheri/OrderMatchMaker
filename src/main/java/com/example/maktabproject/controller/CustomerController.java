@@ -2,9 +2,7 @@ package com.example.maktabproject.controller;
 
 import com.example.maktabproject.dto.*;
 import com.example.maktabproject.exception.*;
-import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Order;
-import com.example.maktabproject.model.Rating;
 import com.example.maktabproject.model.enumeration.OrderState;
 import com.example.maktabproject.service.Impl.CustomerServiceImpl;
 import com.example.maktabproject.service.Impl.OrderServiceImpl;

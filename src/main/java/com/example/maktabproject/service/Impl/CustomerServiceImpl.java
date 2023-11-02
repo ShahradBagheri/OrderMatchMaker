@@ -2,7 +2,6 @@ package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.exception.CustomerNotFoundException;
 import com.example.maktabproject.model.Customer;
-import com.example.maktabproject.model.User;
 import com.example.maktabproject.repository.CustomerRepository;
 import com.example.maktabproject.service.CustomerService;
 import jakarta.validation.ConstraintViolationException;
@@ -23,9 +22,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer register(Customer customer) {
 
-        try{
+        try {
             return customerRepository.save(customer);
-        } catch (ConstraintViolationException | DataAccessException e){
+        } catch (ConstraintViolationException | DataAccessException e) {
             log.error(e.getMessage());
             return null;
         }

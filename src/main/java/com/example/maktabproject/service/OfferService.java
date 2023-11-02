@@ -1,7 +1,6 @@
 package com.example.maktabproject.service;
 
 import com.example.maktabproject.exception.*;
-import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Offer;
 
 import java.time.LocalDateTime;

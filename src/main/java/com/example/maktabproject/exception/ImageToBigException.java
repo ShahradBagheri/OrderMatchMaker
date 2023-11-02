@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class ImageToBigException extends Exception{
+public class ImageToBigException extends Exception {
 
     public ImageToBigException() {
     }

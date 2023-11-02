@@ -13,7 +13,7 @@ public class UserMapper {
 
     private final SubServiceServiceImpl subServiceService;
 
-    public UserResponseDto userToDto(User user){
+    public UserResponseDto userToDto(User user) {
         return UserResponseDto.builder()
                 .id(user.getId())
                 .firstname(user.getFirstname())

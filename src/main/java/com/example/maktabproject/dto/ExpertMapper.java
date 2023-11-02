@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExpertMapper {
 
-    public Expert dtoToExpert(ExpertRequestDto expertRequestDto){
+    public Expert dtoToExpert(ExpertRequestDto expertRequestDto) {
 
         User user = User.builder()
                 .firstname(expertRequestDto.firstname())
@@ -25,7 +25,7 @@ public class ExpertMapper {
                 .build();
     }
 
-    public ExpertResponseDto expertToDto(Expert expert){
+    public ExpertResponseDto expertToDto(Expert expert) {
         return ExpertResponseDto.builder()
                 .id(expert.getId())
                 .firstname(expert.getUser().getFirstname())

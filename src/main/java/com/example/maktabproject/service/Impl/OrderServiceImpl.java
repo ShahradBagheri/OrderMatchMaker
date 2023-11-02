@@ -32,19 +32,19 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order register(Order order) throws InvalidPriceException, InvalidTimeException {
-        try{
+        try {
 
-            if(order.getOrderState() == OrderState.WAITING_FOR_SUGGESTIONS) {
+            if (order.getOrderState() == OrderState.WAITING_FOR_SUGGESTIONS) {
                 if (priceValidation(order))
                     if (dateValidation(order.getStartingDate()))
                         return orderRepository.save(order);
                     else
                         throw new InvalidTimeException();
                 throw new InvalidPriceException();
-            }else
+            } else
                 return orderRepository.save(order);
 
-        } catch (ConstraintViolationException | DataAccessException e){
+        } catch (ConstraintViolationException | DataAccessException e) {
             log.error(e.getMessage());
             return null;
         }
@@ -60,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
     public Order findById(Long id) throws OrderNotFoundException {
 
         return orderRepository.findById(id).orElseThrow(
-            OrderNotFoundException::new
+                OrderNotFoundException::new
         );
     }
 
@@ -74,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> findOrdersForExpert(Long expertId) throws ExpertNotFoundException {
 
         Expert expert = expertService.findById(expertId);
-        return orderRepository.findBySubServiceInAndOrderStateOrOrderState(expert.getSubServices(), OrderState.WAITING_FOR_SUGGESTIONS,OrderState.WAITING_TO_SELECT_SUGGESTION);
+        return orderRepository.findBySubServiceInAndOrderStateOrOrderState(expert.getSubServices(), OrderState.WAITING_FOR_SUGGESTIONS, OrderState.WAITING_TO_SELECT_SUGGESTION);
     }
 
     @Override
@@ -91,13 +91,13 @@ public class OrderServiceImpl implements OrderService {
             order.setSelectedOffer(offer);
             return register(order);
         }
-        throw new  ExpertHasNoOfferForOfferException();
+        throw new ExpertHasNoOfferForOfferException();
     }
 
     @Override
     public boolean priceValidation(Order order) {
 
-        if(order.getSuggestedPrice() != null && order.getSubService() != null)
+        if (order.getSuggestedPrice() != null && order.getSubService() != null)
             return order.getSuggestedPrice() > order.getSubService().getBasePrice();
         return false;
     }
@@ -111,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
     public Order statusToStarted(Long orderId) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException, OrderNotFoundException {
 
         Order order = findById(orderId);
-        if(LocalDateTime.now().isAfter(offerRepository.findByExpertAndOrder(order.getSelectedOffer().getExpert(), order).getStartingDate())){
+        if (LocalDateTime.now().isAfter(offerRepository.findByExpertAndOrder(order.getSelectedOffer().getExpert(), order).getStartingDate())) {
             order.setOrderState(OrderState.STARTED);
             return register(order);
         }
@@ -125,9 +125,9 @@ public class OrderServiceImpl implements OrderService {
         if (order.getOrderState() == OrderState.STARTED) {
 
             order.setOrderState(OrderState.FINISHED);
-            if(LocalDateTime.now().isAfter(order.getSelectedOffer().getCompletionDate())){
+            if (LocalDateTime.now().isAfter(order.getSelectedOffer().getCompletionDate())) {
 
-                Duration duration = Duration.between(LocalDateTime.now(),order.getSelectedOffer().getCompletionDate());
+                Duration duration = Duration.between(LocalDateTime.now(), order.getSelectedOffer().getCompletionDate());
                 long hoursDifference = duration.toHours();
 
                 Expert expert = order.getSelectedOffer().getExpert();
@@ -156,11 +156,11 @@ public class OrderServiceImpl implements OrderService {
         double customerBalance = customer.getUser().getWallet().getCredit();
         double expertBalance = expert.getUser().getWallet().getCredit();
 
-        if(order.getSelectedOffer().getSuggestedPrice() > customerBalance)
+        if (order.getSelectedOffer().getSuggestedPrice() > customerBalance)
             throw new InsufficientFundException();
 
         customer.getUser().getWallet().setCredit(customerBalance - order.getSelectedOffer().getSuggestedPrice());
-        expert.getUser().getWallet().setCredit(expertBalance + order.getSelectedOffer().getSuggestedPrice()*70/100);
+        expert.getUser().getWallet().setCredit(expertBalance + order.getSelectedOffer().getSuggestedPrice() * 70 / 100);
 
         customerService.register(customer);
         expertService.register(expert);

@@ -2,7 +2,6 @@ package com.example.maktabproject.service;
 
 import com.example.maktabproject.exception.CustomerNotFoundException;
 import com.example.maktabproject.model.Customer;
-import com.example.maktabproject.model.User;
 
 import java.util.List;
 
@@ -18,5 +17,5 @@ public interface CustomerService {
 
     Customer findByUser(Long userId) throws CustomerNotFoundException;
 
-    Customer changePassword(Long customerId,String password) throws CustomerNotFoundException;
+    Customer changePassword(Long customerId, String password) throws CustomerNotFoundException;
 }

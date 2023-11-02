@@ -1,13 +1,13 @@
 package com.example.maktabproject.model;
 
 import com.example.maktabproject.model.enumeration.ExpertStatus;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
 import java.util.List;
 
 @Data
@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Expert{
+public class Expert {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

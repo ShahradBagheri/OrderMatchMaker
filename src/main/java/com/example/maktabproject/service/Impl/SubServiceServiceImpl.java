@@ -26,9 +26,9 @@ public class SubServiceServiceImpl implements SubServiceService {
     @Override
     public SubService register(SubService subService) {
 
-        try{
+        try {
             return subServiceRepository.save(subService);
-        } catch (ConstraintViolationException | DataAccessException e){
+        } catch (ConstraintViolationException | DataAccessException e) {
             log.error(e.getMessage());
             return null;
         }
@@ -59,7 +59,7 @@ public class SubServiceServiceImpl implements SubServiceService {
 
         SubService subService = findById(subServiceId);
 
-        if(subService.getMainService() != null)
+        if (subService.getMainService() != null)
             throw new SubServiceTwoMainServiceException();
 
         MainService mainService = mainServiceService.findById(mainServiceId);
@@ -73,7 +73,7 @@ public class SubServiceServiceImpl implements SubServiceService {
 
         SubService subService = findById(subServiceId);
 
-        if(subService.getMainService() == null)
+        if (subService.getMainService() == null)
             throw new MainServiceNotFoundException();
 
         subService.setMainService(null);

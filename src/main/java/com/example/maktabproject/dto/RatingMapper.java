@@ -24,7 +24,7 @@ public class RatingMapper {
 
         String comment = "";
 
-        if(ratingRequestDto.comment() != null)
+        if (ratingRequestDto.comment() != null)
             comment = ratingRequestDto.comment();
 
         return Rating.builder()
@@ -35,7 +35,7 @@ public class RatingMapper {
                 .build();
     }
 
-    public RatingResponseDto ratingToDto(Rating rating){
+    public RatingResponseDto ratingToDto(Rating rating) {
 
         return RatingResponseDto.builder()
                 .id(rating.getId())

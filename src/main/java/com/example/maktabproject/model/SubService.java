@@ -1,8 +1,8 @@
 package com.example.maktabproject.model;
 
+import jakarta.persistence.*;
 import lombok.*;
 
-import jakarta.persistence.*;
 import java.util.List;
 
 @Getter
@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString(exclude = {"mainService","experts"})
+@ToString(exclude = {"mainService", "experts"})
 @Entity
 public class SubService {
 

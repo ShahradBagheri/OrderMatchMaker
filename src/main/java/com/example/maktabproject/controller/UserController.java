@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping("/register/customer")
-    public CustomerResponseDto customerRegister(@RequestBody @Valid CustomerRequestDto customerRequestDto){
+    public CustomerResponseDto customerRegister(@RequestBody @Valid CustomerRequestDto customerRequestDto) {
 
         Customer customer = customerMapper.dtoToCustomer(customerRequestDto);
         customer = customerService.register(customer);

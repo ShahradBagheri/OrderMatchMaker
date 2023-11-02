@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class InvalidScoreException extends Exception{
+public class InvalidScoreException extends Exception {
 
     public InvalidScoreException() {
     }

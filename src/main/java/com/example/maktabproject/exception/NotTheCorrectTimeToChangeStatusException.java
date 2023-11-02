@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class NotTheCorrectTimeToChangeStatusException extends Exception{
+public class NotTheCorrectTimeToChangeStatusException extends Exception {
 
     public NotTheCorrectTimeToChangeStatusException() {
     }

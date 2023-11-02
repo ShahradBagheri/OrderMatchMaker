@@ -1,12 +1,12 @@
 package com.example.maktabproject.exception;
 
-public class DuplicateServiceException extends Exception{
+public class DuplicateServiceException extends Exception {
 
-    public DuplicateServiceException(){
+    public DuplicateServiceException() {
         super();
     }
 
-    public DuplicateServiceException(String message){
+    public DuplicateServiceException(String message) {
         super(message);
     }
 }

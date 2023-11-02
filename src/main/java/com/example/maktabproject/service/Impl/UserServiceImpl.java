@@ -21,9 +21,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(User user) {
 
-        try{
+        try {
             return userRepository.save(user);
-        } catch (ConstraintViolationException | DataAccessException e){
+        } catch (ConstraintViolationException | DataAccessException e) {
             log.error(e.getMessage());
             return null;
         }

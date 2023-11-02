@@ -29,26 +29,26 @@ public class OrderController {
     }
 
     @PostMapping("/selectOffer")
-    public void selectOffer(@RequestParam Long offerId,@RequestParam Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertHasNoOfferForOfferException, OfferNotFoundException {
+    public void selectOffer(@RequestParam Long offerId, @RequestParam Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertHasNoOfferForOfferException, OfferNotFoundException {
 
-        orderService.choseOffer(offerId,orderId);
+        orderService.choseOffer(offerId, orderId);
     }
 
     @PostMapping("/changeState/started")
     public ResponseEntity<OrderResponseDto> changeStateStarted(@RequestParam Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException {
 
-        return new ResponseEntity<>(orderMapper.orderToDto(orderService.statusToStarted(orderId)),HttpStatus.OK);
+        return new ResponseEntity<>(orderMapper.orderToDto(orderService.statusToStarted(orderId)), HttpStatus.OK);
     }
 
     @PostMapping("/changeState/finished")
     public ResponseEntity<OrderResponseDto> changeStateFinished(@RequestParam Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException {
 
-        return new ResponseEntity<>(orderMapper.orderToDto(orderService.statusToFinished(orderId)),HttpStatus.OK);
+        return new ResponseEntity<>(orderMapper.orderToDto(orderService.statusToFinished(orderId)), HttpStatus.OK);
     }
 
     @PostMapping("/changeState/paid")
     public ResponseEntity<OrderResponseDto> changeStatePaid(@RequestParam Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertNotFoundException, InsufficientFundException, CustomerNotFoundException {
 
-        return new ResponseEntity<>(orderMapper.orderToDto(orderService.statusToPaid(orderId)),HttpStatus.OK);
+        return new ResponseEntity<>(orderMapper.orderToDto(orderService.statusToPaid(orderId)), HttpStatus.OK);
     }
 }

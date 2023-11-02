@@ -1,7 +1,6 @@
 package com.example.maktabproject.repository;
 
 import com.example.maktabproject.model.Expert;
-import com.example.maktabproject.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

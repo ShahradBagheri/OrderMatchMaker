@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class CustomerNotFoundException extends Exception{
+public class CustomerNotFoundException extends Exception {
 
     public CustomerNotFoundException() {
     }

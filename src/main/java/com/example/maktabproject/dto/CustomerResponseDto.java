@@ -8,5 +8,5 @@ public record CustomerResponseDto(Long id,
                                   String firstname,
                                   String lastname,
                                   String email,
-                                  Role role){
+                                  Role role) {
 }

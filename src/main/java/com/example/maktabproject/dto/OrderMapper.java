@@ -26,7 +26,7 @@ public class OrderMapper {
                 .build();
     }
 
-    public OrderResponseDto orderToDto(Order order){
+    public OrderResponseDto orderToDto(Order order) {
         return OrderResponseDto.builder()
                 .id(order.getId())
                 .subServiceId(order.getSubService().getId())
