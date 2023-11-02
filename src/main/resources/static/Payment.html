@@ -11,16 +11,29 @@
 </head>
 <body>
 <div class="d-flex flex-column gap-3 w-50 align-items-center justify-content-center">
+
+    <div class="input-group mb-3 align-middle">
+        <input type="text" class="form-control" placeholder="Customer Id" id="customer-id" aria-label="Username"
+               aria-describedby="basic-addon1">
+    </div>
+
     <div class="input-group mb-3 align-middle">
         <input type="text" class="form-control" placeholder="Card Number" id="card-number" aria-label="Username"
                aria-describedby="basic-addon1">
     </div>
+
     <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="CVV2" id="cvv2" aria-label="Username"
                aria-describedby="basic-addon1">
     </div>
+
     <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Second Password" id="second-password" aria-label="Username"
+               aria-describedby="basic-addon1">
+    </div>
+
+    <div class="input-group mb-3 align-middle">
+        <input type="text" class="form-control" placeholder="Amount" id="amount" aria-label="Username"
                aria-describedby="basic-addon1">
     </div>
     <div>
@@ -33,14 +46,18 @@
 <script>
     function myFunction() {
 
+        let customerId = $("customer-id").val();
         let creditCardNumber = $("#card-number").val();
         let cvv2 = $("#cvv2").val();
         let secondPassword = $("#second-password").val();
+        let amount = $("amount").val();
 
         const obj = {
+            customerId,
             creditCardNumber,
             cvv2,
-            secondPassword
+            secondPassword,
+            amount
         };
         userAction(obj)
     }
