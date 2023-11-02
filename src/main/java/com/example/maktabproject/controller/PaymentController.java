@@ -6,6 +6,7 @@ import com.example.maktabproject.exception.UserNotFoundException;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.service.Impl.UserServiceImpl;
 import com.wf.captcha.SpecCaptcha;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +25,10 @@ public class PaymentController {
     private final UserServiceImpl userService;
 
     @PostMapping("/submit")
-    public String payment(@RequestBody PaymentRequestDto paymentRequestDto) throws InvalidCaptchaException, UserNotFoundException {
+    public String payment(@RequestBody @Valid PaymentRequestDto paymentRequestDto) throws InvalidCaptchaException, UserNotFoundException {
 
-        String captchaText = captchaMap.remove(paymentRequestDto.captchaId());
-        if(! paymentRequestDto.captcha().equals(captchaText))
+        String captchaText = captchaMap.get(paymentRequestDto.captchaId());
+        if(! paymentRequestDto.captcha().toUpperCase().equals(captchaText))
             throw new  InvalidCaptchaException();
 
         User user = userService.findById(paymentRequestDto.userId());
@@ -41,7 +42,7 @@ public class PaymentController {
 
         SpecCaptcha captcha = new SpecCaptcha(130,48);
         int id = counter.incrementAndGet();
-        captchaMap.put(id, captcha.text());
+        captchaMap.put(id, captcha.text().toUpperCase());
 
         return new Captcha(id,captcha.toBase64());
     }

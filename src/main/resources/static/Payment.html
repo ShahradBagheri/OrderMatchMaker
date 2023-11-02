@@ -13,7 +13,7 @@
 <div class="d-flex flex-column gap-3 w-50 align-items-center justify-content-center">
 
     <div class="input-group mb-3 align-middle">
-        <input type="text" class="form-control" placeholder="Customer Id" id="customer-id" aria-label="Username"
+        <input type="text" class="form-control" placeholder="User Id" id="user-id" aria-label="Username"
                aria-describedby="basic-addon1">
     </div>
 
@@ -39,7 +39,7 @@
 
     <div class="input-group mb-3 align-middle">
         <img alt="Captcha" id="captchaImage"/>
-        <input type="text" class="form-control" placeholder="Amount" id="captcha-answer" aria-label="Username"
+        <input type="text" class="form-control" placeholder="captcha" id="captcha-answer" aria-label="Username"
                aria-describedby="basic-addon1">
         <input type="hidden", id="captcha-id" name="captcha-id">
     </div>
@@ -68,23 +68,27 @@
 
     function myFunction() {
 
-        let customerId = $("customer-id").val();
-        let creditCardNumber = $("#card-number").val();
-        let cvv2 = $("#cvv2").val();
+        let captchaId = $("#captcha-id").val();
+        let captcha = $("#captcha-answer").val();
+        let userId = $("#user-id").val();
+        let cardNumber = $("#card-number").val();
+        let CVV2 = $("#cvv2").val();
         let secondPassword = $("#second-password").val();
-        let amount = $("amount").val();
+        let amount = $("#amount").val();
 
         const obj = {
-            customerId,
-            creditCardNumber,
-            cvv2,
+            captchaId,
+            captcha,
+            userId,
+            cardNumber,
+            CVV2,
             secondPassword,
             amount
         };
         userAction(obj)
     }
     const userAction = async (formData) => {
-        const response = await fetch('http://localhost:8080/api/v1/order/paymentPage', {
+        const response = await fetch('http://localhost:8080/payment/submit', {
             method: 'POST',
             body: JSON.stringify(formData), // string or object
             headers: {

@@ -3,7 +3,9 @@ package com.example.maktabproject.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import org.springframework.validation.annotation.Validated;
 
+@Validated
 public record PaymentRequestDto (@NotNull Integer captchaId,
                                  @NotBlank String captcha,
                                  @NotNull Long userId,
