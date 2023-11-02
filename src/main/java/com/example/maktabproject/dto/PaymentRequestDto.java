@@ -1,0 +1,14 @@
+package com.example.maktabproject.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
+public record PaymentRequestDto (@NotNull Integer captchaId,
+                                 @NotBlank String captcha,
+                                 @NotNull Long userId,
+                                 @Pattern(regexp = "^[0-9]{12}$") String cardNumber,
+                                 @Pattern(regexp = "^[0-9]{4}$") String CVV2,
+                                 @Pattern(regexp = "^[0-9]{8}$") String secondPassword,
+                                 @NotNull Double amount){
+}
