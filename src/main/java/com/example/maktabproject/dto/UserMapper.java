@@ -1,6 +1,7 @@
 package com.example.maktabproject.dto;
 
 import com.example.maktabproject.exception.SubServiceNotFoundException;
+import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.service.Impl.SubServiceServiceImpl;
 import lombok.AllArgsConstructor;
@@ -23,12 +24,17 @@ public class UserMapper {
 
     public UserFilterCriteriaDto filterRequestToCriteriaDto(UserFilterRequestDto userFilterRequestDto) throws SubServiceNotFoundException {
 
+        SubService subService = null;
+
+        if (userFilterRequestDto.subServiceId() != null)
+            subService = subServiceService.findById(userFilterRequestDto.subServiceId());
+
         return UserFilterCriteriaDto.builder()
                 .role(userFilterRequestDto.role())
                 .firstname(userFilterRequestDto.firstname())
                 .lastname(userFilterRequestDto.lastname())
                 .email(userFilterRequestDto.email())
-                .subService(subServiceService.findById(userFilterRequestDto.subServiceId()))
+                .subService(subService)
                 .score(userFilterRequestDto.score())
                 .build();
     }
