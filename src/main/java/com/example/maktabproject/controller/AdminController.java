@@ -7,6 +7,7 @@ import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.MainService;
 import com.example.maktabproject.model.SubService;
+import com.example.maktabproject.model.User;
 import com.example.maktabproject.model.enumeration.ExpertStatus;
 import com.example.maktabproject.service.AdminService;
 import com.example.maktabproject.service.Impl.MainServiceServiceImpl;
@@ -30,6 +31,7 @@ public class AdminController {
     private final MainServiceMapper mainServiceMapper;
     private final SubServiceMapper subServiceMapper;
     private final ExpertMapper expertMapper;
+    private final UserMapper userMapper;
 
     @GetMapping("/allMainService")
     public List<MainServiceResponseDto> getMainServices(){
@@ -87,5 +89,12 @@ public class AdminController {
     public ResponseEntity<ExpertResponseDto> approveExpert(@RequestParam Long expertId) throws ExpertNotFoundException {
 
         return new ResponseEntity<>(expertMapper.expertToDto(adminService.updateExpertStatus(expertId, ExpertStatus.APPROVED)),HttpStatus.OK);
+    }
+
+    @PostMapping("/users/filter")
+    public ResponseEntity<List<UserResponseDto>> filterAllUsers(@RequestParam UserFilterRequestDto userFilterRequestDto) throws SubServiceNotFoundException {
+
+        List<User> users = adminService.filterUsers(userMapper.filterRequestToCriteriaDto(userFilterRequestDto));
+        return new ResponseEntity<>(users.stream().map(userMapper::userToDto).toList(),HttpStatus.OK);
     }
 }
