@@ -157,7 +157,7 @@ public class OrderServiceImpl implements OrderService {
         double expertBalance = expert.getUser().getWallet().getCredit();
 
         if (order.getSelectedOffer().getSuggestedPrice() > customerBalance)
-            throw new InsufficientFundException();
+            throw new InsufficientFundException("not enough money");
 
         customer.getUser().getWallet().setCredit(customerBalance - order.getSelectedOffer().getSuggestedPrice());
         expert.getUser().getWallet().setCredit(expertBalance + order.getSelectedOffer().getSuggestedPrice() * 70 / 100);

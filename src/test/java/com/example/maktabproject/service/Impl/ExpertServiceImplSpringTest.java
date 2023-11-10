@@ -32,21 +32,21 @@ class ExpertServiceImplSpringTest {
     @Test
     void validExpertRegisterShouldSave() throws ImageToBigException {
 
-//        byte[] bytes = imageProcessing.imageToBytes("src/main/resources/pictures/Screenshot_20231020_092009.png");
-//
-//        User user = User.builder()
-//                .firstname("shahrad")
-//                .lastname("bagheri")
-//                .email("expertShouldSave@gmaill.com")
-//                .password("qweasd123")
-//                .build();
-//        Expert expert = Expert.builder()
-//                .user(user)
-//                .imageData(bytes)
-//                .build();
-//
-//        expert = expertService.register(expert);
-//        assertThat(expert.getId()).isNotNull();
+        byte[] bytes = imageProcessing.imageToBytes("src/main/resources/pictures/Screenshot_20231020_092009.png");
+
+        User user = User.builder()
+                .firstname("shahrad")
+                .lastname("bagheri")
+                .email("expertShouldSave@gmaill.com")
+                .password("qweasd123")
+                .build();
+        Expert expert = Expert.builder()
+                .user(user)
+                .imageData(bytes)
+                .build();
+
+        expert = expertService.register(expert);
+        assertThat(expert.getId()).isNotNull();
     }
 
     @Test
