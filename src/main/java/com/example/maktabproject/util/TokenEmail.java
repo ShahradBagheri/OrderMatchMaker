@@ -33,7 +33,7 @@ public class TokenEmail {
 
         String recipientAddress = user.getEmail();
         String subject = "Registration Confirmation";
-        String confirmationUrl = "http://localhost:8080" + "/verify?token=" + token;
+        String confirmationUrl = "http://localhost:8080" + "/user/verify?token=" + token;
         String message = "click this";
 
         SimpleMailMessage email = new SimpleMailMessage();
