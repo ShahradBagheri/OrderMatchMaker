@@ -26,17 +26,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer register(Customer customer) {
 
-        try {
             if(customer.getId() == null){
                 String password = customer.getUser().getPassword();
                 customer.getUser().setPassword(bCryptPasswordEncoder.encode(password));
             }
 
             return customerRepository.save(customer);
-        } catch (ConstraintViolationException | DataAccessException e) {
-            log.error(e.getMessage());
-            return null;
-        }
     }
 
     @Override

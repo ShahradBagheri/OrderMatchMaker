@@ -26,12 +26,7 @@ public class SubServiceServiceImpl implements SubServiceService {
     @Override
     public SubService register(SubService subService) {
 
-        try {
             return subServiceRepository.save(subService);
-        } catch (ConstraintViolationException | DataAccessException e) {
-            log.error(e.getMessage());
-            return null;
-        }
     }
 
     @Override

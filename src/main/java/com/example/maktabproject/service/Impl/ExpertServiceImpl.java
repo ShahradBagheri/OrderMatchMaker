@@ -27,9 +27,6 @@ public class ExpertServiceImpl implements ExpertService {
     @Override
     @Transactional
     public Expert register(Expert expert) {
-
-        try {
-
             if(expert.getId() == null){
                 String password = expert.getUser().getPassword();
                 expert.getUser().setPassword(bCryptPasswordEncoder.encode(password));
@@ -38,10 +35,6 @@ public class ExpertServiceImpl implements ExpertService {
             if (expert.getScore() < 0)
                 expert.setExpertStatus(ExpertStatus.INACTIVE);
             return expertRepository.save(expert);
-        } catch (ConstraintViolationException | DataAccessException e) {
-            log.error(e.getMessage());
-            return null;
-        }
     }
 
     @Override

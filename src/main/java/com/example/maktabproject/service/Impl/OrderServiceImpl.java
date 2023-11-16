@@ -35,7 +35,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Order register(Order order) throws InvalidPriceException, InvalidTimeException {
-        try {
 
             if (order.getOrderState() == OrderState.WAITING_FOR_SUGGESTIONS) {
                 if (priceValidation(order))
@@ -47,10 +46,6 @@ public class OrderServiceImpl implements OrderService {
             } else
                 return orderRepository.save(order);
 
-        } catch (ConstraintViolationException | DataAccessException e) {
-            log.error(e.getMessage());
-            return null;
-        }
     }
 
     @Override
@@ -99,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
             order.setSelectedOffer(offer);
             return register(order);
         }
-        throw new ExpertHasNoOfferForOfferException();
+        throw new ExpertHasNoOfferForOfferException("expert has no offer for offer");
     }
 
     @Override

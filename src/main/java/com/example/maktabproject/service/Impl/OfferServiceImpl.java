@@ -29,7 +29,6 @@ public class OfferServiceImpl implements OfferService {
     @Override
     public Offer register(Offer offer) {
 
-        try {
             if(!offer.getExpert().getSubServices().contains(offer.getOrder().getSubService()))
                 throw new NotExpertsSubServiceException("this is not experts SubService!");
 
@@ -47,10 +46,6 @@ public class OfferServiceImpl implements OfferService {
                 } else
                     throw new InvalidTimeException("invalid time!");
             throw new InvalidPriceException("invalid price!");
-        } catch (ConstraintViolationException | DataAccessException e) {
-            log.error(e.getMessage());
-            return null;
-        }
     }
 
     @Override

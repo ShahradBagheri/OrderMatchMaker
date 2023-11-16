@@ -34,12 +34,7 @@ public class RatingServiceImpl implements RatingService {
         expert.setScore(expert.getScore() + rating.getScore());
 
         expertService.register(expert);
-        try {
             return ratingRepository.save(rating);
-        } catch (ConstraintViolationException | DataAccessException e) {
-            log.error(e.getMessage());
-            return null;
-        }
     }
 
     @Override
