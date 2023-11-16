@@ -10,6 +10,7 @@ import com.example.maktabproject.repository.OfferRepository;
 import com.example.maktabproject.repository.OrderRepository;
 import com.example.maktabproject.service.ExpertService;
 import com.example.maktabproject.service.OrderService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ public class OrderServiceImpl implements OrderService {
     private final CustomerServiceImpl customerService;
 
     @Override
+    @Transactional
     public Order register(Order order) throws InvalidPriceException, InvalidTimeException {
         try {
 
@@ -51,12 +53,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public void delete(Order order) {
 
         orderRepository.delete(order);
     }
 
     @Override
+    @Transactional
     public Order findById(Long id) throws OrderNotFoundException {
 
         return orderRepository.findById(id).orElseThrow(
@@ -65,12 +69,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public List<Order> findAll() {
 
         return orderRepository.findAll();
     }
 
     @Override
+    @Transactional
     public List<Order> findOrdersForExpert(Long expertId) throws ExpertNotFoundException {
 
         Expert expert = expertService.findById(expertId);
@@ -78,6 +84,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public Order choseOffer(Long offerId, Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertHasNoOfferForOfferException, OfferNotFoundException {
 
         Offer offer = offerRepository.findById(offerId).orElseThrow(
