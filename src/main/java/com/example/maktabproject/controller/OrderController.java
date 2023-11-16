@@ -4,10 +4,12 @@ import com.example.maktabproject.dto.OrderMapper;
 import com.example.maktabproject.dto.OrderResponseDto;
 import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.Order;
+import com.example.maktabproject.service.Impl.ExpertServiceImpl;
 import com.example.maktabproject.service.Impl.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,9 +21,13 @@ public class OrderController {
 
     private final OrderServiceImpl orderService;
     private final OrderMapper orderMapper;
+    private final ExpertServiceImpl expertService;
 
     @GetMapping("/findForExpert")
-    public ResponseEntity<List<OrderResponseDto>> findOrderForExpert(@RequestParam Long expertId) throws ExpertNotFoundException {
+    public ResponseEntity<List<OrderResponseDto>> findOrderForExpert() throws ExpertNotFoundException {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Long expertId = expertService.findByUsername(username).getId();
 
         List<Order> ordersForExpert = orderService.findOrdersForExpert(expertId);
         List<OrderResponseDto> orderListDto = ordersForExpert.stream().map(orderMapper::orderToDto).toList();
