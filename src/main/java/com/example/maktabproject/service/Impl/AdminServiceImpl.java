@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class AdminServiceImpl implements AdminService {
     private final ExpertRepository expertRepository;
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
+    private final CustomerServiceImpl customerService;
 
     @Override
     public Expert addExpertSubService(Long expertId, Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
@@ -159,5 +161,15 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Long expertOrdersFinished(Long expertId) {
         return orderRepository.countOrderBySelectedOffer_Expert_IdAndOrderStateOrOrderState(expertId, OrderState.FINISHED, OrderState.PAID);
+    }
+
+    @Override
+    public LocalDateTime customerSignedUpTime(Long customerId) {
+        return customerService.findById(customerId).getUser().getRegistrationDate();
+    }
+
+    @Override
+    public LocalDateTime expertSignedUpTime(Long expertId) {
+        return expertService.findById(expertId).getUser().getRegistrationDate();
     }
 }

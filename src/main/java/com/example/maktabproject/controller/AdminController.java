@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -130,4 +131,17 @@ public class AdminController {
         return new ResponseEntity<>(adminService.expertOrdersFinished(expertId), HttpStatus.OK);
     }
 
+    @GetMapping("/customer/registrationDate")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<LocalDateTime> customerRegistrationDate(@RequestParam Long customerId){
+
+        return new ResponseEntity<>(adminService.customerSignedUpTime(customerId), HttpStatus.OK);
+    }
+
+    @GetMapping("/expert/registrationDate")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<LocalDateTime> expertRegistrationDate(@RequestParam Long expertId){
+
+        return new ResponseEntity<>(adminService.expertSignedUpTime(expertId), HttpStatus.OK);
+    }
 }

@@ -11,6 +11,7 @@ import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.model.enumeration.ExpertStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AdminService {
@@ -32,4 +33,8 @@ public interface AdminService {
     Long customerOrderSubmits(Long customerId);
 
     Long expertOrdersFinished(Long expertId);
+
+    LocalDateTime customerSignedUpTime(Long customerId);
+
+    LocalDateTime expertSignedUpTime(Long expertId);
 }
