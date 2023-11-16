@@ -2,6 +2,7 @@ package com.example.maktabproject.controller;
 
 import com.example.maktabproject.dto.*;
 import com.example.maktabproject.exception.*;
+import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.enumeration.OrderState;
 import com.example.maktabproject.service.Impl.CustomerServiceImpl;
@@ -39,10 +40,16 @@ public class CustomerController {
     }
 
     @PostMapping("/order/submit")
+    @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<OrderResponseDto> submitOrder(@RequestBody @Valid OrderRequestDto orderRequestDto) throws CustomerNotFoundException, SubServiceNotFoundException, InvalidPriceException, InvalidTimeException {
 
         Order order = orderMapper.dtoToOrder(orderRequestDto);
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Customer customer = customerService.findByUsername(username);
+
         order.setOrderState(OrderState.WAITING_FOR_SUGGESTIONS);
+        order.setCustomer(customer);
         order = orderService.register(order);
         return new ResponseEntity<>(orderMapper.orderToDto(order),HttpStatus.OK);
     }
