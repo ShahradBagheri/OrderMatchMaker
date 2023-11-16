@@ -25,10 +25,10 @@ public class RatingServiceImpl implements RatingService {
     private final ExpertService expertService;
 
     @Override
-    public Rating register(Rating rating) throws ExpertNotFoundException, InvalidScoreException {
+    public Rating register(Rating rating) {
 
         if (rating.getScore() > 5 || rating.getScore() < 0)
-            throw new InvalidScoreException();
+            throw new InvalidScoreException("invalid score!");
 
         Expert expert = expertService.findById(rating.getExpert().getId());
         expert.setScore(expert.getScore() + rating.getScore());
@@ -52,7 +52,7 @@ public class RatingServiceImpl implements RatingService {
     public Rating findById(Long id) throws RatingNotFoundException {
 
         return ratingRepository.findById(id).orElseThrow(
-                RatingNotFoundException::new
+                () -> new RatingNotFoundException("rating not found!")
         );
     }
 

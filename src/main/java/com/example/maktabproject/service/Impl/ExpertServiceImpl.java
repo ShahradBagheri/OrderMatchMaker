@@ -53,7 +53,7 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Override
     @Transactional
-    public Expert findById(Long id) throws ExpertNotFoundException {
+    public Expert findById(Long id){
 
         return expertRepository.findById(id).orElseThrow(
                 () -> new ExpertNotFoundException("expert not found")
@@ -77,7 +77,7 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Override
     @Transactional
-    public Expert findByUser(Long userId) throws ExpertNotFoundException {
+    public Expert findByUser(Long userId){
 
         return expertRepository.findByUser_Id(userId).orElseThrow(
                 () -> new ExpertNotFoundException("expert not found")
@@ -85,7 +85,7 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public Expert changePassword(Long expertId, String password) throws ExpertNotFoundException {
+    public Expert changePassword(Long expertId, String password){
 
         Expert expert = findById(expertId);
         expert.getUser().setPassword(bCryptPasswordEncoder.encode(password));

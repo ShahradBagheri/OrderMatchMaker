@@ -34,7 +34,7 @@ public class AdminServiceImpl implements AdminService {
     private final CustomerServiceImpl customerService;
 
     @Override
-    public Expert addExpertSubService(Long expertId, Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
+    public Expert addExpertSubService(Long expertId, Long subServiceId){
 
         Expert expert = expertService.findById(expertId);
         SubService subService = subServiceService.findById(subServiceId);
@@ -45,7 +45,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Expert removeExpertSubService(Long expertId, Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
+    public Expert removeExpertSubService(Long expertId, Long subServiceId){
 
         Expert expert = expertService.findById(expertId);
         SubService subService = subServiceService.findById(subServiceId);
@@ -57,7 +57,7 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public Expert updateExpertStatus(Long expertId, ExpertStatus expertStatus) throws ExpertNotFoundException {
+    public Expert updateExpertStatus(Long expertId, ExpertStatus expertStatus){
 
         Expert expert = expertService.findById(expertId);
         expert.setExpertStatus(expertStatus);
@@ -65,7 +65,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public SubService editSubServicePrice(Long subServiceId, Double newBasePrice) throws SubServiceNotFoundException {
+    public SubService editSubServicePrice(Long subServiceId, Double newBasePrice){
 
         SubService subService = subServiceService.findById(subServiceId);
         subService.setBasePrice(newBasePrice);
@@ -74,7 +74,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public SubService editSubServiceComment(Long subServiceId, String newComment) throws SubServiceNotFoundException {
+    public SubService editSubServiceComment(Long subServiceId, String newComment){
 
         SubService subService = subServiceService.findById(subServiceId);
         subService.setComment(newComment);

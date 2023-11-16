@@ -30,16 +30,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(String email, String password) throws IncorrectCredentialsException {
+    public User login(String email, String password){
         return userRepository.findByEmail(email).orElseThrow(
                 () -> new IncorrectCredentialsException("incorrect email or password")
         );
     }
 
     @Override
-    public User findById(Long id) throws UserNotFoundException {
+    public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(
-                UserNotFoundException::new
+                () -> new UserNotFoundException("user not found")
         );
     }
 

@@ -42,8 +42,8 @@ public class OrderServiceImpl implements OrderService {
                     if (dateValidation(order.getStartingDate()))
                         return orderRepository.save(order);
                     else
-                        throw new InvalidTimeException();
-                throw new InvalidPriceException();
+                        throw new InvalidTimeException("invalid time!");
+                throw new InvalidPriceException("invalid price!");
             } else
                 return orderRepository.save(order);
 
@@ -62,10 +62,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order findById(Long id) throws OrderNotFoundException {
+    public Order findById(Long id) {
 
         return orderRepository.findById(id).orElseThrow(
-                OrderNotFoundException::new
+                () -> new OrderNotFoundException("order not found!")
         );
     }
 
@@ -78,7 +78,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public List<Order> findOrdersForExpert(Long expertId) throws ExpertNotFoundException {
+    public List<Order> findOrdersForExpert(Long expertId) {
 
         Expert expert = expertService.findById(expertId);
         return orderRepository.findBySubServiceInAndOrderStateOrOrderState(expert.getSubServices(), OrderState.WAITING_FOR_SUGGESTIONS, OrderState.WAITING_TO_SELECT_SUGGESTION);
@@ -86,10 +86,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order choseOffer(Long offerId, Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertHasNoOfferForOfferException, OfferNotFoundException {
+    public Order choseOffer(Long offerId, Long orderId) {
 
         Offer offer = offerRepository.findById(offerId).orElseThrow(
-                OfferNotFoundException::new
+                () -> new OfferNotFoundException("offer not found")
         );
 
         Order order = findById(orderId);
@@ -116,18 +116,20 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order statusToStarted(Long orderId) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException, OrderNotFoundException {
+    @Transactional
+    public Order statusToStarted(Long orderId) {
 
         Order order = findById(orderId);
         if (LocalDateTime.now().isAfter(offerRepository.findByExpertAndOrder(order.getSelectedOffer().getExpert(), order).getStartingDate())) {
             order.setOrderState(OrderState.STARTED);
             return register(order);
         }
-        throw new NotTheCorrectTimeToChangeStatusException();
+        throw new NotTheCorrectTimeToChangeStatusException("not the correct time to change status!");
     }
 
     @Override
-    public Order statusToFinished(Long orderId) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException, OrderNotFoundException {
+    @Transactional
+    public Order statusToFinished(Long orderId){
 
         Order order = findById(orderId);
         if (order.getOrderState() == OrderState.STARTED) {
@@ -144,11 +146,12 @@ public class OrderServiceImpl implements OrderService {
             }
             return register(order);
         }
-        throw new NotTheCorrectTimeToChangeStatusException();
+        throw new NotTheCorrectTimeToChangeStatusException("not the correct time to change status!");
     }
 
     @Override
-    public Order statusToWaitingToSelect(Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException {
+    @Transactional
+    public Order statusToWaitingToSelect(Long orderId) {
 
         Order order = findById(orderId);
         order.setOrderState(OrderState.WAITING_TO_SELECT_SUGGESTION);
@@ -156,7 +159,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order statusToPaid(Long orderId) throws OrderNotFoundException, InsufficientFundException, CustomerNotFoundException, ExpertNotFoundException, InvalidPriceException, InvalidTimeException {
+    @Transactional
+    public Order statusToPaid(Long orderId) {
 
         Order order = findById(orderId);
         Customer customer = customerService.findById(order.getCustomer().getId());
@@ -177,12 +181,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public List<Order> filterOrderCustomer(Long customerId, UserOrderFilterRequestDto userOrderFilterRequestDto) {
+
+        if(userOrderFilterRequestDto.orderState() == null)
+            return orderRepository.findAllByCustomer_Id(customerId);
+
         return orderRepository.findAllByCustomer_IdAndOrderState(customerId,userOrderFilterRequestDto.orderState());
     }
 
     @Override
+    @Transactional
     public List<Order> filterOrderExpert(Long expertId, UserOrderFilterRequestDto userOrderFilterRequestDto) {
+
+        if(userOrderFilterRequestDto.orderState() == null)
+            return orderRepository.findAllBySelectedOffer_Expert_Id(expertId);
+
         return orderRepository.findAllBySelectedOffer_Expert_IdAndOrderState(expertId,userOrderFilterRequestDto.orderState());
     }
 }

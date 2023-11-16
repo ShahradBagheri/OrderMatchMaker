@@ -41,10 +41,10 @@ public class SubServiceServiceImpl implements SubServiceService {
     }
 
     @Override
-    public SubService findById(Long id) throws SubServiceNotFoundException {
+    public SubService findById(Long id){
 
         return subServiceRepository.findById(id).orElseThrow(
-                SubServiceNotFoundException::new
+                () -> new SubServiceNotFoundException("subService not found!")
         );
     }
 
@@ -55,12 +55,12 @@ public class SubServiceServiceImpl implements SubServiceService {
     }
 
     @Override
-    public SubService addMainService(Long subServiceId, Long mainServiceId) throws SubServiceNotFoundException, SubServiceTwoMainServiceException, MainServiceNotFoundException {
+    public SubService addMainService(Long subServiceId, Long mainServiceId){
 
         SubService subService = findById(subServiceId);
 
         if (subService.getMainService() != null)
-            throw new SubServiceTwoMainServiceException();
+            throw new SubServiceTwoMainServiceException("subService cant have two mainServices!");
 
         MainService mainService = mainServiceService.findById(mainServiceId);
 
@@ -69,19 +69,19 @@ public class SubServiceServiceImpl implements SubServiceService {
     }
 
     @Override
-    public SubService removeMainService(Long subServiceId) throws SubServiceNotFoundException, MainServiceNotFoundException {
+    public SubService removeMainService(Long subServiceId){
 
         SubService subService = findById(subServiceId);
 
         if (subService.getMainService() == null)
-            throw new MainServiceNotFoundException();
+            throw new MainServiceNotFoundException("mainService not found!");
 
         subService.setMainService(null);
         return register(subService);
     }
 
     @Override
-    public List<SubService> findByMainService(Long mainServiceId) throws MainServiceNotFoundException {
+    public List<SubService> findByMainService(Long mainServiceId){
 
         MainService mainService = mainServiceService.findById(mainServiceId);
 

@@ -46,7 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer findById(Long id) throws CustomerNotFoundException {
+    public Customer findById(Long id){
 
         return customerRepository.findById(id).orElseThrow(
                 () -> new CustomerNotFoundException("customer not found")
@@ -67,7 +67,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer findByUser(Long userId) throws CustomerNotFoundException {
+    public Customer findByUser(Long userId){
 
         return customerRepository.findByUser_Id(userId).orElseThrow(
                 () -> new CustomerNotFoundException("customer not found")
@@ -75,7 +75,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer changePassword(Long customerId, String password) throws CustomerNotFoundException {
+    public Customer changePassword(Long customerId, String password){
 
         Customer customer = findById(customerId);
         customer.getUser().setPassword(bCryptPasswordEncoder.encode(password));

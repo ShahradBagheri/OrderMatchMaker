@@ -37,10 +37,10 @@ public class MainServiceServiceImpl implements MainServiceService {
     }
 
     @Override
-    public MainService findById(Long id) throws MainServiceNotFoundException {
+    public MainService findById(Long id) {
 
         return mainServiceRepository.findById(id).orElseThrow(
-                MainServiceNotFoundException::new
+                () -> new MainServiceNotFoundException("Main service not found")
         );
     }
 

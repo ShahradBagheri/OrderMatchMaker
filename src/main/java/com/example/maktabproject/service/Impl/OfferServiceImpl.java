@@ -54,10 +54,10 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public Offer findById(Long id) throws OfferNotFoundException {
+    public Offer findById(Long id){
 
         return offerRepository.findById(id).orElseThrow(
-                OfferNotFoundException::new
+                () -> new OfferNotFoundException("offer not found!")
         );
     }
 
@@ -69,7 +69,7 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     @Transactional
-    public List<Offer> findByCustomerPriceOrder(Long customerId) throws CustomerNotFoundException {
+    public List<Offer> findByCustomerPriceOrder(Long customerId){
 
         Customer customer = customerService.findById(customerId);
         return offerRepository.findByOrder_CustomerOrderBySuggestedPrice(customer);
@@ -77,7 +77,7 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     @Transactional
-    public List<Offer> findByCustomerScoreOrder(Long customerId) throws CustomerNotFoundException {
+    public List<Offer> findByCustomerScoreOrder(Long customerId){
 
         Customer customer = customerService.findById(customerId);
         return offerRepository.findByOrder_CustomerOrderByExpert_Score(customer);
