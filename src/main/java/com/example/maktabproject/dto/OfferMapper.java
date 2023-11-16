@@ -28,7 +28,6 @@ public class OfferMapper {
 
     public Offer dtoToOffer(OfferRequestDto offerRequestDto) throws ExpertNotFoundException, OrderNotFoundException {
         return Offer.builder()
-                .expert(expertService.findById(offerRequestDto.expertId()))
                 .order(orderService.findById(offerRequestDto.orderId()))
                 .startingDate(offerRequestDto.startingDate())
                 .completionDate(offerRequestDto.completionDate())
