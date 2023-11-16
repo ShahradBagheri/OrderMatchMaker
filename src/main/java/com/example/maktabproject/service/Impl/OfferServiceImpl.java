@@ -27,7 +27,7 @@ public class OfferServiceImpl implements OfferService {
     private final OrderServiceImpl orderService;
 
     @Override
-    public Offer register(Offer offer) throws InvalidTimeException, InvalidPriceException, OrderNotFoundException {
+    public Offer register(Offer offer) {
 
         try {
             if (priceValidation(offer))
@@ -39,8 +39,8 @@ public class OfferServiceImpl implements OfferService {
 
                     return offer;
                 } else
-                    throw new InvalidTimeException();
-            throw new InvalidPriceException();
+                    throw new InvalidTimeException("invalid time!");
+            throw new InvalidPriceException("invalid price!");
         } catch (ConstraintViolationException | DataAccessException e) {
             log.error(e.getMessage());
             return null;
