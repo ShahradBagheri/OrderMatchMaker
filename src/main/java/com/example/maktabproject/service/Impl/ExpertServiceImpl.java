@@ -5,6 +5,7 @@ import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.enumeration.ExpertStatus;
 import com.example.maktabproject.repository.ExpertRepository;
 import com.example.maktabproject.service.ExpertService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ public class ExpertServiceImpl implements ExpertService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
+    @Transactional
     public Expert register(Expert expert) {
 
         try {
@@ -43,12 +45,14 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
+    @Transactional
     public void delete(Expert expert) {
 
         expertRepository.delete(expert);
     }
 
     @Override
+    @Transactional
     public Expert findById(Long id) throws ExpertNotFoundException {
 
         return expertRepository.findById(id).orElseThrow(
@@ -57,6 +61,7 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
+    @Transactional
     public Expert findByUsername(String username) {
         return expertRepository.findByUser_Username(username).orElseThrow(
                 () -> new ExpertNotFoundException("expert not found")
@@ -64,12 +69,14 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
+    @Transactional
     public List<Expert> findAll() {
 
         return expertRepository.findAll();
     }
 
     @Override
+    @Transactional
     public Expert findByUser(Long userId) throws ExpertNotFoundException {
 
         return expertRepository.findByUser_Id(userId).orElseThrow(
@@ -81,7 +88,7 @@ public class ExpertServiceImpl implements ExpertService {
     public Expert changePassword(Long expertId, String password) throws ExpertNotFoundException {
 
         Expert expert = findById(expertId);
-        expert.getUser().setPassword(password);
+        expert.getUser().setPassword(bCryptPasswordEncoder.encode(password));
         return register(expert);
     }
 

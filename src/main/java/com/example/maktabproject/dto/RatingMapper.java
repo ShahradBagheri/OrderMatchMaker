@@ -20,7 +20,6 @@ public class RatingMapper {
     public Rating dtoToRating(RatingRequestDto ratingRequestDto) throws ExpertNotFoundException, CustomerNotFoundException {
 
         Expert expert = expertService.findById(ratingRequestDto.expertId());
-        Customer customer = customerService.findById(ratingRequestDto.customerId());
 
         String comment = "";
 
@@ -29,7 +28,6 @@ public class RatingMapper {
 
         return Rating.builder()
                 .expert(expert)
-                .customer(customer)
                 .score(ratingRequestDto.score())
                 .comment(comment)
                 .build();

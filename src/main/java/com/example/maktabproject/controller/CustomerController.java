@@ -4,6 +4,7 @@ import com.example.maktabproject.dto.*;
 import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Order;
+import com.example.maktabproject.model.Rating;
 import com.example.maktabproject.model.enumeration.OrderState;
 import com.example.maktabproject.service.Impl.CustomerServiceImpl;
 import com.example.maktabproject.service.Impl.OrderServiceImpl;
@@ -55,8 +56,14 @@ public class CustomerController {
     }
 
     @PostMapping("/rating/submit")
+    @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<RatingResponseDto> submitRating(@RequestBody @Valid RatingRequestDto ratingRequestDto) throws ExpertNotFoundException, CustomerNotFoundException, InvalidScoreException {
 
-        return new ResponseEntity<>(ratingMapper.ratingToDto(ratingService.register(ratingMapper.dtoToRating(ratingRequestDto))),HttpStatus.OK);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Customer customer = customerService.findByUsername(username);
+
+        Rating rating = ratingMapper.dtoToRating(ratingRequestDto);
+        rating.setCustomer(customer);
+        return new ResponseEntity<>(ratingMapper.ratingToDto(ratingService.register(rating)),HttpStatus.OK);
     }
 }
