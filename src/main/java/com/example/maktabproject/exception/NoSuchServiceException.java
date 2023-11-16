@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class NoSuchServiceException extends Exception {
+public class NoSuchServiceException extends RuntimeException {
 
     public NoSuchServiceException() {
         super();

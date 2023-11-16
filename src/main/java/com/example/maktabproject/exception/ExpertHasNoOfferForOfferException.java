@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class ExpertHasNoOfferForOfferException extends Exception {
+public class ExpertHasNoOfferForOfferException extends RuntimeException {
 
     public ExpertHasNoOfferForOfferException() {
     }

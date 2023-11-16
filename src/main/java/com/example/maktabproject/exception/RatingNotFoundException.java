@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class RatingNotFoundException extends Exception {
+public class RatingNotFoundException extends RuntimeException {
 
     public RatingNotFoundException() {
     }

@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class IncorrectCredentialsException extends Exception {
+public class IncorrectCredentialsException extends RuntimeException {
 
     public IncorrectCredentialsException() {
         super();

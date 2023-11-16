@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class InvalidCaptchaException extends Exception {
+public class InvalidCaptchaException extends RuntimeException {
 
     public InvalidCaptchaException() {
     }

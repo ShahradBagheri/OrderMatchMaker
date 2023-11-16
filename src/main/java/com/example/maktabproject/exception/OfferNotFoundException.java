@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class OfferNotFoundException extends Exception {
+public class OfferNotFoundException extends RuntimeException {
 
     public OfferNotFoundException() {
     }

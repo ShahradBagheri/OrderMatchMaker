@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class DuplicateServiceException extends Exception {
+public class DuplicateServiceException extends RuntimeException {
 
     public DuplicateServiceException() {
         super();

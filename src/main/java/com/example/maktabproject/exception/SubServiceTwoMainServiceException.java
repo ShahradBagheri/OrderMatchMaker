@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class SubServiceTwoMainServiceException extends Exception {
+public class SubServiceTwoMainServiceException extends RuntimeException {
 
     public SubServiceTwoMainServiceException() {
     }
