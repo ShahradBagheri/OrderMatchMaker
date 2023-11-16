@@ -1,9 +1,12 @@
 package com.example.maktabproject.service;
 
+import com.example.maktabproject.dto.OrderFilterCriteriaDto;
+import com.example.maktabproject.dto.OrderFilterRequestDto;
 import com.example.maktabproject.dto.UserFilterCriteriaDto;
 import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.Expert;
+import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.model.enumeration.ExpertStatus;
@@ -23,4 +26,6 @@ public interface AdminService {
     SubService editSubServiceComment(Long subServiceId, String newComment) throws SubServiceNotFoundException;
 
     List<User> filterUsers(UserFilterCriteriaDto userFilterCriteriaDto);
+
+    List<Order> filterOrders(OrderFilterCriteriaDto orderFilterCriteriaDto);
 }

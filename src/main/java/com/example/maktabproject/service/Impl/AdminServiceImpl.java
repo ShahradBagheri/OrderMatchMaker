@@ -1,13 +1,17 @@
 package com.example.maktabproject.service.Impl;
 
+import com.example.maktabproject.dto.OrderFilterCriteriaDto;
+import com.example.maktabproject.dto.OrderFilterRequestDto;
 import com.example.maktabproject.dto.UserFilterCriteriaDto;
 import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.Expert;
+import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.model.enumeration.ExpertStatus;
 import com.example.maktabproject.repository.ExpertRepository;
+import com.example.maktabproject.repository.OrderRepository;
 import com.example.maktabproject.repository.UserRepository;
 import com.example.maktabproject.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +29,7 @@ public class AdminServiceImpl implements AdminService {
     private final ExpertServiceImpl expertService;
     private final ExpertRepository expertRepository;
     private final UserRepository userRepository;
+    private final OrderRepository orderRepository;
 
     @Override
     public Expert addExpertSubService(Long expertId, Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
@@ -115,5 +120,17 @@ public class AdminServiceImpl implements AdminService {
         }
 
         return allUsers;
+    }
+
+    @Override
+    public List<Order> filterOrders(OrderFilterCriteriaDto orderFilterCriteriaDto) {
+
+        Specification<Order> orderSpecification = Specification.where(null);
+
+        if(orderFilterCriteriaDto.customer() != null)
+            orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("customer"), orderFilterCriteriaDto.customer()));
+
+
+        return orderRepository.findAll(orderSpecification);
     }
 }
