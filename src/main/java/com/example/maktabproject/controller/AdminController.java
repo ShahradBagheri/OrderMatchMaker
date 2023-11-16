@@ -14,6 +14,7 @@ import com.example.maktabproject.service.Impl.SubServiceServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class AdminController {
     private final UserMapper userMapper;
 
     @GetMapping("/allMainService")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<MainServiceResponseDto> getMainServices() {
 
         List<MainService> mainServiceList = mainServiceService.findAll();
@@ -39,6 +41,7 @@ public class AdminController {
     }
 
     @PostMapping("/register/mainService")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MainServiceResponseDto> registerMainService(@RequestBody MainServiceRequestDto mainServiceRequestDto) {
 
         MainService mainService = mainServiceService.register(mainServiceMapper.mainServiceDtoToMainService(mainServiceRequestDto));
@@ -46,6 +49,7 @@ public class AdminController {
     }
 
     @PostMapping("/register/subService")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SubServiceResponseDto> registerSubService(@RequestBody SubServiceRequestDto subServiceRequestDto,
                                                                     @RequestParam Long mainServiceId) throws MainServiceNotFoundException {
 
@@ -56,6 +60,7 @@ public class AdminController {
     }
 
     @PostMapping("/subService/editComment")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SubServiceResponseDto> editSubServiceComment(@RequestParam Long subServiceId,
                                                                        @RequestParam String newComment) throws SubServiceNotFoundException {
 
@@ -63,6 +68,7 @@ public class AdminController {
     }
 
     @PostMapping("/subService/editBasePrice")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SubServiceResponseDto> editSubServiceBasePrice(@RequestParam Long subServiceId,
                                                                          @RequestParam Double newBasePrice) throws SubServiceNotFoundException {
 
@@ -70,6 +76,7 @@ public class AdminController {
     }
 
     @PostMapping("/expert/addToSubService")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ExpertResponseDto> addExpertToSubService(@RequestParam Long expertId,
                                                                    @RequestParam Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
 
@@ -77,6 +84,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/expert/removeToSubService")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ExpertResponseDto> removeExpertToSubService(@RequestParam Long expertId,
                                                                       @RequestParam Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
 
@@ -84,12 +92,14 @@ public class AdminController {
     }
 
     @PostMapping("/expert/approveExpert")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ExpertResponseDto> approveExpert(@RequestParam Long expertId) throws ExpertNotFoundException {
 
         return new ResponseEntity<>(expertMapper.expertToDto(adminService.updateExpertStatus(expertId, ExpertStatus.APPROVED)), HttpStatus.OK);
     }
 
     @GetMapping("/users/filter")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserResponseDto>> filterAllUsers(@RequestBody UserFilterRequestDto userFilterRequestDto) throws SubServiceNotFoundException {
 
         List<User> users = adminService.filterUsers(userMapper.filterRequestToCriteriaDto(userFilterRequestDto));
