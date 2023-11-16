@@ -15,6 +15,7 @@ public class CustomerMapper {
                 .firstname(customerRequestDto.firstname())
                 .lastname(customerRequestDto.lastname())
                 .email(customerRequestDto.email())
+                .username(customerRequestDto.username())
                 .password(customerRequestDto.password())
                 .role(Role.CUSTOMER)
                 .wallet(new Wallet())
@@ -31,6 +32,7 @@ public class CustomerMapper {
                 .firstname(customer.getUser().getFirstname())
                 .lastname(customer.getUser().getLastname())
                 .email(customer.getUser().getEmail())
+                .username(customer.getUser().getUsername())
                 .role(customer.getUser().getRole())
                 .build();
     }

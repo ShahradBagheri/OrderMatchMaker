@@ -7,6 +7,7 @@ import lombok.Builder;
 public record ExpertResponseDto(Long id,
                                 String firstname,
                                 String lastname,
+                                String username,
                                 String email,
                                 Role role) {
 }

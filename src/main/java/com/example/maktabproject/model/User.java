@@ -35,6 +35,8 @@ public class User implements UserDetails {
     @Email
     private String email;
 
+    private String username;
+
     @NotNull
     @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d).{8,}$",
             message = "password must be 8 characters minimum and include numbers and letters")
@@ -59,11 +61,6 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
     }
 
     @Override

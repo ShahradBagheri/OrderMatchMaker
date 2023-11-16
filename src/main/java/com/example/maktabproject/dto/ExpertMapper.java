@@ -18,6 +18,7 @@ public class ExpertMapper {
                 .password(expertRequestDto.password())
                 .role(Role.EXPERT)
                 .wallet(new Wallet())
+                .username(expertRequestDto.username())
                 .build();
 
         return Expert.builder()
@@ -32,6 +33,7 @@ public class ExpertMapper {
                 .lastname(expert.getUser().getLastname())
                 .email(expert.getUser().getEmail())
                 .role(expert.getUser().getRole())
+                .username(expert.getUser().getUsername())
                 .build();
     }
 }
