@@ -5,6 +5,7 @@ import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.exception.MainServiceNotFoundException;
 import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.MainService;
+import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.model.enumeration.ExpertStatus;
@@ -31,6 +32,7 @@ public class AdminController {
     private final SubServiceMapper subServiceMapper;
     private final ExpertMapper expertMapper;
     private final UserMapper userMapper;
+    private final OrderMapper orderMapper;
 
     @GetMapping("/allMainService")
     @PreAuthorize("hasRole('ADMIN')")
@@ -104,5 +106,13 @@ public class AdminController {
 
         List<User> users = adminService.filterUsers(userMapper.filterRequestToCriteriaDto(userFilterRequestDto));
         return new ResponseEntity<>(users.stream().map(userMapper::userToDto).toList(), HttpStatus.OK);
+    }
+
+    @GetMapping("/orders/filter")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<OrderResponseDto>> filterAllUsers(@RequestBody OrderFilterRequestDto orderFilterRequestDto) throws SubServiceNotFoundException {
+
+        List<Order> orders = adminService.filterOrders(orderMapper.dtoToCriteria(orderFilterRequestDto));
+        return new ResponseEntity<>(orders.stream().map(orderMapper::orderToDto).toList(), HttpStatus.OK);
     }
 }
