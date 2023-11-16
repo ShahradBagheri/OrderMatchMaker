@@ -177,12 +177,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> filterOrderCustomer(Long customerId, UserOrderFilterRequestDto customerOrderFilterRequestDto) {
-        return orderRepository.findAllByCustomer_IdAndOrderState(customerId,customerOrderFilterRequestDto.orderState());
+    public List<Order> filterOrderCustomer(Long customerId, UserOrderFilterRequestDto userOrderFilterRequestDto) {
+        return orderRepository.findAllByCustomer_IdAndOrderState(customerId,userOrderFilterRequestDto.orderState());
     }
 
     @Override
-    public List<Order> filterOrderExpert(Long expertId, UserOrderFilterRequestDto customerOrderFilterRequestDto) {
-        return orderRepository.findAllBySelectedOffer_Expert_IdAndOrderState(expertId,customerOrderFilterRequestDto.orderState());
+    public List<Order> filterOrderExpert(Long expertId, UserOrderFilterRequestDto userOrderFilterRequestDto) {
+        return orderRepository.findAllBySelectedOffer_Expert_IdAndOrderState(expertId,userOrderFilterRequestDto.orderState());
     }
 }

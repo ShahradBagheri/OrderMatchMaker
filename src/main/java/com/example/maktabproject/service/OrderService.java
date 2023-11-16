@@ -33,7 +33,7 @@ public interface OrderService {
 
     Order statusToPaid(Long orderId) throws OrderNotFoundException, InsufficientFundException, CustomerNotFoundException, ExpertNotFoundException, InvalidPriceException, InvalidTimeException;
 
-    List<Order> filterOrderCustomer(Long customerId, UserOrderFilterRequestDto customerOrderFilterRequestDto);
+    List<Order> filterOrderCustomer(Long customerId, UserOrderFilterRequestDto userOrderFilterRequestDto);
 
-    List<Order> filterOrderExpert(Long expertId, UserOrderFilterRequestDto customerOrderFilterRequestDto);
+    List<Order> filterOrderExpert(Long expertId, UserOrderFilterRequestDto userOrderFilterRequestDto);
 }

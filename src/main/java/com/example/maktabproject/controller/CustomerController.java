@@ -70,12 +70,12 @@ public class CustomerController {
 
     @GetMapping("/filter/order")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<List<OrderResponseDto>> filterOrders(@RequestBody UserOrderFilterRequestDto customerOrderFilterRequest){
+    public ResponseEntity<List<OrderResponseDto>> filterOrders(@RequestBody UserOrderFilterRequestDto userOrderFilterRequestDto){
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Customer customer = customerService.findByUsername(username);
 
-        return new ResponseEntity<>(orderService.filterOrderCustomer(customer.getId(),customerOrderFilterRequest)
+        return new ResponseEntity<>(orderService.filterOrderCustomer(customer.getId(),userOrderFilterRequestDto)
                 .stream()
                 .map(orderMapper::orderToDto)
                 .toList()
