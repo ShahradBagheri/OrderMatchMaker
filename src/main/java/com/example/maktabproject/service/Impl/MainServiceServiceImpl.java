@@ -4,10 +4,8 @@ import com.example.maktabproject.exception.MainServiceNotFoundException;
 import com.example.maktabproject.model.MainService;
 import com.example.maktabproject.repository.MainServiceRepository;
 import com.example.maktabproject.service.MainServiceService;
-import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +19,7 @@ public class MainServiceServiceImpl implements MainServiceService {
 
     @Override
     public MainService register(MainService mainService) {
-            return mainServiceRepository.save(mainService);
+        return mainServiceRepository.save(mainService);
     }
 
     @Override

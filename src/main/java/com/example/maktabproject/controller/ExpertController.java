@@ -46,15 +46,15 @@ public class ExpertController {
 
     @GetMapping("/filter/order")
     @PreAuthorize("hasRole('EXPERT')")
-    public ResponseEntity<List<OrderResponseDto>> filterOrders(@RequestBody UserOrderFilterRequestDto userOrderFilterRequestDto){
+    public ResponseEntity<List<OrderResponseDto>> filterOrders(@RequestBody UserOrderFilterRequestDto userOrderFilterRequestDto) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Expert expert = expertService.findByUsername(username);
 
-        return new ResponseEntity<>(orderService.filterOrderExpert(expert.getId(),userOrderFilterRequestDto)
+        return new ResponseEntity<>(orderService.filterOrderExpert(expert.getId(), userOrderFilterRequestDto)
                 .stream()
                 .map(orderMapper::orderToDto)
                 .toList()
-                ,HttpStatus.OK);
+                , HttpStatus.OK);
     }
 }

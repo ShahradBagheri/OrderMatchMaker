@@ -12,10 +12,8 @@ import com.example.maktabproject.repository.OrderRepository;
 import com.example.maktabproject.service.ExpertService;
 import com.example.maktabproject.service.OrderService;
 import jakarta.transaction.Transactional;
-import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -36,15 +34,15 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Order register(Order order) throws InvalidPriceException, InvalidTimeException {
 
-            if (order.getOrderState() == OrderState.WAITING_FOR_SUGGESTIONS) {
-                if (priceValidation(order))
-                    if (dateValidation(order.getStartingDate()))
-                        return orderRepository.save(order);
-                    else
-                        throw new InvalidTimeException("invalid time!");
-                throw new InvalidPriceException("invalid price!");
-            } else
-                return orderRepository.save(order);
+        if (order.getOrderState() == OrderState.WAITING_FOR_SUGGESTIONS) {
+            if (priceValidation(order))
+                if (dateValidation(order.getStartingDate()))
+                    return orderRepository.save(order);
+                else
+                    throw new InvalidTimeException("invalid time!");
+            throw new InvalidPriceException("invalid price!");
+        } else
+            return orderRepository.save(order);
 
     }
 
@@ -124,7 +122,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order statusToFinished(Long orderId){
+    public Order statusToFinished(Long orderId) {
 
         Order order = findById(orderId);
         if (order.getOrderState() == OrderState.STARTED) {
@@ -179,19 +177,19 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public List<Order> filterOrderCustomer(Long customerId, UserOrderFilterRequestDto userOrderFilterRequestDto) {
 
-        if(userOrderFilterRequestDto.orderState() == null)
+        if (userOrderFilterRequestDto.orderState() == null)
             return orderRepository.findAllByCustomer_Id(customerId);
 
-        return orderRepository.findAllByCustomer_IdAndOrderState(customerId,userOrderFilterRequestDto.orderState());
+        return orderRepository.findAllByCustomer_IdAndOrderState(customerId, userOrderFilterRequestDto.orderState());
     }
 
     @Override
     @Transactional
     public List<Order> filterOrderExpert(Long expertId, UserOrderFilterRequestDto userOrderFilterRequestDto) {
 
-        if(userOrderFilterRequestDto.orderState() == null)
+        if (userOrderFilterRequestDto.orderState() == null)
             return orderRepository.findAllBySelectedOffer_Expert_Id(expertId);
 
-        return orderRepository.findAllBySelectedOffer_Expert_IdAndOrderState(expertId,userOrderFilterRequestDto.orderState());
+        return orderRepository.findAllBySelectedOffer_Expert_IdAndOrderState(expertId, userOrderFilterRequestDto.orderState());
     }
 }

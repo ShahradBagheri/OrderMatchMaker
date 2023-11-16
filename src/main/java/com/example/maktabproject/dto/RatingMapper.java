@@ -2,7 +2,6 @@ package com.example.maktabproject.dto;
 
 import com.example.maktabproject.exception.CustomerNotFoundException;
 import com.example.maktabproject.exception.ExpertNotFoundException;
-import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Rating;
 import com.example.maktabproject.service.Impl.CustomerServiceImpl;

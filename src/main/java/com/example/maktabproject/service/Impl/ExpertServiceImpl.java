@@ -6,10 +6,8 @@ import com.example.maktabproject.model.enumeration.ExpertStatus;
 import com.example.maktabproject.repository.ExpertRepository;
 import com.example.maktabproject.service.ExpertService;
 import jakarta.transaction.Transactional;
-import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,14 +25,14 @@ public class ExpertServiceImpl implements ExpertService {
     @Override
     @Transactional
     public Expert register(Expert expert) {
-            if(expert.getId() == null){
-                String password = expert.getUser().getPassword();
-                expert.getUser().setPassword(bCryptPasswordEncoder.encode(password));
-            }
+        if (expert.getId() == null) {
+            String password = expert.getUser().getPassword();
+            expert.getUser().setPassword(bCryptPasswordEncoder.encode(password));
+        }
 
-            if (expert.getScore() < 0)
-                expert.setExpertStatus(ExpertStatus.INACTIVE);
-            return expertRepository.save(expert);
+        if (expert.getScore() < 0)
+            expert.setExpertStatus(ExpertStatus.INACTIVE);
+        return expertRepository.save(expert);
     }
 
     @Override
@@ -46,7 +44,7 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Override
     @Transactional
-    public Expert findById(Long id){
+    public Expert findById(Long id) {
 
         return expertRepository.findById(id).orElseThrow(
                 () -> new ExpertNotFoundException("expert not found")
@@ -70,7 +68,7 @@ public class ExpertServiceImpl implements ExpertService {
 
     @Override
     @Transactional
-    public Expert findByUser(Long userId){
+    public Expert findByUser(Long userId) {
 
         return expertRepository.findByUser_Id(userId).orElseThrow(
                 () -> new ExpertNotFoundException("expert not found")
@@ -78,7 +76,7 @@ public class ExpertServiceImpl implements ExpertService {
     }
 
     @Override
-    public Expert changePassword(Long expertId, String password){
+    public Expert changePassword(Long expertId, String password) {
 
         Expert expert = findById(expertId);
         expert.getUser().setPassword(bCryptPasswordEncoder.encode(password));

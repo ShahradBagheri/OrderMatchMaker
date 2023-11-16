@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class NotOrderOwnerException extends RuntimeException{
+public class NotOrderOwnerException extends RuntimeException {
 
     public NotOrderOwnerException() {
     }

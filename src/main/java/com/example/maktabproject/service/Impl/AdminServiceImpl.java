@@ -2,8 +2,6 @@ package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.dto.OrderFilterCriteriaDto;
 import com.example.maktabproject.dto.UserFilterCriteriaDto;
-import com.example.maktabproject.exception.ExpertNotFoundException;
-import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.SubService;
@@ -34,7 +32,7 @@ public class AdminServiceImpl implements AdminService {
     private final CustomerServiceImpl customerService;
 
     @Override
-    public Expert addExpertSubService(Long expertId, Long subServiceId){
+    public Expert addExpertSubService(Long expertId, Long subServiceId) {
 
         Expert expert = expertService.findById(expertId);
         SubService subService = subServiceService.findById(subServiceId);
@@ -45,7 +43,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Expert removeExpertSubService(Long expertId, Long subServiceId){
+    public Expert removeExpertSubService(Long expertId, Long subServiceId) {
 
         Expert expert = expertService.findById(expertId);
         SubService subService = subServiceService.findById(subServiceId);
@@ -57,7 +55,7 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public Expert updateExpertStatus(Long expertId, ExpertStatus expertStatus){
+    public Expert updateExpertStatus(Long expertId, ExpertStatus expertStatus) {
 
         Expert expert = expertService.findById(expertId);
         expert.setExpertStatus(expertStatus);
@@ -65,7 +63,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public SubService editSubServicePrice(Long subServiceId, Double newBasePrice){
+    public SubService editSubServicePrice(Long subServiceId, Double newBasePrice) {
 
         SubService subService = subServiceService.findById(subServiceId);
         subService.setBasePrice(newBasePrice);
@@ -74,7 +72,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public SubService editSubServiceComment(Long subServiceId, String newComment){
+    public SubService editSubServiceComment(Long subServiceId, String newComment) {
 
         SubService subService = subServiceService.findById(subServiceId);
         subService.setComment(newComment);
@@ -129,25 +127,25 @@ public class AdminServiceImpl implements AdminService {
 
         Specification<Order> orderSpecification = Specification.where(null);
 
-        if(orderFilterCriteriaDto.customer() != null)
+        if (orderFilterCriteriaDto.customer() != null)
             orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("customer"), orderFilterCriteriaDto.customer()));
 
-        if(orderFilterCriteriaDto.expert() != null)
+        if (orderFilterCriteriaDto.expert() != null)
             orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("selectedOffer").get("expert"), orderFilterCriteriaDto.expert()));
 
-        if(orderFilterCriteriaDto.startAfter() != null)
+        if (orderFilterCriteriaDto.startAfter() != null)
             orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("startingDate"), orderFilterCriteriaDto.startAfter()));
 
-        if(orderFilterCriteriaDto.startBefore() != null)
+        if (orderFilterCriteriaDto.startBefore() != null)
             orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("startingDate"), orderFilterCriteriaDto.startBefore()));
 
-        if(orderFilterCriteriaDto.orderState() != null)
+        if (orderFilterCriteriaDto.orderState() != null)
             orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("orderState"), orderFilterCriteriaDto.orderState()));
 
-        if(orderFilterCriteriaDto.mainService() != null)
+        if (orderFilterCriteriaDto.mainService() != null)
             orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("subService").get("mainService"), orderFilterCriteriaDto.mainService()));
 
-        if(orderFilterCriteriaDto.subService() != null)
+        if (orderFilterCriteriaDto.subService() != null)
             orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("subService"), orderFilterCriteriaDto.subService()));
 
         return orderRepository.findAll(orderSpecification);

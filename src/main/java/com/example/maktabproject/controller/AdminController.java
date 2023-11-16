@@ -1,9 +1,6 @@
 package com.example.maktabproject.controller;
 
 import com.example.maktabproject.dto.*;
-import com.example.maktabproject.exception.ExpertNotFoundException;
-import com.example.maktabproject.exception.MainServiceNotFoundException;
-import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.MainService;
 import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.SubService;
@@ -65,7 +62,7 @@ public class AdminController {
     @PostMapping("/subService/editComment")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SubServiceResponseDto> editSubServiceComment(@RequestParam Long subServiceId,
-                                                                       @RequestParam String newComment){
+                                                                       @RequestParam String newComment) {
 
         return new ResponseEntity<>(subServiceMapper.subServiceToDto(adminService.editSubServiceComment(subServiceId, newComment)), HttpStatus.OK);
     }
@@ -73,7 +70,7 @@ public class AdminController {
     @PostMapping("/subService/editBasePrice")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SubServiceResponseDto> editSubServiceBasePrice(@RequestParam Long subServiceId,
-                                                                         @RequestParam Double newBasePrice){
+                                                                         @RequestParam Double newBasePrice) {
 
         return new ResponseEntity<>(subServiceMapper.subServiceToDto(adminService.editSubServicePrice(subServiceId, newBasePrice)), HttpStatus.OK);
     }
@@ -81,7 +78,7 @@ public class AdminController {
     @PostMapping("/expert/addToSubService")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ExpertResponseDto> addExpertToSubService(@RequestParam Long expertId,
-                                                                   @RequestParam Long subServiceId){
+                                                                   @RequestParam Long subServiceId) {
 
         return new ResponseEntity<>(expertMapper.expertToDto(adminService.addExpertSubService(expertId, subServiceId)), HttpStatus.OK);
     }
@@ -89,21 +86,21 @@ public class AdminController {
     @DeleteMapping("/expert/removeToSubService")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ExpertResponseDto> removeExpertToSubService(@RequestParam Long expertId,
-                                                                      @RequestParam Long subServiceId){
+                                                                      @RequestParam Long subServiceId) {
 
         return new ResponseEntity<>(expertMapper.expertToDto(adminService.removeExpertSubService(expertId, subServiceId)), HttpStatus.OK);
     }
 
     @PostMapping("/expert/approveExpert")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ExpertResponseDto> approveExpert(@RequestParam Long expertId){
+    public ResponseEntity<ExpertResponseDto> approveExpert(@RequestParam Long expertId) {
 
         return new ResponseEntity<>(expertMapper.expertToDto(adminService.updateExpertStatus(expertId, ExpertStatus.APPROVED)), HttpStatus.OK);
     }
 
     @GetMapping("/users/filter")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<UserResponseDto>> filterAllUsers(@RequestBody UserFilterRequestDto userFilterRequestDto){
+    public ResponseEntity<List<UserResponseDto>> filterAllUsers(@RequestBody UserFilterRequestDto userFilterRequestDto) {
 
         List<User> users = adminService.filterUsers(userMapper.filterRequestToCriteriaDto(userFilterRequestDto));
         return new ResponseEntity<>(users.stream().map(userMapper::userToDto).toList(), HttpStatus.OK);
@@ -111,7 +108,7 @@ public class AdminController {
 
     @GetMapping("/orders/filter")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<OrderResponseDto>> filterAllUsers(@RequestBody OrderFilterRequestDto orderFilterRequestDto){
+    public ResponseEntity<List<OrderResponseDto>> filterAllUsers(@RequestBody OrderFilterRequestDto orderFilterRequestDto) {
 
         List<Order> orders = adminService.filterOrders(orderMapper.dtoToCriteria(orderFilterRequestDto));
         return new ResponseEntity<>(orders.stream().map(orderMapper::orderToDto).toList(), HttpStatus.OK);
@@ -119,28 +116,28 @@ public class AdminController {
 
     @GetMapping("/customer/numberOfOrders")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Long> customerOrderCount(@RequestParam Long customerId){
+    public ResponseEntity<Long> customerOrderCount(@RequestParam Long customerId) {
 
         return new ResponseEntity<>(adminService.customerOrderSubmits(customerId), HttpStatus.OK);
     }
 
     @GetMapping("/expert/numberOfOrdersFinished")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Long> expertOrdersFinishedCount(@RequestParam Long expertId){
+    public ResponseEntity<Long> expertOrdersFinishedCount(@RequestParam Long expertId) {
 
         return new ResponseEntity<>(adminService.expertOrdersFinished(expertId), HttpStatus.OK);
     }
 
     @GetMapping("/customer/registrationDate")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<LocalDateTime> customerRegistrationDate(@RequestParam Long customerId){
+    public ResponseEntity<LocalDateTime> customerRegistrationDate(@RequestParam Long customerId) {
 
         return new ResponseEntity<>(adminService.customerSignedUpTime(customerId), HttpStatus.OK);
     }
 
     @GetMapping("/expert/registrationDate")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<LocalDateTime> expertRegistrationDate(@RequestParam Long expertId){
+    public ResponseEntity<LocalDateTime> expertRegistrationDate(@RequestParam Long expertId) {
 
         return new ResponseEntity<>(adminService.expertSignedUpTime(expertId), HttpStatus.OK);
     }

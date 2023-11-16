@@ -7,10 +7,8 @@ import com.example.maktabproject.model.MainService;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.repository.SubServiceRepository;
 import com.example.maktabproject.service.SubServiceService;
-import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +24,7 @@ public class SubServiceServiceImpl implements SubServiceService {
     @Override
     public SubService register(SubService subService) {
 
-            return subServiceRepository.save(subService);
+        return subServiceRepository.save(subService);
     }
 
     @Override
@@ -36,7 +34,7 @@ public class SubServiceServiceImpl implements SubServiceService {
     }
 
     @Override
-    public SubService findById(Long id){
+    public SubService findById(Long id) {
 
         return subServiceRepository.findById(id).orElseThrow(
                 () -> new SubServiceNotFoundException("subService not found!")
@@ -50,7 +48,7 @@ public class SubServiceServiceImpl implements SubServiceService {
     }
 
     @Override
-    public SubService addMainService(Long subServiceId, Long mainServiceId){
+    public SubService addMainService(Long subServiceId, Long mainServiceId) {
 
         SubService subService = findById(subServiceId);
 
@@ -64,7 +62,7 @@ public class SubServiceServiceImpl implements SubServiceService {
     }
 
     @Override
-    public SubService removeMainService(Long subServiceId){
+    public SubService removeMainService(Long subServiceId) {
 
         SubService subService = findById(subServiceId);
 
@@ -76,7 +74,7 @@ public class SubServiceServiceImpl implements SubServiceService {
     }
 
     @Override
-    public List<SubService> findByMainService(Long mainServiceId){
+    public List<SubService> findByMainService(Long mainServiceId) {
 
         MainService mainService = mainServiceService.findById(mainServiceId);
 

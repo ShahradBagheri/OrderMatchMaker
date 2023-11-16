@@ -2,7 +2,6 @@ package com.example.maktabproject.controller;
 
 import com.example.maktabproject.dto.PaymentRequestDto;
 import com.example.maktabproject.exception.InvalidCaptchaException;
-import com.example.maktabproject.exception.UserNotFoundException;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.service.Impl.UserServiceImpl;
 import com.wf.captcha.SpecCaptcha;

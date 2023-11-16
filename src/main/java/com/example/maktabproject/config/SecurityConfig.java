@@ -38,7 +38,7 @@ public class SecurityConfig {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
         auth.userDetailsService(username -> userRepository
-                .findByUsername(username).orElseThrow(() -> new UserNotFoundException(username + " not Found")))
+                        .findByUsername(username).orElseThrow(() -> new UserNotFoundException(username + " not Found")))
                 .passwordEncoder(passwordEncoder);
     }
 }

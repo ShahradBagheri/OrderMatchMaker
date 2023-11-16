@@ -1,7 +1,6 @@
 package com.example.maktabproject.controller;
 
 import com.example.maktabproject.dto.*;
-import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.Rating;
@@ -33,17 +32,17 @@ public class CustomerController {
 
     @PostMapping("/changePassword")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<CustomerResponseDto> changePassword(@RequestParam String newPassword){
+    public ResponseEntity<CustomerResponseDto> changePassword(@RequestParam String newPassword) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Long customerId = customerService.findByUsername(username).getId();
 
-        return new ResponseEntity<>(customerMapper.customerToDto(customerService.changePassword(customerId,newPassword)), HttpStatus.OK);
+        return new ResponseEntity<>(customerMapper.customerToDto(customerService.changePassword(customerId, newPassword)), HttpStatus.OK);
     }
 
     @PostMapping("/order/submit")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<OrderResponseDto> submitOrder(@RequestBody @Valid OrderRequestDto orderRequestDto){
+    public ResponseEntity<OrderResponseDto> submitOrder(@RequestBody @Valid OrderRequestDto orderRequestDto) {
 
         Order order = orderMapper.dtoToOrder(orderRequestDto);
 
@@ -53,32 +52,32 @@ public class CustomerController {
         order.setOrderState(OrderState.WAITING_FOR_SUGGESTIONS);
         order.setCustomer(customer);
         order = orderService.register(order);
-        return new ResponseEntity<>(orderMapper.orderToDto(order),HttpStatus.OK);
+        return new ResponseEntity<>(orderMapper.orderToDto(order), HttpStatus.OK);
     }
 
     @PostMapping("/rating/submit")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<RatingResponseDto> submitRating(@RequestBody @Valid RatingRequestDto ratingRequestDto){
+    public ResponseEntity<RatingResponseDto> submitRating(@RequestBody @Valid RatingRequestDto ratingRequestDto) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Customer customer = customerService.findByUsername(username);
 
         Rating rating = ratingMapper.dtoToRating(ratingRequestDto);
         rating.setCustomer(customer);
-        return new ResponseEntity<>(ratingMapper.ratingToDto(ratingService.register(rating)),HttpStatus.OK);
+        return new ResponseEntity<>(ratingMapper.ratingToDto(ratingService.register(rating)), HttpStatus.OK);
     }
 
     @GetMapping("/filter/order")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<List<OrderResponseDto>> filterOrders(@RequestBody UserOrderFilterRequestDto userOrderFilterRequestDto){
+    public ResponseEntity<List<OrderResponseDto>> filterOrders(@RequestBody UserOrderFilterRequestDto userOrderFilterRequestDto) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Customer customer = customerService.findByUsername(username);
 
-        return new ResponseEntity<>(orderService.filterOrderCustomer(customer.getId(),userOrderFilterRequestDto)
+        return new ResponseEntity<>(orderService.filterOrderCustomer(customer.getId(), userOrderFilterRequestDto)
                 .stream()
                 .map(orderMapper::orderToDto)
                 .toList()
-                ,HttpStatus.OK);
+                , HttpStatus.OK);
     }
 }

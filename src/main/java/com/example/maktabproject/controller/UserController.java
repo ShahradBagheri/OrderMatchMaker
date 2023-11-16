@@ -1,8 +1,6 @@
 package com.example.maktabproject.controller;
 
 import com.example.maktabproject.dto.*;
-import com.example.maktabproject.exception.ImageToBigException;
-import com.example.maktabproject.exception.IncorrectCredentialsException;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.User;
@@ -12,7 +10,6 @@ import com.example.maktabproject.service.Impl.CustomerServiceImpl;
 import com.example.maktabproject.service.Impl.ExpertServiceImpl;
 import com.example.maktabproject.service.Impl.UserServiceImpl;
 import com.example.maktabproject.service.Impl.VerificationTokenServiceImpl;
-import com.example.maktabproject.service.VerificationTokenService;
 import com.example.maktabproject.util.ImageProcessing;
 import com.example.maktabproject.util.TokenEmail;
 import jakarta.validation.Valid;
@@ -69,11 +66,11 @@ public class UserController {
     }
 
     @GetMapping(value = "/verify")
-    public String verifyAccount(@RequestParam String token){
+    public String verifyAccount(@RequestParam String token) {
 
         VerificationToken verificationToken = verificationTokenService.findByToken(token);
 
-        if(verificationToken.getUser().isEnabled())
+        if (verificationToken.getUser().isEnabled())
             return "already verified";
 
         User user = verificationToken.getUser();

@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class TokenNotFoundException extends RuntimeException{
+public class TokenNotFoundException extends RuntimeException {
 
     public TokenNotFoundException() {
     }

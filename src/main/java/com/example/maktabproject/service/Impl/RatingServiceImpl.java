@@ -1,6 +1,5 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.exception.InvalidScoreException;
 import com.example.maktabproject.exception.RatingNotFoundException;
 import com.example.maktabproject.model.Expert;
@@ -8,10 +7,8 @@ import com.example.maktabproject.model.Rating;
 import com.example.maktabproject.repository.RatingRepository;
 import com.example.maktabproject.service.ExpertService;
 import com.example.maktabproject.service.RatingService;
-import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +31,7 @@ public class RatingServiceImpl implements RatingService {
         expert.setScore(expert.getScore() + rating.getScore());
 
         expertService.register(expert);
-            return ratingRepository.save(rating);
+        return ratingRepository.save(rating);
     }
 
     @Override

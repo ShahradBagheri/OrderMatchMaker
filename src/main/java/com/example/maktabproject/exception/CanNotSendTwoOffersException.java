@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class CanNotSendTwoOffersException extends RuntimeException{
+public class CanNotSendTwoOffersException extends RuntimeException {
 
     public CanNotSendTwoOffersException() {
     }

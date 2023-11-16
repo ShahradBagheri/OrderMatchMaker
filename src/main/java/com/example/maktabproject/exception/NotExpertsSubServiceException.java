@@ -1,6 +1,6 @@
 package com.example.maktabproject.exception;
 
-public class NotExpertsSubServiceException extends RuntimeException{
+public class NotExpertsSubServiceException extends RuntimeException {
 
     public NotExpertsSubServiceException() {
     }

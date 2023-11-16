@@ -14,7 +14,7 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
 
     Long countOrderByCustomer_Id(Long customerId);
 
-    Long countOrderBySelectedOffer_Expert_IdAndOrderStateOrOrderState(Long expertId,OrderState orderState1, OrderState orderState2);
+    Long countOrderBySelectedOffer_Expert_IdAndOrderStateOrOrderState(Long expertId, OrderState orderState1, OrderState orderState2);
 
     List<Order> findAllByCustomer_IdAndOrderState(Long customerId, OrderState orderState);
 

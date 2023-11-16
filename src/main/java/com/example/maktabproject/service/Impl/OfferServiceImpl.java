@@ -8,10 +8,8 @@ import com.example.maktabproject.repository.OfferRepository;
 import com.example.maktabproject.service.CustomerService;
 import com.example.maktabproject.service.OfferService;
 import jakarta.transaction.Transactional;
-import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -29,23 +27,23 @@ public class OfferServiceImpl implements OfferService {
     @Override
     public Offer register(Offer offer) {
 
-            if(!offer.getExpert().getSubServices().contains(offer.getOrder().getSubService()))
-                throw new NotExpertsSubServiceException("this is not experts SubService!");
+        if (!offer.getExpert().getSubServices().contains(offer.getOrder().getSubService()))
+            throw new NotExpertsSubServiceException("this is not experts SubService!");
 
-            if(offer.getOrder().getOffers().stream().map(Offer::getExpert).toList().contains(offer.getExpert()))
-                throw new CanNotSendTwoOffersException("cant send two offer to the same order");
+        if (offer.getOrder().getOffers().stream().map(Offer::getExpert).toList().contains(offer.getExpert()))
+            throw new CanNotSendTwoOffersException("cant send two offer to the same order");
 
-            if (priceValidation(offer))
-                if (dateValidation(offer.getStartingDate())) {
+        if (priceValidation(offer))
+            if (dateValidation(offer.getStartingDate())) {
 
-                    offer = offerRepository.save(offer);
-                    if (offer.getOrder().getOrderState().equals(OrderState.WAITING_FOR_SUGGESTIONS))
-                        orderService.statusToWaitingToSelect(offer.getOrder().getId());
+                offer = offerRepository.save(offer);
+                if (offer.getOrder().getOrderState().equals(OrderState.WAITING_FOR_SUGGESTIONS))
+                    orderService.statusToWaitingToSelect(offer.getOrder().getId());
 
-                    return offer;
-                } else
-                    throw new InvalidTimeException("invalid time!");
-            throw new InvalidPriceException("invalid price!");
+                return offer;
+            } else
+                throw new InvalidTimeException("invalid time!");
+        throw new InvalidPriceException("invalid price!");
     }
 
     @Override
@@ -55,7 +53,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public Offer findById(Long id){
+    public Offer findById(Long id) {
 
         return offerRepository.findById(id).orElseThrow(
                 () -> new OfferNotFoundException("offer not found!")
@@ -70,7 +68,7 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     @Transactional
-    public List<Offer> findByCustomerPriceOrder(Long customerId){
+    public List<Offer> findByCustomerPriceOrder(Long customerId) {
 
         Customer customer = customerService.findById(customerId);
         return offerRepository.findByOrder_CustomerOrderBySuggestedPrice(customer);
@@ -78,7 +76,7 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     @Transactional
-    public List<Offer> findByCustomerScoreOrder(Long customerId){
+    public List<Offer> findByCustomerScoreOrder(Long customerId) {
 
         Customer customer = customerService.findById(customerId);
         return offerRepository.findByOrder_CustomerOrderByExpert_Score(customer);
