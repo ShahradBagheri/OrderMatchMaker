@@ -2,7 +2,6 @@ package com.example.maktabproject.controller;
 
 import com.example.maktabproject.dto.*;
 import com.example.maktabproject.exception.ExpertNotFoundException;
-import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.service.Impl.ExpertServiceImpl;
 import com.example.maktabproject.service.Impl.OrderServiceImpl;
@@ -47,7 +46,7 @@ public class ExpertController {
 
     @GetMapping("/filter/order")
     @PreAuthorize("hasRole('EXPERT')")
-    public ResponseEntity<List<OrderResponseDto>> filterOrders(@RequestBody CustomerOrderFilterRequestDto customerOrderFilterRequest){
+    public ResponseEntity<List<OrderResponseDto>> filterOrders(@RequestBody UserOrderFilterRequestDto customerOrderFilterRequest){
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Expert expert = expertService.findByUsername(username);

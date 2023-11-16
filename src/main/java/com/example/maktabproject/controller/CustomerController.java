@@ -70,7 +70,7 @@ public class CustomerController {
 
     @GetMapping("/filter/order")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<List<OrderResponseDto>> filterOrders(@RequestBody CustomerOrderFilterRequestDto customerOrderFilterRequest){
+    public ResponseEntity<List<OrderResponseDto>> filterOrders(@RequestBody UserOrderFilterRequestDto customerOrderFilterRequest){
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Customer customer = customerService.findByUsername(username);

@@ -1,8 +1,6 @@
 package com.example.maktabproject.service;
 
-import com.example.maktabproject.dto.CustomerOrderFilterRequestDto;
-import com.example.maktabproject.dto.OrderFilterCriteriaDto;
-import com.example.maktabproject.dto.OrderFilterRequestDto;
+import com.example.maktabproject.dto.UserOrderFilterRequestDto;
 import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.Order;
 
@@ -35,7 +33,7 @@ public interface OrderService {
 
     Order statusToPaid(Long orderId) throws OrderNotFoundException, InsufficientFundException, CustomerNotFoundException, ExpertNotFoundException, InvalidPriceException, InvalidTimeException;
 
-    List<Order> filterOrderCustomer(Long customerId, CustomerOrderFilterRequestDto customerOrderFilterRequestDto);
+    List<Order> filterOrderCustomer(Long customerId, UserOrderFilterRequestDto customerOrderFilterRequestDto);
 
-    List<Order> filterOrderExpert(Long expertId, CustomerOrderFilterRequestDto customerOrderFilterRequestDto);
+    List<Order> filterOrderExpert(Long expertId, UserOrderFilterRequestDto customerOrderFilterRequestDto);
 }
