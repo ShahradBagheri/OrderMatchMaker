@@ -36,7 +36,7 @@ public class ExpertController {
 
     @GetMapping("/checkScore")
     @PreAuthorize("hasRole('EXPERT')")
-    public float checkScore() throws ExpertNotFoundException {
+    public float checkScore() {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Long expertId = expertService.findByUsername(username).getId();
