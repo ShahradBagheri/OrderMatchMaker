@@ -78,7 +78,7 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer changePassword(Long customerId, String password) throws CustomerNotFoundException {
 
         Customer customer = findById(customerId);
-        customer.getUser().setPassword(password);
+        customer.getUser().setPassword(bCryptPasswordEncoder.encode(password));
         return register(customer);
     }
 }
