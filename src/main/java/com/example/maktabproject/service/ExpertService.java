@@ -13,6 +13,8 @@ public interface ExpertService {
 
     Expert findById(Long id) throws ExpertNotFoundException;
 
+    Expert findByUsername(String username);
+
     List<Expert> findAll();
 
     Expert findByUser(Long userId) throws ExpertNotFoundException;

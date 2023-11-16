@@ -52,7 +52,14 @@ public class ExpertServiceImpl implements ExpertService {
     public Expert findById(Long id) throws ExpertNotFoundException {
 
         return expertRepository.findById(id).orElseThrow(
-                ExpertNotFoundException::new
+                () -> new ExpertNotFoundException("expert not found")
+        );
+    }
+
+    @Override
+    public Expert findByUsername(String username) {
+        return expertRepository.findByUser_Username(username).orElseThrow(
+                () -> new ExpertNotFoundException("expert not found")
         );
     }
 
@@ -66,7 +73,7 @@ public class ExpertServiceImpl implements ExpertService {
     public Expert findByUser(Long userId) throws ExpertNotFoundException {
 
         return expertRepository.findByUser_Id(userId).orElseThrow(
-                ExpertNotFoundException::new
+                () -> new ExpertNotFoundException("expert not found")
         );
     }
 

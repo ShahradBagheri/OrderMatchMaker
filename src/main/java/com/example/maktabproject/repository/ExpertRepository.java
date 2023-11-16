@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface ExpertRepository extends JpaRepository<Expert, Long>, JpaSpecificationExecutor<Expert> {
 
     Optional<Expert> findByUser_Id(Long userId);
+
+    Optional<Expert> findByUser_Username(String username);
 }

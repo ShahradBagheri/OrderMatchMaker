@@ -13,6 +13,8 @@ public interface CustomerService {
 
     Customer findById(Long id) throws CustomerNotFoundException;
 
+    Customer findByUsername(String username);
+
     List<Customer> findAll();
 
     Customer findByUser(Long userId) throws CustomerNotFoundException;
