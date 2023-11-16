@@ -33,7 +33,7 @@ public class CustomerController {
 
     @PostMapping("/changePassword")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<CustomerResponseDto> changePassword(@RequestParam String newPassword) throws CustomerNotFoundException {
+    public ResponseEntity<CustomerResponseDto> changePassword(@RequestParam String newPassword){
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Long customerId = customerService.findByUsername(username).getId();
@@ -43,7 +43,7 @@ public class CustomerController {
 
     @PostMapping("/order/submit")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<OrderResponseDto> submitOrder(@RequestBody @Valid OrderRequestDto orderRequestDto) throws CustomerNotFoundException, SubServiceNotFoundException, InvalidPriceException, InvalidTimeException {
+    public ResponseEntity<OrderResponseDto> submitOrder(@RequestBody @Valid OrderRequestDto orderRequestDto){
 
         Order order = orderMapper.dtoToOrder(orderRequestDto);
 
@@ -58,7 +58,7 @@ public class CustomerController {
 
     @PostMapping("/rating/submit")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<RatingResponseDto> submitRating(@RequestBody @Valid RatingRequestDto ratingRequestDto) throws ExpertNotFoundException, CustomerNotFoundException, InvalidScoreException {
+    public ResponseEntity<RatingResponseDto> submitRating(@RequestBody @Valid RatingRequestDto ratingRequestDto){
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Customer customer = customerService.findByUsername(username);

@@ -24,7 +24,7 @@ public class PaymentController {
     private final UserServiceImpl userService;
 
     @PostMapping("/submit")
-    public String payment(@RequestBody @Valid PaymentRequestDto paymentRequestDto) throws InvalidCaptchaException, UserNotFoundException {
+    public String payment(@RequestBody @Valid PaymentRequestDto paymentRequestDto) {
 
         String captchaText = captchaMap.get(paymentRequestDto.captchaId());
         if (!paymentRequestDto.captcha().toUpperCase().equals(captchaText))

@@ -30,7 +30,7 @@ public class OrderController {
 
     @GetMapping("/findForExpert")
     @PreAuthorize("hasRole('EXPERT')")
-    public ResponseEntity<List<OrderResponseDto>> findOrderForExpert() throws ExpertNotFoundException {
+    public ResponseEntity<List<OrderResponseDto>> findOrderForExpert() {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Long expertId = expertService.findByUsername(username).getId();
@@ -68,7 +68,7 @@ public class OrderController {
 
     @PostMapping("/changeState/finished")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<OrderResponseDto> changeStateFinished(@RequestParam Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException {
+    public ResponseEntity<OrderResponseDto> changeStateFinished(@RequestParam Long orderId){
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Customer customer = customerService.findByUsername(username);
@@ -81,7 +81,7 @@ public class OrderController {
 
     @PostMapping("/changeState/paid")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<OrderResponseDto> changeStatePaid(@RequestParam Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertNotFoundException, InsufficientFundException, CustomerNotFoundException {
+    public ResponseEntity<OrderResponseDto> changeStatePaid(@RequestParam Long orderId){
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Customer customer = customerService.findByUsername(username);

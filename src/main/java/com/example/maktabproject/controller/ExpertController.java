@@ -26,7 +26,7 @@ public class ExpertController {
 
     @PostMapping("/changePassword")
     @PreAuthorize("hasRole('EXPERT')")
-    public ResponseEntity<ExpertResponseDto> changePassword(@RequestParam String newPassword) throws ExpertNotFoundException {
+    public ResponseEntity<ExpertResponseDto> changePassword(@RequestParam String newPassword) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Long expertId = expertService.findByUsername(username).getId();

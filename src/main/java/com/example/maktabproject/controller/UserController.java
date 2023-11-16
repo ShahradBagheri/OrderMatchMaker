@@ -39,7 +39,7 @@ public class UserController {
     private final VerificationTokenServiceImpl verificationTokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponseDto> login(@RequestBody UserLoginDto userLoginDto) throws IncorrectCredentialsException {
+    public ResponseEntity<UserResponseDto> login(@RequestBody UserLoginDto userLoginDto) {
 
         User user = userService.login(userLoginDto.email(), userLoginDto.password());
         UserResponseDto userResponseDto = userMapper.userToDto(user);
@@ -56,7 +56,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/register/expert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ExpertResponseDto expertRegister(@ModelAttribute ExpertRequestDto expertRequestDto) throws ImageToBigException {
+    public ExpertResponseDto expertRegister(@ModelAttribute ExpertRequestDto expertRequestDto) {
 
         byte[] imageData = imageProcessing.imageToBytes(expertRequestDto.image());
         Expert expert = expertMapper.dtoToExpert(expertRequestDto);

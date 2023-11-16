@@ -30,7 +30,7 @@ public class OfferController {
 
     @PostMapping("/submit")
     @PreAuthorize("hasRole('EXPERT')")
-    public ResponseEntity<OfferResponseDto> submitOffer(@RequestBody OfferRequestDto offerRequestDto) throws ExpertNotFoundException, OrderNotFoundException, InvalidPriceException, InvalidTimeException {
+    public ResponseEntity<OfferResponseDto> submitOffer(@RequestBody OfferRequestDto offerRequestDto){
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Expert expert = expertService.findByUsername(username);
@@ -43,7 +43,7 @@ public class OfferController {
 
     @GetMapping("/findAllByScore")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<List<OfferResponseDto>> findAllOfferByScore() throws CustomerNotFoundException {
+    public ResponseEntity<List<OfferResponseDto>> findAllOfferByScore() {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Long customerId = customerService.findByUsername(username).getId();
@@ -53,7 +53,7 @@ public class OfferController {
 
     @GetMapping("/findAllByPrice")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<List<OfferResponseDto>> findAllOfferByPrice() throws CustomerNotFoundException {
+    public ResponseEntity<List<OfferResponseDto>> findAllOfferByPrice() {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Long customerId = customerService.findByUsername(username).getId();

@@ -54,7 +54,7 @@ public class AdminController {
     @PostMapping("/register/subService")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SubServiceResponseDto> registerSubService(@RequestBody SubServiceRequestDto subServiceRequestDto,
-                                                                    @RequestParam Long mainServiceId) throws MainServiceNotFoundException {
+                                                                    @RequestParam Long mainServiceId) {
 
         SubService subService = subServiceMapper.subServiceDtoToSubService(subServiceRequestDto);
         subService.setMainService(mainServiceService.findById(mainServiceId));
@@ -65,7 +65,7 @@ public class AdminController {
     @PostMapping("/subService/editComment")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SubServiceResponseDto> editSubServiceComment(@RequestParam Long subServiceId,
-                                                                       @RequestParam String newComment) throws SubServiceNotFoundException {
+                                                                       @RequestParam String newComment){
 
         return new ResponseEntity<>(subServiceMapper.subServiceToDto(adminService.editSubServiceComment(subServiceId, newComment)), HttpStatus.OK);
     }
@@ -73,7 +73,7 @@ public class AdminController {
     @PostMapping("/subService/editBasePrice")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SubServiceResponseDto> editSubServiceBasePrice(@RequestParam Long subServiceId,
-                                                                         @RequestParam Double newBasePrice) throws SubServiceNotFoundException {
+                                                                         @RequestParam Double newBasePrice){
 
         return new ResponseEntity<>(subServiceMapper.subServiceToDto(adminService.editSubServicePrice(subServiceId, newBasePrice)), HttpStatus.OK);
     }
@@ -81,7 +81,7 @@ public class AdminController {
     @PostMapping("/expert/addToSubService")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ExpertResponseDto> addExpertToSubService(@RequestParam Long expertId,
-                                                                   @RequestParam Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
+                                                                   @RequestParam Long subServiceId){
 
         return new ResponseEntity<>(expertMapper.expertToDto(adminService.addExpertSubService(expertId, subServiceId)), HttpStatus.OK);
     }
@@ -89,21 +89,21 @@ public class AdminController {
     @DeleteMapping("/expert/removeToSubService")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ExpertResponseDto> removeExpertToSubService(@RequestParam Long expertId,
-                                                                      @RequestParam Long subServiceId) throws ExpertNotFoundException, SubServiceNotFoundException {
+                                                                      @RequestParam Long subServiceId){
 
         return new ResponseEntity<>(expertMapper.expertToDto(adminService.removeExpertSubService(expertId, subServiceId)), HttpStatus.OK);
     }
 
     @PostMapping("/expert/approveExpert")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ExpertResponseDto> approveExpert(@RequestParam Long expertId) throws ExpertNotFoundException {
+    public ResponseEntity<ExpertResponseDto> approveExpert(@RequestParam Long expertId){
 
         return new ResponseEntity<>(expertMapper.expertToDto(adminService.updateExpertStatus(expertId, ExpertStatus.APPROVED)), HttpStatus.OK);
     }
 
     @GetMapping("/users/filter")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<UserResponseDto>> filterAllUsers(@RequestBody UserFilterRequestDto userFilterRequestDto) throws SubServiceNotFoundException {
+    public ResponseEntity<List<UserResponseDto>> filterAllUsers(@RequestBody UserFilterRequestDto userFilterRequestDto){
 
         List<User> users = adminService.filterUsers(userMapper.filterRequestToCriteriaDto(userFilterRequestDto));
         return new ResponseEntity<>(users.stream().map(userMapper::userToDto).toList(), HttpStatus.OK);
@@ -111,7 +111,7 @@ public class AdminController {
 
     @GetMapping("/orders/filter")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<OrderResponseDto>> filterAllUsers(@RequestBody OrderFilterRequestDto orderFilterRequestDto) throws SubServiceNotFoundException {
+    public ResponseEntity<List<OrderResponseDto>> filterAllUsers(@RequestBody OrderFilterRequestDto orderFilterRequestDto){
 
         List<Order> orders = adminService.filterOrders(orderMapper.dtoToCriteria(orderFilterRequestDto));
         return new ResponseEntity<>(orders.stream().map(orderMapper::orderToDto).toList(), HttpStatus.OK);
