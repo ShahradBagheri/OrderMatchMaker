@@ -1,7 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.dto.OrderFilterCriteriaDto;
-import com.example.maktabproject.dto.OrderFilterRequestDto;
 import com.example.maktabproject.dto.UserFilterCriteriaDto;
 import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.exception.SubServiceNotFoundException;
@@ -128,8 +127,25 @@ public class AdminServiceImpl implements AdminService {
         Specification<Order> orderSpecification = Specification.where(null);
 
         if(orderFilterCriteriaDto.customer() != null)
-            orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("customer"), orderFilterCriteriaDto.customer()));
+            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("customer"), orderFilterCriteriaDto.customer()));
 
+        if(orderFilterCriteriaDto.expert() != null)
+            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("selectedOffer").get("expert"), orderFilterCriteriaDto.expert()));
+
+        if(orderFilterCriteriaDto.startAfter() != null)
+            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("startingDate"), orderFilterCriteriaDto.startAfter()));
+
+        if(orderFilterCriteriaDto.startBefore() != null)
+            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("startingDate"), orderFilterCriteriaDto.startBefore()));
+
+        if(orderFilterCriteriaDto.orderState() != null)
+            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("orderState"), orderFilterCriteriaDto.orderState()));
+
+        if(orderFilterCriteriaDto.mainService() != null)
+            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("subService").get("mainService"), orderFilterCriteriaDto.mainService()));
+
+        if(orderFilterCriteriaDto.subService() != null)
+            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("subService"), orderFilterCriteriaDto.subService()));
 
         return orderRepository.findAll(orderSpecification);
     }
