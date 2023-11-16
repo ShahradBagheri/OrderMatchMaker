@@ -1,4 +1,8 @@
 package com.example.maktabproject.service;
 
-public class VerificationTokenService {
+import com.example.maktabproject.model.VerificationToken;
+
+public interface VerificationTokenService {
+
+    VerificationToken register(VerificationToken verificationToken);
 }

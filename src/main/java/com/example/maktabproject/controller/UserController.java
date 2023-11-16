@@ -11,6 +11,7 @@ import com.example.maktabproject.service.Impl.CustomerServiceImpl;
 import com.example.maktabproject.service.Impl.ExpertServiceImpl;
 import com.example.maktabproject.service.Impl.UserServiceImpl;
 import com.example.maktabproject.util.ImageProcessing;
+import com.example.maktabproject.util.TokenEmail;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,7 @@ public class UserController {
     private final ExpertServiceImpl expertService;
     private final ImageProcessing imageProcessing;
     private final UserMapper userMapper;
+    private final TokenEmail tokenEmail;
 
     @PostMapping("/login")
     public ResponseEntity<UserResponseDto> login(@RequestBody UserLoginDto userLoginDto) throws IncorrectCredentialsException {
@@ -45,6 +47,7 @@ public class UserController {
 
         Customer customer = customerMapper.dtoToCustomer(customerRequestDto);
         customer = customerService.register(customer);
+        tokenEmail.sendEmail(customer.getUser());
         return customerMapper.customerToDto(customer);
     }
 
