@@ -6,10 +6,13 @@ import com.example.maktabproject.exception.IncorrectCredentialsException;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.User;
+import com.example.maktabproject.model.VerificationToken;
 import com.example.maktabproject.model.enumeration.ExpertStatus;
 import com.example.maktabproject.service.Impl.CustomerServiceImpl;
 import com.example.maktabproject.service.Impl.ExpertServiceImpl;
 import com.example.maktabproject.service.Impl.UserServiceImpl;
+import com.example.maktabproject.service.Impl.VerificationTokenServiceImpl;
+import com.example.maktabproject.service.VerificationTokenService;
 import com.example.maktabproject.util.ImageProcessing;
 import com.example.maktabproject.util.TokenEmail;
 import jakarta.validation.Valid;
@@ -33,6 +36,7 @@ public class UserController {
     private final ImageProcessing imageProcessing;
     private final UserMapper userMapper;
     private final TokenEmail tokenEmail;
+    private final VerificationTokenServiceImpl verificationTokenService;
 
     @PostMapping("/login")
     public ResponseEntity<UserResponseDto> login(@RequestBody UserLoginDto userLoginDto) throws IncorrectCredentialsException {
@@ -60,6 +64,21 @@ public class UserController {
         expert.setExpertStatus(ExpertStatus.NEW);
         expert.setScore(0F);
         expert = expertService.register(expert);
+        tokenEmail.sendEmail(expert.getUser());
         return expertMapper.expertToDto(expert);
+    }
+
+    @GetMapping(value = "/verify")
+    public String verifyAccount(@RequestParam String token){
+
+        VerificationToken verificationToken = verificationTokenService.findByToken(token);
+
+        if(verificationToken.getUser().isEnabled())
+            return "already verified";
+
+        User user = verificationToken.getUser();
+        user.setEnabled(true);
+        userService.register(user);
+        return "DONE!";
     }
 }
