@@ -11,6 +11,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,7 +29,11 @@ public class CustomerController {
     private final RatingServiceImpl ratingService;
 
     @PostMapping("/changePassword")
-    public ResponseEntity<CustomerResponseDto> changePassword(@RequestParam Long customerId,@RequestParam String newPassword) throws CustomerNotFoundException {
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<CustomerResponseDto> changePassword(@RequestParam String newPassword) throws CustomerNotFoundException {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Long customerId = customerService.findByUsername(username).getId();
 
         return new ResponseEntity<>(customerMapper.customerToDto(customerService.changePassword(customerId,newPassword)), HttpStatus.OK);
     }
