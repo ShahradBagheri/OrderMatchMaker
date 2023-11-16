@@ -1,5 +1,8 @@
 package com.example.maktabproject.service.Impl;
 
+import com.example.maktabproject.dto.CustomerOrderFilterRequestDto;
+import com.example.maktabproject.dto.OrderFilterCriteriaDto;
+import com.example.maktabproject.dto.OrderFilterRequestDto;
 import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
@@ -173,5 +176,15 @@ public class OrderServiceImpl implements OrderService {
         expertService.register(expert);
         order.setOrderState(OrderState.PAID);
         return register(order);
+    }
+
+    @Override
+    public List<Order> filterOrderCustomer(Long customerId, CustomerOrderFilterRequestDto customerOrderFilterRequestDto) {
+        return orderRepository.findAllByCustomer_IdAndOrderState(customerId,customerOrderFilterRequestDto.orderState());
+    }
+
+    @Override
+    public List<Order> filterOrderExpert(Long expertId, CustomerOrderFilterRequestDto customerOrderFilterRequestDto) {
+        return orderRepository.findAllBySelectedOffer_Expert_IdAndOrderState(expertId,customerOrderFilterRequestDto.orderState());
     }
 }

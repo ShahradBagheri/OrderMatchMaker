@@ -9,15 +9,15 @@ import com.example.maktabproject.model.enumeration.OrderState;
 import com.example.maktabproject.service.Impl.CustomerServiceImpl;
 import com.example.maktabproject.service.Impl.OrderServiceImpl;
 import com.example.maktabproject.service.Impl.RatingServiceImpl;
-import com.example.maktabproject.util.TokenEmail;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/customer")
@@ -66,5 +66,19 @@ public class CustomerController {
         Rating rating = ratingMapper.dtoToRating(ratingRequestDto);
         rating.setCustomer(customer);
         return new ResponseEntity<>(ratingMapper.ratingToDto(ratingService.register(rating)),HttpStatus.OK);
+    }
+
+    @GetMapping("/filter/order")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<List<OrderResponseDto>> filterOrders(@RequestBody CustomerOrderFilterRequestDto customerOrderFilterRequest){
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Customer customer = customerService.findByUsername(username);
+
+        return new ResponseEntity<>(orderService.filterOrderCustomer(customer.getId(),customerOrderFilterRequest)
+                .stream()
+                .map(orderMapper::orderToDto)
+                .toList()
+                ,HttpStatus.OK);
     }
 }
