@@ -28,4 +28,8 @@ public interface AdminService {
     List<User> filterUsers(UserFilterCriteriaDto userFilterCriteriaDto);
 
     List<Order> filterOrders(OrderFilterCriteriaDto orderFilterCriteriaDto);
+
+    Long customerOrderSubmits(Long customerId);
+
+    Long expertOrdersFinished(Long expertId);
 }

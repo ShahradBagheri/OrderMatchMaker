@@ -115,4 +115,19 @@ public class AdminController {
         List<Order> orders = adminService.filterOrders(orderMapper.dtoToCriteria(orderFilterRequestDto));
         return new ResponseEntity<>(orders.stream().map(orderMapper::orderToDto).toList(), HttpStatus.OK);
     }
+
+    @GetMapping("/customer/numberOfOrders")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Long> customerOrderCount(@RequestParam Long customerId){
+
+        return new ResponseEntity<>(adminService.customerOrderSubmits(customerId), HttpStatus.OK);
+    }
+
+    @GetMapping("/expert/numberOfOrdersFinished")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Long> expertOrdersFinishedCount(@RequestParam Long expertId){
+
+        return new ResponseEntity<>(adminService.expertOrdersFinished(expertId), HttpStatus.OK);
+    }
+
 }

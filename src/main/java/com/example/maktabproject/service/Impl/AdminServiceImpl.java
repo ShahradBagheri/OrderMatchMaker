@@ -9,6 +9,7 @@ import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.model.enumeration.ExpertStatus;
+import com.example.maktabproject.model.enumeration.OrderState;
 import com.example.maktabproject.repository.ExpertRepository;
 import com.example.maktabproject.repository.OrderRepository;
 import com.example.maktabproject.repository.UserRepository;
@@ -148,5 +149,15 @@ public class AdminServiceImpl implements AdminService {
             orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("subService"), orderFilterCriteriaDto.subService()));
 
         return orderRepository.findAll(orderSpecification);
+    }
+
+    @Override
+    public Long customerOrderSubmits(Long customerId) {
+        return orderRepository.countOrderByCustomer_Id(customerId);
+    }
+
+    @Override
+    public Long expertOrdersFinished(Long expertId) {
+        return orderRepository.countOrderBySelectedOffer_Expert_IdAndOrderStateOrOrderState(expertId, OrderState.FINISHED, OrderState.PAID);
     }
 }

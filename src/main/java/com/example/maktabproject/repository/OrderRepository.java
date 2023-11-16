@@ -11,4 +11,8 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
 
     List<Order> findBySubServiceInAndOrderStateOrOrderState(List<SubService> subServices, OrderState orderState1, OrderState orderState2);
+
+    Long countOrderByCustomer_Id(Long customerId);
+
+    Long countOrderBySelectedOffer_Expert_IdAndOrderStateOrOrderState(Long expertId,OrderState orderState1, OrderState orderState2);
 }
