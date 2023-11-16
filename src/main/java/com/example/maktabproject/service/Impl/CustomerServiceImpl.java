@@ -1,5 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
+import com.example.maktabproject.config.PasswordEncoder;
 import com.example.maktabproject.exception.CustomerNotFoundException;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.repository.CustomerRepository;
@@ -8,6 +9,8 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.core.parameters.P;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +21,17 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public Customer register(Customer customer) {
 
         try {
+            if(customer.getId() == null){
+                String password = customer.getUser().getPassword();
+                customer.getUser().setPassword(bCryptPasswordEncoder.encode(password));
+            }
+
             return customerRepository.save(customer);
         } catch (ConstraintViolationException | DataAccessException e) {
             log.error(e.getMessage());

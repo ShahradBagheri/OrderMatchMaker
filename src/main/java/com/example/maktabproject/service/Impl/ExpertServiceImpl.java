@@ -9,6 +9,7 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,11 +21,18 @@ public class ExpertServiceImpl implements ExpertService {
 
     private final ExpertRepository expertRepository;
     private final SubServiceServiceImpl subServiceService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public Expert register(Expert expert) {
 
         try {
+
+            if(expert.getId() == null){
+                String password = expert.getUser().getPassword();
+                expert.getUser().setPassword(bCryptPasswordEncoder.encode(password));
+            }
+
             if (expert.getScore() < 0)
                 expert.setExpertStatus(ExpertStatus.INACTIVE);
             return expertRepository.save(expert);
