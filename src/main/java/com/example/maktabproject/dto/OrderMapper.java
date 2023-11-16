@@ -18,7 +18,6 @@ public class OrderMapper {
     public Order dtoToOrder(OrderRequestDto orderRequestDto) throws SubServiceNotFoundException, CustomerNotFoundException {
         return Order.builder()
                 .subService(subServiceService.findById(orderRequestDto.subServiceId()))
-                .customer(customerService.findById(orderRequestDto.customerId()))
                 .suggestedPrice(orderRequestDto.suggestedPrice())
                 .startingDate(orderRequestDto.startingDate())
                 .address(orderRequestDto.address())

@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Builder
 @Validated
 public record OrderRequestDto(@NotNull Long subServiceId,
-                              @NotNull Long customerId,
                               @NotNull Double suggestedPrice,
                               @NotBlank String details,
                               @NotNull LocalDateTime startingDate,
