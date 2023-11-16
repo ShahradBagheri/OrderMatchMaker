@@ -30,6 +30,12 @@ public class OfferServiceImpl implements OfferService {
     public Offer register(Offer offer) {
 
         try {
+            if(!offer.getExpert().getSubServices().contains(offer.getOrder().getSubService()))
+                throw new NotExpertsSubServiceException("this is not experts SubService!");
+
+            if(offer.getOrder().getOffers().stream().map(Offer::getExpert).toList().contains(offer.getExpert()))
+                throw new CanNotSendTwoOffersException("cant send two offer to the same order");
+
             if (priceValidation(offer))
                 if (dateValidation(offer.getStartingDate())) {
 
