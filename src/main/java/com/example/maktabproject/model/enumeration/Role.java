@@ -1,7 +1,7 @@
 package com.example.maktabproject.model.enumeration;
 
 public enum Role {
-    CUSTOMER,
-    EXPERT,
-    ADMIN
+    ROLE_CUSTOMER,
+    ROLE_EXPERT,
+    ROLE_ADMIN
 }

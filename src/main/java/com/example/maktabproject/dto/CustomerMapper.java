@@ -17,7 +17,7 @@ public class CustomerMapper {
                 .email(customerRequestDto.email())
                 .username(customerRequestDto.username())
                 .password(customerRequestDto.password())
-                .role(Role.CUSTOMER)
+                .role(Role.ROLE_CUSTOMER)
                 .wallet(new Wallet())
                 .build();
 
