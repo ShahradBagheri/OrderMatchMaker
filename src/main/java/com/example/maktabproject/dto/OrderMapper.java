@@ -60,8 +60,8 @@ public class OrderMapper {
         return OrderFilterCriteriaDto.builder()
                 .customer(customer)
                 .expert(expert)
-                .doneAfter(orderFilterRequestDto.doneAfter())
-                .doneBefore(orderFilterRequestDto.doneBefore())
+                .startAfter(orderFilterRequestDto.startAfter())
+                .startBefore(orderFilterRequestDto.startBefore())
                 .subService(subService)
                 .mainService(mainService)
                 .build();

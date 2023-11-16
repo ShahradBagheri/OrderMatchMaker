@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @Builder
 public record OrderFilterCriteriaDto(Customer customer,
                                      Expert expert,
-                                     LocalDateTime doneAfter,
-                                     LocalDateTime doneBefore,
+                                     LocalDateTime startAfter,
+                                     LocalDateTime startBefore,
                                      OrderState orderState,
                                      MainService mainService,
                                      SubService subService) {
