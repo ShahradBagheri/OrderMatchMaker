@@ -5,6 +5,7 @@ import com.example.maktabproject.dto.OfferRequestDto;
 import com.example.maktabproject.dto.OfferResponseDto;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Offer;
+import com.example.maktabproject.model.enumeration.ExpertStatus;
 import com.example.maktabproject.service.Impl.CustomerServiceImpl;
 import com.example.maktabproject.service.Impl.ExpertServiceImpl;
 import com.example.maktabproject.service.Impl.OfferServiceImpl;
@@ -33,6 +34,9 @@ public class OfferController {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Expert expert = expertService.findByUsername(username);
+
+        if(expert.getExpertStatus() != ExpertStatus.APPROVED)
+            return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
 
         Offer offer = offerMapper.dtoToOffer(offerRequestDto);
         offer.setExpert(expert);

@@ -3,6 +3,7 @@ package com.example.maktabproject.controller;
 import com.example.maktabproject.dto.*;
 import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.model.Expert;
+import com.example.maktabproject.model.enumeration.ExpertStatus;
 import com.example.maktabproject.service.Impl.ExpertServiceImpl;
 import com.example.maktabproject.service.Impl.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -29,19 +30,25 @@ public class ExpertController {
     public ResponseEntity<ExpertResponseDto> changePassword(@RequestParam String newPassword) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Long expertId = expertService.findByUsername(username).getId();
+        Expert expert = expertService.findByUsername(username);
 
-        return new ResponseEntity<>(expertMapper.expertToDto(expertService.changePassword(expertId, newPassword)), HttpStatus.OK);
+        if(expert.getExpertStatus() != ExpertStatus.APPROVED)
+            return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+
+        return new ResponseEntity<>(expertMapper.expertToDto(expertService.changePassword(expert.getId(), newPassword)), HttpStatus.OK);
     }
 
     @GetMapping("/checkScore")
     @PreAuthorize("hasRole('EXPERT')")
-    public float checkScore() {
+    public ResponseEntity<Float> checkScore() {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Long expertId = expertService.findByUsername(username).getId();
+        Expert expert = expertService.findByUsername(username);
 
-        return expertService.findById(expertId).getScore();
+        if(expert.getExpertStatus() != ExpertStatus.APPROVED)
+            return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+
+        return new ResponseEntity<>(expertService.findById(expert.getId()).getScore(),HttpStatus.OK) ;
     }
 
     @GetMapping("/filter/order")
@@ -50,6 +57,9 @@ public class ExpertController {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Expert expert = expertService.findByUsername(username);
+
+        if(expert.getExpertStatus() != ExpertStatus.APPROVED)
+            return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
 
         return new ResponseEntity<>(orderService.filterOrderExpert(expert.getId(), userOrderFilterRequestDto)
                 .stream()

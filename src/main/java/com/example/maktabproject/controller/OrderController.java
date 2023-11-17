@@ -4,7 +4,9 @@ import com.example.maktabproject.dto.OrderMapper;
 import com.example.maktabproject.dto.OrderResponseDto;
 import com.example.maktabproject.exception.NotOrderOwnerException;
 import com.example.maktabproject.model.Customer;
+import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Order;
+import com.example.maktabproject.model.enumeration.ExpertStatus;
 import com.example.maktabproject.service.Impl.CustomerServiceImpl;
 import com.example.maktabproject.service.Impl.ExpertServiceImpl;
 import com.example.maktabproject.service.Impl.OrderServiceImpl;
@@ -33,9 +35,12 @@ public class OrderController {
     public ResponseEntity<List<OrderResponseDto>> findOrderForExpert() {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Long expertId = expertService.findByUsername(username).getId();
+        Expert expert = expertService.findByUsername(username);
 
-        List<Order> ordersForExpert = orderService.findOrdersForExpert(expertId);
+        if(expert.getExpertStatus() != ExpertStatus.APPROVED)
+            return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+
+        List<Order> ordersForExpert = orderService.findOrdersForExpert(expert.getId());
         List<OrderResponseDto> orderListDto = ordersForExpert.stream().map(orderMapper::orderToDto).toList();
         return new ResponseEntity<>(orderListDto, HttpStatus.OK);
     }
