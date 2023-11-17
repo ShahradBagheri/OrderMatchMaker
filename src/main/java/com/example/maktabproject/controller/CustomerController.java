@@ -80,4 +80,14 @@ public class CustomerController {
                 .toList()
                 , HttpStatus.OK);
     }
+
+    @GetMapping("/balance")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<Double> getBalance(){
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Customer customer = customerService.findByUsername(username);
+
+        return new ResponseEntity<>(customer.getUser().getWallet().getCredit(),HttpStatus.OK);
+    }
 }

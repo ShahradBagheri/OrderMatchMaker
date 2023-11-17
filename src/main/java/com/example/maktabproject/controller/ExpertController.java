@@ -2,6 +2,7 @@ package com.example.maktabproject.controller;
 
 import com.example.maktabproject.dto.*;
 import com.example.maktabproject.exception.ExpertNotFoundException;
+import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.enumeration.ExpertStatus;
 import com.example.maktabproject.service.Impl.ExpertServiceImpl;
@@ -66,5 +67,18 @@ public class ExpertController {
                 .map(orderMapper::orderToDto)
                 .toList()
                 , HttpStatus.OK);
+    }
+
+    @GetMapping("/balance")
+    @PreAuthorize("hasRole('EXPERT')")
+    public ResponseEntity<Double> getBalance(){
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Expert expert = expertService.findByUsername(username);
+
+        if(expert.getExpertStatus() != ExpertStatus.APPROVED)
+            return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+
+        return new ResponseEntity<>(expert.getUser().getWallet().getCredit(),HttpStatus.OK);
     }
 }
