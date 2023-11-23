@@ -62,6 +62,7 @@ public class OrderMapper {
                 .expert(expert)
                 .startAfter(orderFilterRequestDto.startAfter())
                 .startBefore(orderFilterRequestDto.startBefore())
+                .orderState(orderFilterRequestDto.orderState())
                 .subService(subService)
                 .mainService(mainService)
                 .build();
