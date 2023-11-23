@@ -33,17 +33,18 @@ public class OfferServiceImpl implements OfferService {
         if (offer.getOrder().getOffers().stream().map(Offer::getExpert).toList().contains(offer.getExpert()))
             throw new CanNotSendTwoOffersException("cant send two offer to the same order");
 
-        if (priceValidation(offer))
-            if (dateValidation(offer.getStartingDate())) {
+        if (!priceValidation(offer))
+            throw new InvalidPriceException("invalid price!");
 
-                offer = offerRepository.save(offer);
-                if (offer.getOrder().getOrderState().equals(OrderState.WAITING_FOR_SUGGESTIONS))
-                    orderService.statusToWaitingToSelect(offer.getOrder().getId());
+        if (!dateValidation(offer.getStartingDate()))
+            throw new InvalidTimeException("invalid time!");
 
-                return offer;
-            } else
-                throw new InvalidTimeException("invalid time!");
-        throw new InvalidPriceException("invalid price!");
+
+        offer = offerRepository.save(offer);
+        if (offer.getOrder().getOrderState().equals(OrderState.WAITING_FOR_SUGGESTIONS))
+            orderService.statusToWaitingToSelect(offer.getOrder().getId());
+
+        return offer;
     }
 
     @Override
