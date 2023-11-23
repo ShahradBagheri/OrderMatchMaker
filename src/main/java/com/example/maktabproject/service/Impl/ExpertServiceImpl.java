@@ -19,7 +19,6 @@ import java.util.List;
 public class ExpertServiceImpl implements ExpertService {
 
     private final ExpertRepository expertRepository;
-    private final SubServiceServiceImpl subServiceService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
