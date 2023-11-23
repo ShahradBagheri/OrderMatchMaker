@@ -104,6 +104,12 @@ public class AdminServiceImpl implements AdminService {
         if (userFilterCriteriaDto.email() != null)
             userSpecification = userSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("email"), "%" + userFilterCriteriaDto.email() + "%"));
 
+        if (userFilterCriteriaDto.afterCreationDate() != null)
+            userSpecification = userSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("registrationDate"), userFilterCriteriaDto.afterCreationDate()));
+
+        if (userFilterCriteriaDto.beforeCreationDate() != null)
+            userSpecification = userSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("registrationDate"), userFilterCriteriaDto.beforeCreationDate()));
+
         if (userFilterCriteriaDto.role() != null)
             userSpecification = userSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("role"), userFilterCriteriaDto.role()));
 

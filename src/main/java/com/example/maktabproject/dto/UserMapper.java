@@ -38,6 +38,8 @@ public class UserMapper {
                 .subService(subService)
                 .scoreHigher(userFilterRequestDto.scoreHigher())
                 .scoreLower(userFilterRequestDto.scoreLower())
+                .afterCreationDate(userFilterRequestDto.afterCreationDate())
+                .beforeCreationDate(userFilterRequestDto.beforeCreationDate())
                 .build();
     }
 }
