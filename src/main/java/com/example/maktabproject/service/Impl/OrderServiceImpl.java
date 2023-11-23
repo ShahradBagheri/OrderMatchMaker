@@ -32,17 +32,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order register(Order order) throws InvalidPriceException, InvalidTimeException {
-
+    public Order register(Order order) {
         if (order.getOrderState() == OrderState.WAITING_FOR_SUGGESTIONS) {
-            if (priceValidation(order))
-                if (dateValidation(order.getStartingDate()))
-                    return orderRepository.save(order);
-                else
-                    throw new InvalidTimeException("invalid time!");
-            throw new InvalidPriceException("invalid price!");
-        } else
-            return orderRepository.save(order);
+
+            if (!priceValidation(order))
+                throw new InvalidPriceException("invalid price!");
+
+            if (!dateValidation(order.getStartingDate()))
+                throw new InvalidTimeException("invalid time!");
+        }
+        return orderRepository.save(order);
 
     }
 
