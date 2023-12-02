@@ -1,8 +1,8 @@
 package com.example.maktabproject.controller;
 
-import com.example.maktabproject.dto.OfferMapper;
-import com.example.maktabproject.dto.OfferRequestDto;
-import com.example.maktabproject.dto.OfferResponseDto;
+import com.example.maktabproject.dto.offer.OfferMapper;
+import com.example.maktabproject.dto.offer.OfferRequestDto;
+import com.example.maktabproject.dto.offer.OfferResponseDto;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.model.enumeration.ExpertStatus;

@@ -1,10 +1,9 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.dto.UserFilterCriteriaDto;
+import com.example.maktabproject.dto.user.UserFilterCriteriaDto;
 import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.User;
-import com.example.maktabproject.model.enumeration.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,7 +1,7 @@
 package com.example.maktabproject.service;
 
-import com.example.maktabproject.dto.OrderFilterCriteriaDto;
-import com.example.maktabproject.dto.UserFilterCriteriaDto;
+import com.example.maktabproject.dto.order.OrderFilterCriteriaDto;
+import com.example.maktabproject.dto.user.UserFilterCriteriaDto;
 import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.Expert;
