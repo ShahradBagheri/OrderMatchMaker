@@ -10,7 +10,35 @@ Welcome to the Spring Order Management System, a robust platform that enables cu
 
 - **Wallet Integration**: A secure wallet system is integrated into the application, allowing customers to deposit funds using a simple payment website. Wallet balance can be used to pay for orders.
 
-## Getting Started
+# Usage
+
+## Customers:
+
+1. **Register:**
+   - Sign up as a customer (they have to verify their email).
+
+2. **Place Orders:**
+   - Provide order details.
+
+3. **Deposit Funds:**
+   - Use integrated payment to add funds.
+
+4. **Track Orders:**
+   - Monitor order status and expert bids.
+
+5. **Select Expert:**
+   - Choose based on bids.
+
+## Experts:
+
+1. **Browse Orders:**
+   - Explore available orders.
+
+2. **Place Bids:**
+   - Bid with amount and completion time.
+
+4. **Fulfill Orders:**
+   - Complete orders on time.
 
 ### Prerequisites
 
