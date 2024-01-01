@@ -14,7 +14,10 @@ Welcome to the Spring Order Management System, a robust platform that enables cu
 
 ### Prerequisites
 
-- Java JDK 8 or later
+- Java
+- Spring boot
+- Spring mvc
+- Spring data jpa
+- Spring security
 - Maven
-- MySQL
-- Spring Boot
+- Postgresql
