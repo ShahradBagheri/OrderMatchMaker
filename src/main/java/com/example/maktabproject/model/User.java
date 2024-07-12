@@ -1,6 +1,6 @@
 package com.example.maktabproject.model;
 
-import com.example.maktabproject.model.enumeration.Role;
+import com.example.maktabproject.model.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;

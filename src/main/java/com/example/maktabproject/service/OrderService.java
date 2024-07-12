@@ -1,6 +1,6 @@
 package com.example.maktabproject.service;
 
-import com.example.maktabproject.dto.user.UserOrderFilterRequestDto;
+import com.example.maktabproject.model.dto.user.UserOrderFilterRequestDto;
 import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.Order;
 

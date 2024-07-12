@@ -2,7 +2,7 @@ package com.example.maktabproject.repository;
 
 import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.SubService;
-import com.example.maktabproject.model.enumeration.OrderState;
+import com.example.maktabproject.model.enums.OrderState;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

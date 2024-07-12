@@ -1,13 +1,13 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.dto.order.OrderFilterCriteriaDto;
-import com.example.maktabproject.dto.user.UserFilterCriteriaDto;
+import com.example.maktabproject.model.dto.order.OrderFilterCriteriaDto;
+import com.example.maktabproject.model.dto.user.UserFilterCriteriaDto;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.User;
-import com.example.maktabproject.model.enumeration.ExpertStatus;
-import com.example.maktabproject.model.enumeration.OrderState;
+import com.example.maktabproject.model.enums.ExpertStatus;
+import com.example.maktabproject.model.enums.OrderState;
 import com.example.maktabproject.repository.ExpertRepository;
 import com.example.maktabproject.repository.OrderRepository;
 import com.example.maktabproject.repository.UserRepository;

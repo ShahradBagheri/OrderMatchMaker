@@ -1,12 +1,12 @@
 package com.example.maktabproject.controller;
 
-import com.example.maktabproject.dto.expert.ExpertMapper;
-import com.example.maktabproject.dto.expert.ExpertResponseDto;
-import com.example.maktabproject.dto.order.OrderMapper;
-import com.example.maktabproject.dto.order.OrderResponseDto;
-import com.example.maktabproject.dto.user.UserOrderFilterRequestDto;
+import com.example.maktabproject.model.dto.expert.ExpertMapper;
+import com.example.maktabproject.model.dto.expert.ExpertResponseDto;
+import com.example.maktabproject.model.dto.order.OrderMapper;
+import com.example.maktabproject.model.dto.order.OrderResponseDto;
+import com.example.maktabproject.model.dto.user.UserOrderFilterRequestDto;
 import com.example.maktabproject.model.Expert;
-import com.example.maktabproject.model.enumeration.ExpertStatus;
+import com.example.maktabproject.model.enums.ExpertStatus;
 import com.example.maktabproject.service.Impl.ExpertServiceImpl;
 import com.example.maktabproject.service.Impl.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;

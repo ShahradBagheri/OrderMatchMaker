@@ -1,6 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.dto.user.UserFilterCriteriaDto;
+import com.example.maktabproject.model.dto.user.UserFilterCriteriaDto;
 import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.User;

@@ -2,7 +2,7 @@ package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.model.Expert;
-import com.example.maktabproject.model.enumeration.ExpertStatus;
+import com.example.maktabproject.model.enums.ExpertStatus;
 import com.example.maktabproject.repository.ExpertRepository;
 import com.example.maktabproject.service.ExpertService;
 import jakarta.transaction.Transactional;

@@ -2,7 +2,7 @@ package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.*;
-import com.example.maktabproject.model.enumeration.OrderState;
+import com.example.maktabproject.model.enums.OrderState;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
