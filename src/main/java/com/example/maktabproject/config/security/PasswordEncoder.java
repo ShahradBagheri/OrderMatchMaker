@@ -1,4 +1,4 @@
-package com.example.maktabproject.config;
+package com.example.maktabproject.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

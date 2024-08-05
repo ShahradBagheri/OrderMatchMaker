@@ -1,4 +1,4 @@
-package com.example.maktabproject.config;
+package com.example.maktabproject.config.web;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

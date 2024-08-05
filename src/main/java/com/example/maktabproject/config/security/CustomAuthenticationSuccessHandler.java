@@ -1,4 +1,4 @@
-package com.example.maktabproject.config;
+package com.example.maktabproject.config.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
