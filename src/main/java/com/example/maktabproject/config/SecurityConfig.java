@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -28,9 +29,26 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .cors(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(a -> a.anyRequest().permitAll()).httpBasic(withDefaults());
+                .cors().and()
+                .csrf().disable()
+                .authorizeRequests(authorizeRequests ->
+                        authorizeRequests
+                                .anyRequest().permitAll()
+                )
+                .formLogin(formLogin ->
+                        formLogin
+                                .loginPage("/static/login")
+                                .successHandler(customAuthenticationSuccessHandler())
+                                .failureUrl("/login.html?error=true")
+                )
+                .logout(logout ->
+                        logout
+                                .logoutUrl("/perform_logout")
+                                .deleteCookies("JSESSIONID")
+                                .logoutSuccessUrl("/login.html?logout=true")
+                )
+                .httpBasic();
+
         return httpSecurity.build();
     }
 
@@ -40,5 +58,10 @@ public class SecurityConfig {
         auth.userDetailsService(username -> userRepository
                         .findByUsername(username).orElseThrow(() -> new UserNotFoundException(username + " not Found")))
                 .passwordEncoder(passwordEncoder);
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler();
     }
 }

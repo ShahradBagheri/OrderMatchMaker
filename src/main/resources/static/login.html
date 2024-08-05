@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup or Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+        .container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .container input, .container select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+        .container button:hover {
+            background-color: #218838;
+        }
+        .switch-form {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .switch-form button {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            cursor: pointer;
+            text-decoration: underline;
+            margin: 5px 0;
+        }
+        .switch-form button:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="login-form">
+    <h2>Login</h2>
+    <form action="/login" method="post">
+        <label for="login-username">Username</label>
+        <input type="text" id="login-username" name="username" required>
+
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" name="password" required>
+
+        <button type="submit">Login</button>
+    </form>
+    <div class="switch-form">
+        <p>Don't have an account?</p>
+        <button onclick="showCustomerSignupForm()">Sign Up as Customer</button>
+        <button onclick="showExpertSignupForm()">Sign Up as Expert</button>
+    </div>
+</div>
+
+<div class="container" id="customer-signup-form" style="display: none;">
+    <h2>Customer Sign Up</h2>
+    <form action="/user/register/customer" method="post">
+        <label for="customer-firstname">First Name</label>
+        <input type="text" id="customer-firstname" name="firstname" required>
+
+        <label for="customer-lastname">Last Name</label>
+        <input type="text" id="customer-lastname" name="lastname" required>
+
+        <label for="customer-username">Username</label>
+        <input type="text" id="customer-username" name="username" required>
+
+        <label for="customer-email">Email</label>
+        <input type="email" id="customer-email" name="email" required>
+
+        <label for="customer-password">Password</label>
+        <input type="password" id="customer-password" name="password" pattern="^(?=.*[a-zA-Z])(?=.*\d).{8,}$" required>
+
+        <button type="submit">Sign Up</button>
+    </form>
+    <div class="switch-form">
+        <p>Already have an account?</p>
+        <button onclick="showLoginForm()">Login</button>
+    </div>
+</div>
+
+<div class="container" id="expert-signup-form" style="display: none;">
+    <h2>Expert Sign Up</h2>
+    <form action="/user/register/expert" method="post" enctype="multipart/form-data">
+        <label for="expert-firstname">First Name</label>
+        <input type="text" id="expert-firstname" name="firstname" required>
+
+        <label for="expert-lastname">Last Name</label>
+        <input type="text" id="expert-lastname" name="lastname" required>
+
+        <label for="expert-username">Username</label>
+        <input type="text" id="expert-username" name="username" required>
+
+        <label for="expert-email">Email</label>
+        <input type="email" id="expert-email" name="email" required>
+
+        <label for="expert-password">Password</label>
+        <input type="password" id="expert-password" name="password" pattern="^(?=.*[a-zA-Z])(?=.*\d).{8,}$" required>
+
+        <label for="expert-image">Upload Image</label>
+        <input type="file" id="expert-image" name="image" required>
+
+        <button type="submit">Sign Up</button>
+    </form>
+    <div class="switch-form">
+        <p>Already have an account?</p>
+        <button onclick="showLoginForm()">Login</button>
+    </div>
+</div>
+
+<script>
+    function showCustomerSignupForm() {
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('expert-signup-form').style.display = 'none';
+        document.getElementById('customer-signup-form').style.display = 'block';
+    }
+
+    function showExpertSignupForm() {
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('customer-signup-form').style.display = 'none';
+        document.getElementById('expert-signup-form').style.display = 'block';
+    }
+
+    function showLoginForm() {
+        document.getElementById('customer-signup-form').style.display = 'none';
+        document.getElementById('expert-signup-form').style.display = 'none';
+        document.getElementById('login-form').style.display = 'block';
+    }
+</script>
+</body>
+</html>

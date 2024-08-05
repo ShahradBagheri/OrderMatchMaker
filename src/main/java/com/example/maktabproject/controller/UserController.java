@@ -22,10 +22,18 @@ import com.example.maktabproject.util.ImageProcessing;
 import com.example.maktabproject.util.TokenEmail;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
 
 
 @RestController
@@ -51,13 +59,24 @@ public class UserController {
         return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
     }
 
-    @PostMapping("/register/customer")
+    @PostMapping(path = "/register/customer", consumes = "application/json")
     public CustomerResponseDto customerRegister(@RequestBody @Valid CustomerRequestDto customerRequestDto) {
 
         Customer customer = customerMapper.dtoToCustomer(customerRequestDto);
         customer = customerService.register(customer);
         tokenEmail.sendEmail(customer.getUser());
         return customerMapper.customerToDto(customer);
+    }
+
+    @SneakyThrows
+    @PostMapping(path = "/register/customer", consumes = "application/x-www-form-urlencoded")
+    public Resource customerRegisterStatic(@Valid CustomerRequestDto customerRequestDto) {
+
+        Customer customer = customerMapper.dtoToCustomer(customerRequestDto);
+        customer = customerService.register(customer);
+        tokenEmail.sendEmail(customer.getUser());
+        Path path = Paths.get(Objects.requireNonNull(getClass().getResource("/static/successfulSignup.html")).toURI());
+        return new ByteArrayResource(Files.readAllBytes(path));
     }
 
     @PostMapping(value = "/register/expert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
