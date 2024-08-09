@@ -1,8 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.exception.MainServiceNotFoundException;
-import com.example.maktabproject.exception.SubServiceNotFoundException;
-import com.example.maktabproject.exception.SubServiceTwoMainServiceException;
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.MainService;
 import com.example.maktabproject.model.SubService;
 import org.junit.jupiter.api.Test;
@@ -60,11 +58,11 @@ class SubServiceServiceImplTest {
         subServiceService.register(subService);
         Long id = subService.getId();
         subServiceService.delete(subService);
-        assertThatThrownBy( () -> subServiceService.findById(id) ).isInstanceOf(SubServiceNotFoundException.class);
+        assertThatThrownBy( () -> subServiceService.findById(id) ).isInstanceOf(CustomExceptions.SubServiceNotFoundException.class);
     }
 
     @Test
-    void subServiceShouldBeFound() throws SubServiceNotFoundException {
+    void subServiceShouldBeFound() throws CustomExceptions.SubServiceNotFoundException {
         SubService subService = SubService.builder()
                 .name("findById test")
                 .build();
@@ -83,7 +81,7 @@ class SubServiceServiceImplTest {
         subServiceService.register(subService);
         Long id = subService.getId();
         subServiceService.delete(subService);
-        assertThatThrownBy( () -> subServiceService.findById(id) ).isInstanceOf(SubServiceNotFoundException.class);
+        assertThatThrownBy( () -> subServiceService.findById(id) ).isInstanceOf(CustomExceptions.SubServiceNotFoundException.class);
     }
 
     @Test
@@ -97,7 +95,7 @@ class SubServiceServiceImplTest {
     }
 
     @Test
-    void mainServiceShouldGetAdded() throws SubServiceTwoMainServiceException, SubServiceNotFoundException, MainServiceNotFoundException {
+    void mainServiceShouldGetAdded() throws CustomExceptions.SubServiceTwoMainServiceException, CustomExceptions.SubServiceNotFoundException, CustomExceptions.MainServiceNotFoundException {
         SubService subService = SubService.builder()
                 .name("testAddingMain")
                 .build();
@@ -115,7 +113,7 @@ class SubServiceServiceImplTest {
     }
 
     @Test
-    void canNotAddTwoMainServices() throws SubServiceTwoMainServiceException, SubServiceNotFoundException, MainServiceNotFoundException {
+    void canNotAddTwoMainServices() throws CustomExceptions.SubServiceTwoMainServiceException, CustomExceptions.SubServiceNotFoundException, CustomExceptions.MainServiceNotFoundException {
         SubService subService = SubService.builder()
                 .name("testAddingDouble")
                 .build();
@@ -137,11 +135,11 @@ class SubServiceServiceImplTest {
         subServiceService.addMainService(subService.getId(),mainService1.getId());
         SubService finalSubService = subService;
         MainService finalMainService = mainService2;
-        assertThatThrownBy(() -> subServiceService.addMainService(finalSubService.getId(), finalMainService.getId())).isInstanceOf(SubServiceTwoMainServiceException.class);
+        assertThatThrownBy(() -> subServiceService.addMainService(finalSubService.getId(), finalMainService.getId())).isInstanceOf(CustomExceptions.SubServiceTwoMainServiceException.class);
     }
 
     @Test
-    void mainServiceShouldGetRemoved() throws SubServiceTwoMainServiceException, SubServiceNotFoundException, MainServiceNotFoundException {
+    void mainServiceShouldGetRemoved() throws CustomExceptions.SubServiceTwoMainServiceException, CustomExceptions.SubServiceNotFoundException, CustomExceptions.MainServiceNotFoundException {
         SubService subService = SubService.builder()
                 .name("testRemoveMain")
                 .build();
@@ -160,7 +158,7 @@ class SubServiceServiceImplTest {
     }
 
     @Test
-    void removeNullMainServiceShouldThrow() throws SubServiceTwoMainServiceException, SubServiceNotFoundException, MainServiceNotFoundException {
+    void removeNullMainServiceShouldThrow() throws CustomExceptions.SubServiceTwoMainServiceException, CustomExceptions.SubServiceNotFoundException, CustomExceptions.MainServiceNotFoundException {
 
         SubService subService = SubService.builder()
                 .name("testRemoveMainNull")
@@ -168,11 +166,11 @@ class SubServiceServiceImplTest {
 
         subService = subServiceService.register(subService);
         SubService finalSubService = subService;
-        assertThatThrownBy(() -> subServiceService.removeMainService(finalSubService.getId())).isInstanceOf(MainServiceNotFoundException.class);
+        assertThatThrownBy(() -> subServiceService.removeMainService(finalSubService.getId())).isInstanceOf(CustomExceptions.MainServiceNotFoundException.class);
     }
 
     @Test
-    void shouldFindAllByMainService() throws MainServiceNotFoundException {
+    void shouldFindAllByMainService() throws CustomExceptions.MainServiceNotFoundException {
 
         MainService mainService1 = MainService.builder()
                 .name("testingFindAllByMainService1")

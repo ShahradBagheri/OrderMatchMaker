@@ -1,9 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.exception.InvalidPriceException;
-import com.example.maktabproject.exception.InvalidTimeException;
-import com.example.maktabproject.exception.NotTheCorrectTimeToChangeStatusException;
-import com.example.maktabproject.exception.OrderNotFoundException;
+import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.model.Order;
@@ -43,7 +40,7 @@ public class OrderServiceTest {
     }
 
     @Test
-    void orderStateShouldChangeWhenExpertComes() throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException {
+    void orderStateShouldChangeWhenExpertComes() throws CustomExceptions.OrderNotFoundException, CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.NotTheCorrectTimeToChangeStatusException {
 
         Order order = Order.builder()
                 .selectedOffer(Offer.builder()

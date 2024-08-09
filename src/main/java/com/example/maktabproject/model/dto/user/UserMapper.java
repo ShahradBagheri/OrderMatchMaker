@@ -1,6 +1,6 @@
 package com.example.maktabproject.model.dto.user;
 
-import com.example.maktabproject.exception.SubServiceNotFoundException;
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.service.Impl.SubServiceServiceImpl;
@@ -23,7 +23,7 @@ public class UserMapper {
                 .build();
     }
 
-    public UserFilterCriteriaDto filterRequestToCriteriaDto(UserFilterRequestDto userFilterRequestDto) throws SubServiceNotFoundException {
+    public UserFilterCriteriaDto filterRequestToCriteriaDto(UserFilterRequestDto userFilterRequestDto) throws CustomExceptions.SubServiceNotFoundException {
 
         SubService subService = null;
 

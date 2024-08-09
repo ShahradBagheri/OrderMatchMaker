@@ -28,16 +28,16 @@ public class OfferServiceImpl implements OfferService {
     public Offer register(Offer offer) {
 
         if (!offer.getExpert().getSubServices().contains(offer.getOrder().getSubService()))
-            throw new NotExpertsSubServiceException("this is not experts SubService!");
+            throw new CustomExceptions.NotExpertsSubServiceException("this is not experts SubService!");
 
         if (offer.getOrder().getOffers().stream().map(Offer::getExpert).toList().contains(offer.getExpert()))
-            throw new CanNotSendTwoOffersException("cant send two offer to the same order");
+            throw new CustomExceptions.CanNotSendTwoOffersException("cant send two offer to the same order");
 
         if (!priceValidation(offer))
-            throw new InvalidPriceException("invalid price!");
+            throw new CustomExceptions.InvalidPriceException("invalid price!");
 
         if (!dateValidation(offer.getStartingDate()))
-            throw new InvalidTimeException("invalid time!");
+            throw new CustomExceptions.InvalidTimeException("invalid time!");
 
 
         offer = offerRepository.save(offer);
@@ -57,7 +57,7 @@ public class OfferServiceImpl implements OfferService {
     public Offer findById(Long id) {
 
         return offerRepository.findById(id).orElseThrow(
-                () -> new OfferNotFoundException("offer not found!")
+                () -> new CustomExceptions.OfferNotFoundException("offer not found!")
         );
     }
 

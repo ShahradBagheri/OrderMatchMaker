@@ -1,7 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.exception.InvalidScoreException;
-import com.example.maktabproject.exception.RatingNotFoundException;
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Rating;
 import com.example.maktabproject.repository.RatingRepository;
@@ -25,7 +24,7 @@ public class RatingServiceImpl implements RatingService {
     public Rating register(Rating rating) {
 
         if (rating.getScore() > 5 || rating.getScore() < 0)
-            throw new InvalidScoreException("invalid score!");
+            throw new CustomExceptions.InvalidScoreException("invalid score!");
 
         Expert expert = expertService.findById(rating.getExpert().getId());
         expert.setScore(expert.getScore() + rating.getScore());
@@ -41,10 +40,10 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public Rating findById(Long id) throws RatingNotFoundException {
+    public Rating findById(Long id) throws CustomExceptions.RatingNotFoundException {
 
         return ratingRepository.findById(id).orElseThrow(
-                () -> new RatingNotFoundException("rating not found!")
+                () -> new CustomExceptions.RatingNotFoundException("rating not found!")
         );
     }
 

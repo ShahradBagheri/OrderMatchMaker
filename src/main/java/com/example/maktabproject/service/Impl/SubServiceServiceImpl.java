@@ -1,8 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.exception.MainServiceNotFoundException;
-import com.example.maktabproject.exception.SubServiceNotFoundException;
-import com.example.maktabproject.exception.SubServiceTwoMainServiceException;
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.MainService;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.repository.SubServiceRepository;
@@ -37,7 +35,7 @@ public class SubServiceServiceImpl implements SubServiceService {
     public SubService findById(Long id) {
 
         return subServiceRepository.findById(id).orElseThrow(
-                () -> new SubServiceNotFoundException("subService not found!")
+                () -> new CustomExceptions.SubServiceNotFoundException("subService not found!")
         );
     }
 
@@ -53,7 +51,7 @@ public class SubServiceServiceImpl implements SubServiceService {
         SubService subService = findById(subServiceId);
 
         if (subService.getMainService() != null)
-            throw new SubServiceTwoMainServiceException("subService cant have two mainServices!");
+            throw new CustomExceptions.SubServiceTwoMainServiceException("subService cant have two mainServices!");
 
         MainService mainService = mainServiceService.findById(mainServiceId);
 
@@ -67,7 +65,7 @@ public class SubServiceServiceImpl implements SubServiceService {
         SubService subService = findById(subServiceId);
 
         if (subService.getMainService() == null)
-            throw new MainServiceNotFoundException("mainService not found!");
+            throw new CustomExceptions.MainServiceNotFoundException("mainService not found!");
 
         subService.setMainService(null);
         return register(subService);

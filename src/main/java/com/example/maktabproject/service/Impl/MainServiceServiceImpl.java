@@ -1,6 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.exception.MainServiceNotFoundException;
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.MainService;
 import com.example.maktabproject.repository.MainServiceRepository;
 import com.example.maktabproject.service.MainServiceService;
@@ -32,7 +32,7 @@ public class MainServiceServiceImpl implements MainServiceService {
     public MainService findById(Long id) {
 
         return mainServiceRepository.findById(id).orElseThrow(
-                () -> new MainServiceNotFoundException("Main service not found")
+                () -> new CustomExceptions.MainServiceNotFoundException("Main service not found")
         );
     }
 

@@ -1,6 +1,6 @@
 package com.example.maktabproject.config.security;
 
-import com.example.maktabproject.exception.UserNotFoundException;
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class SecurityConfig {
                         formLogin
                                 .loginPage("/static/login")
                                 .successHandler(customAuthenticationSuccessHandler())
-                                .failureUrl("/login.html?error=true")
+                                .failureUrl("/static/login?error=true")
                 )
                 .logout(logout ->
                         logout
@@ -44,7 +44,7 @@ public class SecurityConfig {
                                 .deleteCookies("JSESSIONID")
                                 .logoutSuccessUrl("/login.html?logout=true")
                 )
-                .httpBasic();
+                ;
 
         return httpSecurity.build();
     }
@@ -53,7 +53,7 @@ public class SecurityConfig {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
         auth.userDetailsService(username -> userRepository
-                        .findByUsername(username).orElseThrow(() -> new UserNotFoundException(username + " not Found")))
+                        .findByUsername(username).orElseThrow(() -> new CustomExceptions.UserNotFoundException(username + " not Found")))
                 .passwordEncoder(passwordEncoder);
     }
 

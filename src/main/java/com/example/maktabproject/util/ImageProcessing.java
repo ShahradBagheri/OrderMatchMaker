@@ -1,6 +1,6 @@
 package com.example.maktabproject.util;
 
-import com.example.maktabproject.exception.ImageToBigException;
+import com.example.maktabproject.exception.CustomExceptions;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,12 +13,12 @@ import java.io.IOException;
 @Component
 public class ImageProcessing {
 
-    public byte[] imageToBytes(MultipartFile image) throws ImageToBigException {
+    public byte[] imageToBytes(MultipartFile image) throws CustomExceptions.ImageToBigException {
         try {
             if (validImageSize(image.getSize()))
                 return image.getBytes();
             else
-                throw new ImageToBigException();
+                throw new CustomExceptions.ImageToBigException("image size is to big");
         } catch (IOException e) {
             System.err.println(e.getMessage());
             return null;

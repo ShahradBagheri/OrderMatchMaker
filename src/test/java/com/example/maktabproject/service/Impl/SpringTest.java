@@ -1,7 +1,7 @@
 package com.example.maktabproject.service.Impl;
 
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.dto.user.UserFilterCriteriaDto;
-import com.example.maktabproject.exception.SubServiceNotFoundException;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.User;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ public class SpringTest {
     private SubServiceServiceImpl subServiceService;
 
     @Test
-    void run() throws SubServiceNotFoundException {
+    void run() throws CustomExceptions.SubServiceNotFoundException {
 
         SubService byId = subServiceService.findById(1L);
 

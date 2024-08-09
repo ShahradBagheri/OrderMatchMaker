@@ -1,9 +1,8 @@
 package com.example.maktabproject.model.dto.user;
 
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.dto.rating.RatingRequestDto;
 import com.example.maktabproject.model.dto.rating.RatingResponseDto;
-import com.example.maktabproject.exception.CustomerNotFoundException;
-import com.example.maktabproject.exception.ExpertNotFoundException;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Rating;
 import com.example.maktabproject.service.Impl.CustomerServiceImpl;
@@ -18,7 +17,7 @@ public class RatingMapper {
     private final ExpertServiceImpl expertService;
     private final CustomerServiceImpl customerService;
 
-    public Rating dtoToRating(RatingRequestDto ratingRequestDto) throws ExpertNotFoundException, CustomerNotFoundException {
+    public Rating dtoToRating(RatingRequestDto ratingRequestDto) throws CustomExceptions.ExpertNotFoundException, CustomExceptions.CustomerNotFoundException {
 
         Expert expert = expertService.findById(ratingRequestDto.expertId());
 

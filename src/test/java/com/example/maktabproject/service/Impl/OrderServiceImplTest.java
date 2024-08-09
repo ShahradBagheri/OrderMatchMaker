@@ -32,7 +32,7 @@ class OrderServiceImplTest {
     private ExpertServiceImpl expertService;
 
     @Test
-    void orderShouldSave() throws InvalidPriceException, InvalidTimeException {
+    void orderShouldSave() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException {
 
         SubService subService = SubService.builder()
                 .name("orderShouldSaveTest")
@@ -67,7 +67,7 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void invalidPriceShouldNotSave() throws InvalidPriceException {
+    void invalidPriceShouldNotSave() throws CustomExceptions.InvalidPriceException {
 
         SubService subService = SubService.builder()
                 .name("orderShouldNotSavePrice")
@@ -97,11 +97,11 @@ class OrderServiceImplTest {
                 .startingDate(LocalDateTime.now().plusDays(1))
                 .build();
 
-        assertThatThrownBy( () -> orderService.register(order)).isInstanceOf(InvalidPriceException.class);
+        assertThatThrownBy( () -> orderService.register(order)).isInstanceOf(CustomExceptions.InvalidPriceException.class);
     }
 
     @Test
-    void invalidTimeShouldNotSave() throws InvalidPriceException {
+    void invalidTimeShouldNotSave() throws CustomExceptions.InvalidPriceException {
 
         SubService subService = SubService.builder()
                 .name("orderShouldNotSaveTimer")
@@ -131,11 +131,11 @@ class OrderServiceImplTest {
                 .startingDate(LocalDateTime.now().minusDays(1))
                 .build();
 
-        assertThatThrownBy( () -> orderService.register(order)).isInstanceOf(InvalidTimeException.class);
+        assertThatThrownBy( () -> orderService.register(order)).isInstanceOf(CustomExceptions.InvalidTimeException.class);
     }
 
     @Test
-    void orderShouldNotSaveWithOutCustomer() throws InvalidPriceException, InvalidTimeException {
+    void orderShouldNotSaveWithOutCustomer() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException {
 
         SubService subService = SubService.builder()
                 .name("notNullCheck")
@@ -154,7 +154,7 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void orderShouldBeFound() throws ExpertNotFoundException, InvalidPriceException, InvalidTimeException, OrderNotFoundException {
+    void orderShouldBeFound() throws CustomExceptions.ExpertNotFoundException, CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.OrderNotFoundException {
 
         SubService subService = SubService.builder()
                 .name("findByIdOrder")
@@ -190,7 +190,7 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void failToFindOrder() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException {
+    void failToFindOrder() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.OrderNotFoundException {
 
         SubService subService = SubService.builder()
                 .name("cantFindByIdOder")
@@ -223,11 +223,11 @@ class OrderServiceImplTest {
         order = orderService.register(order);
         long id = order.getId();
         orderService.delete(order);
-        assertThatThrownBy(() -> orderService.findById(id)).isInstanceOf(OrderNotFoundException.class);
+        assertThatThrownBy(() -> orderService.findById(id)).isInstanceOf(CustomExceptions.OrderNotFoundException.class);
     }
 
     @Test
-    void allOrdersShouldBeFound() throws InvalidPriceException, InvalidTimeException {
+    void allOrdersShouldBeFound() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException {
 
         SubService subService1 = SubService.builder()
                 .name("findAll1")
@@ -264,18 +264,18 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void orderWithNoTimeOrPriceShouldNotSave() throws InvalidPriceException, InvalidTimeException {
+    void orderWithNoTimeOrPriceShouldNotSave() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException {
         Order order = Order.builder()
                 .orderState(OrderState.STARTED)
                 .address("Some address")
                 .startingDate(LocalDateTime.now().plusDays(1))
                 .build();
 
-        assertThatThrownBy(() -> orderService.register(order)).isInstanceOf(InvalidPriceException.class);
+        assertThatThrownBy(() -> orderService.register(order)).isInstanceOf(CustomExceptions.InvalidPriceException.class);
     }
 
     @Test
-    void findOrdersForExpert() throws SubServiceNotFoundException, InvalidPriceException, InvalidTimeException, ExpertNotFoundException {
+    void findOrdersForExpert() throws CustomExceptions.SubServiceNotFoundException, CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.ExpertNotFoundException {
 //        SubService subService = SubService.builder()
 //                .name("ExpertFindingSubService")
 //                .basePrice(100.0)
@@ -354,7 +354,7 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void orderStatusChangeAfterOneOffer() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException {
+    void orderStatusChangeAfterOneOffer() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.OrderNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -411,7 +411,7 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void expertShouldGetAddedToOrder() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException, ExpertHasNoOfferForOfferException, ExpertNotFoundException, OfferNotFoundException {
+    void expertShouldGetAddedToOrder() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.OrderNotFoundException, CustomExceptions.ExpertHasNoOfferForOfferException, CustomExceptions.ExpertNotFoundException, CustomExceptions.OfferNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -469,7 +469,7 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void expertWithNoOfferShouldNotGetAdded() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException {
+    void expertWithNoOfferShouldNotGetAdded() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.OrderNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -545,11 +545,11 @@ class OrderServiceImplTest {
 
         Expert finalExpert = expert;
         Offer finalOffer = offer;
-        assertThatThrownBy(() -> orderService.choseOffer(finalOffer.getId(),order2.getId())).isInstanceOf(ExpertHasNoOfferForOfferException.class);
+        assertThatThrownBy(() -> orderService.choseOffer(finalOffer.getId(),order2.getId())).isInstanceOf(CustomExceptions.ExpertHasNoOfferForOfferException.class);
     }
 
     @Test
-    void orderStateShouldChangeFromStartedToFinished() throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException, OrderNotFoundException {
+    void orderStateShouldChangeFromStartedToFinished() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.NotTheCorrectTimeToChangeStatusException, CustomExceptions.OrderNotFoundException {
 
         SubService subService = SubService.builder()
                 .name("statechangetofinish")
@@ -586,7 +586,7 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void notStartedOrdersShouldNotFinish() throws InvalidPriceException, InvalidTimeException {
+    void notStartedOrdersShouldNotFinish() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException {
 
         SubService subService = SubService.builder()
                 .name("thisDoesntend")
@@ -619,11 +619,11 @@ class OrderServiceImplTest {
 
         order = orderService.register(order);
         Order finalOrder = order;
-        assertThatThrownBy( () -> orderService.statusToFinished(finalOrder.getId())).isInstanceOf(NotTheCorrectTimeToChangeStatusException.class);
+        assertThatThrownBy( () -> orderService.statusToFinished(finalOrder.getId())).isInstanceOf(CustomExceptions.NotTheCorrectTimeToChangeStatusException.class);
     }
 
     @Test
-    void orderStateShouldNotChangeFromWaitingToStartedBeforeCorrectTime() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException, ExpertHasNoOfferForOfferException, ExpertNotFoundException, OfferNotFoundException {
+    void orderStateShouldNotChangeFromWaitingToStartedBeforeCorrectTime() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.OrderNotFoundException, CustomExceptions.ExpertHasNoOfferForOfferException, CustomExceptions.ExpertNotFoundException, CustomExceptions.OfferNotFoundException {
 
         SubService subService = SubService.builder()
                 .name("theginalginaltests")
@@ -681,6 +681,6 @@ class OrderServiceImplTest {
         order = orderService.findById(order.getId());
         order = orderService.choseOffer(offer.getId(),order.getId());
         Order finalOrder = order;
-        assertThatThrownBy( () ->  orderService.statusToStarted(finalOrder.getId())).isInstanceOf(NotTheCorrectTimeToChangeStatusException.class);
+        assertThatThrownBy( () ->  orderService.statusToStarted(finalOrder.getId())).isInstanceOf(CustomExceptions.NotTheCorrectTimeToChangeStatusException.class);
     }
 }

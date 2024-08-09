@@ -1,8 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.exception.ExpertNotFoundException;
-import com.example.maktabproject.exception.ImageToBigException;
-import com.example.maktabproject.exception.SubServiceNotFoundException;
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.util.ImageProcessing;
@@ -28,7 +26,7 @@ class ExpertServiceImplSpringTest {
     private ImageProcessing imageProcessing;
 
     @Test
-    void validExpertRegisterShouldSave() throws ImageToBigException {
+    void validExpertRegisterShouldSave() throws CustomExceptions.ImageToBigException {
 
         /*byte[] bytes = imageProcessing.imageToBytes("src/main/resources/pictures/Screenshot_20231020_092009.png");
 
@@ -101,7 +99,7 @@ class ExpertServiceImplSpringTest {
     }
 
     @Test
-    void expertShouldBeFound() throws ExpertNotFoundException {
+    void expertShouldBeFound() throws CustomExceptions.ExpertNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -138,7 +136,7 @@ class ExpertServiceImplSpringTest {
     }
 
     @Test
-    void customerShouldGetDeleted() throws ExpertNotFoundException {
+    void customerShouldGetDeleted() throws CustomExceptions.ExpertNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -151,11 +149,11 @@ class ExpertServiceImplSpringTest {
 
         Expert registerdExpert = expertService.register(expert);
         expertService.delete(expertService.findById(registerdExpert.getId()));
-        assertThatThrownBy(() -> expertService.findById(registerdExpert.getId())).isInstanceOf(ExpertNotFoundException.class);
+        assertThatThrownBy(() -> expertService.findById(registerdExpert.getId())).isInstanceOf(CustomExceptions.ExpertNotFoundException.class);
     }
 
     @Test
-    void customerPasswordShouldChange() throws ExpertNotFoundException {
+    void customerPasswordShouldChange() throws CustomExceptions.ExpertNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -173,7 +171,7 @@ class ExpertServiceImplSpringTest {
     }
 
     @Test
-    void customerFoundByUser() throws ExpertNotFoundException {
+    void customerFoundByUser() throws CustomExceptions.ExpertNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -190,7 +188,7 @@ class ExpertServiceImplSpringTest {
     }
 
     @Test
-    void statusShouldUpdate() throws ExpertNotFoundException {
+    void statusShouldUpdate() throws CustomExceptions.ExpertNotFoundException {
 //        User user = User.builder()
 //                .firstname("shahrad")
 //                .lastname("bagheri")
@@ -209,7 +207,7 @@ class ExpertServiceImplSpringTest {
     }
 
     @Test
-    void subServiceShouldGetAdded() throws ExpertNotFoundException, SubServiceNotFoundException {
+    void subServiceShouldGetAdded() throws CustomExceptions.ExpertNotFoundException, CustomExceptions.SubServiceNotFoundException {
 //
 //        User user = User.builder()
 //                .firstname("shahrad")
@@ -235,7 +233,7 @@ class ExpertServiceImplSpringTest {
     }
 
     @Test
-    void addSecondSubServiceToGetAdded() throws ExpertNotFoundException, SubServiceNotFoundException {
+    void addSecondSubServiceToGetAdded() throws CustomExceptions.ExpertNotFoundException, CustomExceptions.SubServiceNotFoundException {
 //
 //        User user = User.builder()
 //                .firstname("shahrad")

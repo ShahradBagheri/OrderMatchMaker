@@ -9,5 +9,6 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public record SubServiceRequestDto(@NotBlank String name,
                                    @NotNull Double basePrice,
+                                   @NotNull Long mainServiceId,
                                    @NotBlank String Comment) {
 }

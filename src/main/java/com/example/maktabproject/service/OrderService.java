@@ -9,29 +9,29 @@ import java.util.List;
 
 public interface OrderService {
 
-    Order register(Order order) throws InvalidPriceException, InvalidTimeException;
+    Order register(Order order) throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException;
 
     void delete(Order order);
 
-    Order findById(Long id) throws OrderNotFoundException;
+    Order findById(Long id) throws CustomExceptions.OrderNotFoundException;
 
     List<Order> findAll();
 
-    List<Order> findOrdersForExpert(Long expertId) throws ExpertNotFoundException;
+    List<Order> findOrdersForExpert(Long expertId) throws CustomExceptions.ExpertNotFoundException;
 
-    Order choseOffer(Long offerId, Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException, ExpertHasNoOfferForOfferException, ExpertNotFoundException, OfferNotFoundException;
+    Order choseOffer(Long offerId, Long orderId) throws CustomExceptions.OrderNotFoundException, CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.ExpertHasNoOfferForOfferException, CustomExceptions.ExpertNotFoundException, CustomExceptions.OfferNotFoundException;
 
     boolean priceValidation(Order order);
 
     boolean dateValidation(LocalDateTime localDateTime);
 
-    Order statusToStarted(Long orderId) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException, OrderNotFoundException;
+    Order statusToStarted(Long orderId) throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.NotTheCorrectTimeToChangeStatusException, CustomExceptions.OrderNotFoundException;
 
-    Order statusToFinished(Long orderId) throws InvalidPriceException, InvalidTimeException, NotTheCorrectTimeToChangeStatusException, OrderNotFoundException;
+    Order statusToFinished(Long orderId) throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.NotTheCorrectTimeToChangeStatusException, CustomExceptions.OrderNotFoundException;
 
-    Order statusToWaitingToSelect(Long orderId) throws OrderNotFoundException, InvalidPriceException, InvalidTimeException;
+    Order statusToWaitingToSelect(Long orderId) throws CustomExceptions.OrderNotFoundException, CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException;
 
-    Order statusToPaid(Long orderId) throws OrderNotFoundException, InsufficientFundException, CustomerNotFoundException, ExpertNotFoundException, InvalidPriceException, InvalidTimeException;
+    Order statusToPaid(Long orderId) throws CustomExceptions.OrderNotFoundException, CustomExceptions.InsufficientFundException, CustomExceptions.CustomerNotFoundException, CustomExceptions.ExpertNotFoundException, CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException;
 
     List<Order> filterOrderCustomer(Long customerId, UserOrderFilterRequestDto userOrderFilterRequestDto);
 

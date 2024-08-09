@@ -1,7 +1,6 @@
 package com.example.maktabproject.model.dto.offer;
 
-import com.example.maktabproject.exception.ExpertNotFoundException;
-import com.example.maktabproject.exception.OrderNotFoundException;
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.service.Impl.ExpertServiceImpl;
 import com.example.maktabproject.service.Impl.OrderServiceImpl;
@@ -26,7 +25,7 @@ public class OfferMapper {
                 .build();
     }
 
-    public Offer dtoToOffer(OfferRequestDto offerRequestDto) throws ExpertNotFoundException, OrderNotFoundException {
+    public Offer dtoToOffer(OfferRequestDto offerRequestDto) throws CustomExceptions.ExpertNotFoundException, CustomExceptions.OrderNotFoundException {
         return Offer.builder()
                 .order(orderService.findById(offerRequestDto.orderId()))
                 .startingDate(offerRequestDto.startingDate())

@@ -1,6 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.exception.TokenNotFoundException;
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.VerificationToken;
 import com.example.maktabproject.repository.VerificationTokenRepository;
 import com.example.maktabproject.service.VerificationTokenService;
@@ -23,7 +23,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     public VerificationToken findByToken(String token) {
 
         return verificationTokenRepository.findByToken(token).orElseThrow(
-                () -> new TokenNotFoundException("token not found!")
+                () -> new CustomExceptions.TokenNotFoundException("token not found!")
         );
     }
 }

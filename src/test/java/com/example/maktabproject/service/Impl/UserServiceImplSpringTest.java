@@ -1,6 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.exception.IncorrectCredentialsException;
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.User;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ class UserServiceImplSpringTest {
     private CustomerServiceImpl customerService;
 
     @Test
-    void userShouldLogin() throws IncorrectCredentialsException {
+    void userShouldLogin() throws CustomExceptions.IncorrectCredentialsException {
         User user = User.builder()
                 .firstname("user test")
                 .lastname("test user")
@@ -39,6 +39,6 @@ class UserServiceImplSpringTest {
 
     @Test
     void userShouldNotLogin(){
-        assertThatThrownBy( () -> userService.login("","")).isInstanceOf(IncorrectCredentialsException.class);
+        assertThatThrownBy( () -> userService.login("","")).isInstanceOf(CustomExceptions.IncorrectCredentialsException.class);
     }
 }

@@ -1,6 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.exception.CustomerNotFoundException;
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.User;
 import org.junit.jupiter.api.Test;
@@ -89,7 +89,7 @@ class CustomerServiceImplSpringTest {
     }
 
     @Test
-    void customerShouldBeFound() throws CustomerNotFoundException {
+    void customerShouldBeFound() throws CustomExceptions.CustomerNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -126,7 +126,7 @@ class CustomerServiceImplSpringTest {
     }
 
     @Test
-    void CustomerShouldGetDeleted() throws CustomerNotFoundException {
+    void CustomerShouldGetDeleted() throws CustomExceptions.CustomerNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -139,11 +139,11 @@ class CustomerServiceImplSpringTest {
 
         Customer registerdCustomer = customerService.register(customer);
         customerService.delete(customerService.findById(registerdCustomer.getId()));
-        assertThatThrownBy(() -> customerService.findById(registerdCustomer.getId())).isInstanceOf(CustomerNotFoundException.class);
+        assertThatThrownBy(() -> customerService.findById(registerdCustomer.getId())).isInstanceOf(CustomExceptions.CustomerNotFoundException.class);
     }
 
     @Test
-    void CustomerPasswordShouldChange() throws CustomerNotFoundException {
+    void CustomerPasswordShouldChange() throws CustomExceptions.CustomerNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -161,7 +161,7 @@ class CustomerServiceImplSpringTest {
     }
 
     @Test
-    void CustomerFoundByUser() throws CustomerNotFoundException {
+    void CustomerFoundByUser() throws CustomExceptions.CustomerNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")

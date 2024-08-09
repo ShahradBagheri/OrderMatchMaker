@@ -1,7 +1,6 @@
 package com.example.maktabproject.model.dto.order;
 
-import com.example.maktabproject.exception.CustomerNotFoundException;
-import com.example.maktabproject.exception.SubServiceNotFoundException;
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.*;
 import com.example.maktabproject.service.Impl.CustomerServiceImpl;
 import com.example.maktabproject.service.Impl.ExpertServiceImpl;
@@ -19,7 +18,7 @@ public class OrderMapper {
     private final ExpertServiceImpl expertService;
     private final MainServiceServiceImpl mainServiceService;
 
-    public Order dtoToOrder(OrderRequestDto orderRequestDto) throws SubServiceNotFoundException, CustomerNotFoundException {
+    public Order dtoToOrder(OrderRequestDto orderRequestDto) throws CustomExceptions.SubServiceNotFoundException, CustomExceptions.CustomerNotFoundException {
         return Order.builder()
                 .subService(subServiceService.findById(orderRequestDto.subServiceId()))
                 .suggestedPrice(orderRequestDto.suggestedPrice())

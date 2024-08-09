@@ -68,17 +68,6 @@ public class UserController {
         return customerMapper.customerToDto(customer);
     }
 
-    @SneakyThrows
-    @PostMapping(path = "/register/customer", consumes = "application/x-www-form-urlencoded")
-    public Resource customerRegisterStatic(@Valid CustomerRequestDto customerRequestDto) {
-
-        Customer customer = customerMapper.dtoToCustomer(customerRequestDto);
-        customer = customerService.register(customer);
-        tokenEmail.sendEmail(customer.getUser());
-        Path path = Paths.get(Objects.requireNonNull(getClass().getResource("/static/successfulSignup.html")).toURI());
-        return new ByteArrayResource(Files.readAllBytes(path));
-    }
-
     @PostMapping(value = "/register/expert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ExpertResponseDto expertRegister(@ModelAttribute ExpertRequestDto expertRequestDto) {
 

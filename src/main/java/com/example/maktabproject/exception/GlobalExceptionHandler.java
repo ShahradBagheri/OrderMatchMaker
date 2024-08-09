@@ -12,122 +12,122 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(CustomerNotFoundException.class)
-    public ResponseEntity<String> customerNotFoundExceptionHandler(CustomerNotFoundException e) {
+    @ExceptionHandler(CustomExceptions.CustomerNotFoundException.class)
+    public ResponseEntity<String> customerNotFoundExceptionHandler(CustomExceptions.CustomerNotFoundException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(DuplicateServiceException.class)
-    public ResponseEntity<String> duplicateServiceException(DuplicateServiceException e) {
+    @ExceptionHandler(CustomExceptions.DuplicateServiceException.class)
+    public ResponseEntity<String> duplicateServiceException(CustomExceptions.DuplicateServiceException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(ExpertHasNoOfferForOfferException.class)
-    public ResponseEntity<String> expertHasNoOfferForOfferException(ExpertHasNoOfferForOfferException e) {
+    @ExceptionHandler(CustomExceptions.ExpertHasNoOfferForOfferException.class)
+    public ResponseEntity<String> expertHasNoOfferForOfferException(CustomExceptions.ExpertHasNoOfferForOfferException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(ExpertNotFoundException.class)
-    public ResponseEntity<String> expertNotFoundException(ExpertNotFoundException e) {
+    @ExceptionHandler(CustomExceptions.ExpertNotFoundException.class)
+    public ResponseEntity<String> expertNotFoundException(CustomExceptions.ExpertNotFoundException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(ImageToBigException.class)
-    public ResponseEntity<String> imageToBigException(ImageToBigException e) {
+    @ExceptionHandler(CustomExceptions.ImageToBigException.class)
+    public ResponseEntity<String> imageToBigException(CustomExceptions.ImageToBigException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(IncorrectCredentialsException.class)
-    public ResponseEntity<String> incorrectCredentialsException(IncorrectCredentialsException e) {
+    @ExceptionHandler(CustomExceptions.IncorrectCredentialsException.class)
+    public ResponseEntity<String> incorrectCredentialsException(CustomExceptions.IncorrectCredentialsException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(InsufficientFundException.class)
-    public ResponseEntity<String> insufficientFundException(InsufficientFundException e) {
+    @ExceptionHandler(CustomExceptions.InsufficientFundException.class)
+    public ResponseEntity<String> insufficientFundException(CustomExceptions.InsufficientFundException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(InvalidCaptchaException.class)
-    public ResponseEntity<String> invalidCaptchaException(InvalidCaptchaException e) {
+    @ExceptionHandler(CustomExceptions.InvalidCaptchaException.class)
+    public ResponseEntity<String> invalidCaptchaException(CustomExceptions.InvalidCaptchaException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(InvalidPriceException.class)
-    public ResponseEntity<String> invalidPriceException(InvalidPriceException e) {
+    @ExceptionHandler(CustomExceptions.InvalidPriceException.class)
+    public ResponseEntity<String> invalidPriceException(CustomExceptions.InvalidPriceException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(InvalidScoreException.class)
-    public ResponseEntity<String> invalidScoreException(InvalidScoreException e) {
+    @ExceptionHandler(CustomExceptions.InvalidScoreException.class)
+    public ResponseEntity<String> invalidScoreException(CustomExceptions.InvalidScoreException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(InvalidTimeException.class)
-    public ResponseEntity<String> invalidTimeException(InvalidTimeException e) {
+    @ExceptionHandler(CustomExceptions.InvalidTimeException.class)
+    public ResponseEntity<String> invalidTimeException(CustomExceptions.InvalidTimeException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(MainServiceNotFoundException.class)
-    public ResponseEntity<String> mainServiceNotFoundException(MainServiceNotFoundException e) {
+    @ExceptionHandler(CustomExceptions.MainServiceNotFoundException.class)
+    public ResponseEntity<String> mainServiceNotFoundException(CustomExceptions.MainServiceNotFoundException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(NoSuchServiceException.class)
-    public ResponseEntity<String> noSuchServiceException(NoSuchServiceException e) {
+    @ExceptionHandler(CustomExceptions.NoSuchServiceException.class)
+    public ResponseEntity<String> noSuchServiceException(CustomExceptions.NoSuchServiceException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(NotTheCorrectTimeToChangeStatusException.class)
-    public ResponseEntity<String> notTheCorrectTimeToChangeStatusException(NotTheCorrectTimeToChangeStatusException e) {
+    @ExceptionHandler(CustomExceptions.NotTheCorrectTimeToChangeStatusException.class)
+    public ResponseEntity<String> notTheCorrectTimeToChangeStatusException(CustomExceptions.NotTheCorrectTimeToChangeStatusException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(OfferNotFoundException.class)
-    public ResponseEntity<String> offerNotFoundException(OfferNotFoundException e) {
+    @ExceptionHandler(CustomExceptions.OfferNotFoundException.class)
+    public ResponseEntity<String> offerNotFoundException(CustomExceptions.OfferNotFoundException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(OrderNotFoundException.class)
-    public ResponseEntity<String> orderNotFoundException(OrderNotFoundException e) {
+    @ExceptionHandler(CustomExceptions.OrderNotFoundException.class)
+    public ResponseEntity<String> orderNotFoundException(CustomExceptions.OrderNotFoundException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(RatingNotFoundException.class)
-    public ResponseEntity<String> ratingNotFoundException(RatingNotFoundException e) {
+    @ExceptionHandler(CustomExceptions.RatingNotFoundException.class)
+    public ResponseEntity<String> ratingNotFoundException(CustomExceptions.RatingNotFoundException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(SubServiceNotFoundException.class)
-    public ResponseEntity<String> subServiceNotFoundException(SubServiceNotFoundException e) {
+    @ExceptionHandler(CustomExceptions.SubServiceNotFoundException.class)
+    public ResponseEntity<String> subServiceNotFoundException(CustomExceptions.SubServiceNotFoundException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(SubServiceTwoMainServiceException.class)
-    public ResponseEntity<String> subServiceTwoMainServiceException(SubServiceTwoMainServiceException e) {
+    @ExceptionHandler(CustomExceptions.SubServiceTwoMainServiceException.class)
+    public ResponseEntity<String> subServiceTwoMainServiceException(CustomExceptions.SubServiceTwoMainServiceException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> userNotFoundException(UserNotFoundException e) {
+    @ExceptionHandler(CustomExceptions.UserNotFoundException.class)
+    public ResponseEntity<String> userNotFoundException(CustomExceptions.UserNotFoundException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }

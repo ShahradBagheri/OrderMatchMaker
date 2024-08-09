@@ -1,8 +1,6 @@
 package com.example.maktabproject.service;
 
-import com.example.maktabproject.exception.MainServiceNotFoundException;
-import com.example.maktabproject.exception.SubServiceNotFoundException;
-import com.example.maktabproject.exception.SubServiceTwoMainServiceException;
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.SubService;
 
 import java.util.List;
@@ -13,13 +11,13 @@ public interface SubServiceService {
 
     void delete(SubService subService);
 
-    SubService findById(Long id) throws SubServiceNotFoundException;
+    SubService findById(Long id) throws CustomExceptions.SubServiceNotFoundException;
 
     List<SubService> findAll();
 
-    SubService addMainService(Long subServiceId, Long mainServiceId) throws SubServiceNotFoundException, SubServiceTwoMainServiceException, MainServiceNotFoundException;
+    SubService addMainService(Long subServiceId, Long mainServiceId) throws CustomExceptions.SubServiceNotFoundException, CustomExceptions.SubServiceTwoMainServiceException, CustomExceptions.MainServiceNotFoundException;
 
-    SubService removeMainService(Long subServiceId) throws SubServiceNotFoundException, MainServiceNotFoundException;
+    SubService removeMainService(Long subServiceId) throws CustomExceptions.SubServiceNotFoundException, CustomExceptions.MainServiceNotFoundException;
 
-    List<SubService> findByMainService(Long mainServiceId) throws MainServiceNotFoundException;
+    List<SubService> findByMainService(Long mainServiceId) throws CustomExceptions.MainServiceNotFoundException;
 }

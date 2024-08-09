@@ -1,6 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.exception.CustomerNotFoundException;
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.repository.CustomerRepository;
 import com.example.maktabproject.service.CustomerService;
@@ -40,14 +40,14 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer findById(Long id) {
 
         return customerRepository.findById(id).orElseThrow(
-                () -> new CustomerNotFoundException("customer not found")
+                () -> new CustomExceptions.CustomerNotFoundException("customer not found")
         );
     }
 
     @Override
     public Customer findByUsername(String username) {
         return customerRepository.findByUser_Username(username).orElseThrow(
-                () -> new CustomerNotFoundException("customer not found")
+                () -> new CustomExceptions.CustomerNotFoundException("customer not found")
         );
     }
 
@@ -61,7 +61,7 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer findByUser(Long userId) {
 
         return customerRepository.findByUser_Id(userId).orElseThrow(
-                () -> new CustomerNotFoundException("customer not found")
+                () -> new CustomExceptions.CustomerNotFoundException("customer not found")
         );
     }
 

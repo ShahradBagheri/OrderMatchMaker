@@ -1,7 +1,7 @@
 package com.example.maktabproject.controller;
 
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.dto.user.PaymentRequestDto;
-import com.example.maktabproject.exception.InvalidCaptchaException;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.service.Impl.UserServiceImpl;
 import com.wf.captcha.SpecCaptcha;
@@ -27,7 +27,7 @@ public class PaymentController {
 
         String captchaText = captchaMap.get(paymentRequestDto.captchaId());
         if (!paymentRequestDto.captcha().toUpperCase().equals(captchaText))
-            throw new InvalidCaptchaException();
+            throw new CustomExceptions.InvalidCaptchaException("failed captcha");
 
         User user = userService.findById(paymentRequestDto.userId());
         user.getWallet().setCredit(user.getWallet().getCredit() + paymentRequestDto.amount());

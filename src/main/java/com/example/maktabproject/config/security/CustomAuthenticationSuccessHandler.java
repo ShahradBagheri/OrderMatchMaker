@@ -20,7 +20,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 .orElse("");
 
         String redirectUrl = switch (role) {
-            case "ROLE_ADMIN" -> "/admin/homepage.html";
+            case "ROLE_ADMIN" -> "/static/adminPanel";
             case "ROLE_EXPERT" -> "/expert/homepage.html";
             case "ROLE_CUSTOMER" -> "/customer/homepage.html";
             default -> "/login.html?error=true";

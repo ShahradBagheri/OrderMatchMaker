@@ -1,6 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.exception.MainServiceNotFoundException;
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.MainService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +52,11 @@ class MainServiceServiceImplTest {
         mainServiceService.register(mainService);
         Long id = mainService.getId();
         mainServiceService.delete(mainService);
-        assertThatThrownBy( () -> mainServiceService.findById(id) ).isInstanceOf(MainServiceNotFoundException.class);
+        assertThatThrownBy( () -> mainServiceService.findById(id) ).isInstanceOf(CustomExceptions.MainServiceNotFoundException.class);
     }
 
     @Test
-    void mainServiceShouldBeFound() throws MainServiceNotFoundException {
+    void mainServiceShouldBeFound() throws CustomExceptions.MainServiceNotFoundException {
         MainService mainService = MainService.builder()
                 .name("findById test")
                 .build();
@@ -75,7 +75,7 @@ class MainServiceServiceImplTest {
         mainServiceService.register(mainService);
         Long id = mainService.getId();
         mainServiceService.delete(mainService);
-        assertThatThrownBy( () -> mainServiceService.findById(id) ).isInstanceOf(MainServiceNotFoundException.class);
+        assertThatThrownBy( () -> mainServiceService.findById(id) ).isInstanceOf(CustomExceptions.MainServiceNotFoundException.class);
     }
 
     @Test

@@ -1,6 +1,6 @@
 package com.example.maktabproject.service;
 
-import com.example.maktabproject.exception.MainServiceNotFoundException;
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.MainService;
 
 import java.util.List;
@@ -11,7 +11,7 @@ public interface MainServiceService {
 
     void delete(MainService mainService);
 
-    MainService findById(Long id) throws MainServiceNotFoundException;
+    MainService findById(Long id) throws CustomExceptions.MainServiceNotFoundException;
 
     List<MainService> findAll();
 }

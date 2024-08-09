@@ -1,6 +1,6 @@
 package com.example.maktabproject.service.Impl;
 
-import com.example.maktabproject.exception.ExpertNotFoundException;
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.enums.ExpertStatus;
 import com.example.maktabproject.repository.ExpertRepository;
@@ -46,7 +46,7 @@ public class ExpertServiceImpl implements ExpertService {
     public Expert findById(Long id) {
 
         return expertRepository.findById(id).orElseThrow(
-                () -> new ExpertNotFoundException("expert not found")
+                () -> new CustomExceptions.ExpertNotFoundException("expert not found")
         );
     }
 
@@ -54,7 +54,7 @@ public class ExpertServiceImpl implements ExpertService {
     @Transactional
     public Expert findByUsername(String username) {
         return expertRepository.findByUser_Username(username).orElseThrow(
-                () -> new ExpertNotFoundException("expert not found")
+                () -> new CustomExceptions.ExpertNotFoundException("expert not found")
         );
     }
 
@@ -70,7 +70,7 @@ public class ExpertServiceImpl implements ExpertService {
     public Expert findByUser(Long userId) {
 
         return expertRepository.findByUser_Id(userId).orElseThrow(
-                () -> new ExpertNotFoundException("expert not found")
+                () -> new CustomExceptions.ExpertNotFoundException("expert not found")
         );
     }
 

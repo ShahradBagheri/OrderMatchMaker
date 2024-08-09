@@ -61,14 +61,18 @@ public class AdminController {
         return new ResponseEntity<>(mainServiceMapper.mainServiceToDto(mainService), HttpStatus.OK);
     }
 
+    @PostMapping("/remove/mainService/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void removeMainService(@PathVariable Long id){
+        MainService mainService = mainServiceService.findById(id);
+        mainServiceService.delete(mainService);
+    }
+
     @PostMapping("/register/subService")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<SubServiceResponseDto> registerSubService(@RequestBody SubServiceRequestDto subServiceRequestDto,
-                                                                    @RequestParam Long mainServiceId) {
+    public ResponseEntity<SubServiceResponseDto> registerSubService(@RequestBody SubServiceRequestDto subServiceRequestDto) {
 
         SubService subService = subServiceMapper.subServiceDtoToSubService(subServiceRequestDto);
-        subService.setMainService(mainServiceService.findById(mainServiceId));
-
         return new ResponseEntity<>(subServiceMapper.subServiceToDto(subServiceService.register(subService)), HttpStatus.OK);
     }
 

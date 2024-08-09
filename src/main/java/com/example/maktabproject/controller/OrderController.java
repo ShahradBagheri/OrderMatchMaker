@@ -1,8 +1,8 @@
 package com.example.maktabproject.controller;
 
+import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.dto.order.OrderMapper;
 import com.example.maktabproject.model.dto.order.OrderResponseDto;
-import com.example.maktabproject.exception.NotOrderOwnerException;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Order;
@@ -53,7 +53,7 @@ public class OrderController {
         Customer customer = customerService.findByUsername(username);
 
         if (!Objects.equals(orderService.findById(orderId).getCustomer().getId(), customer.getId()))
-            throw new NotOrderOwnerException("you dont own this order!");
+            throw new CustomExceptions.NotOrderOwnerException("you dont own this order!");
 
         orderService.choseOffer(offerId, orderId);
     }
@@ -66,7 +66,7 @@ public class OrderController {
         Customer customer = customerService.findByUsername(username);
 
         if (!Objects.equals(orderService.findById(orderId).getCustomer().getId(), customer.getId()))
-            throw new NotOrderOwnerException("you dont own this order!");
+            throw new CustomExceptions.NotOrderOwnerException("you dont own this order!");
 
         return new ResponseEntity<>(orderMapper.orderToDto(orderService.statusToStarted(orderId)), HttpStatus.OK);
     }
@@ -79,7 +79,7 @@ public class OrderController {
         Customer customer = customerService.findByUsername(username);
 
         if (!Objects.equals(orderService.findById(orderId).getCustomer().getId(), customer.getId()))
-            throw new NotOrderOwnerException("you dont own this order!");
+            throw new CustomExceptions.NotOrderOwnerException("you dont own this order!");
 
         return new ResponseEntity<>(orderMapper.orderToDto(orderService.statusToFinished(orderId)), HttpStatus.OK);
     }
@@ -92,7 +92,7 @@ public class OrderController {
         Customer customer = customerService.findByUsername(username);
 
         if (!Objects.equals(orderService.findById(orderId).getCustomer().getId(), customer.getId()))
-            throw new NotOrderOwnerException("you dont own this order!");
+            throw new CustomExceptions.NotOrderOwnerException("you dont own this order!");
 
         return new ResponseEntity<>(orderMapper.orderToDto(orderService.statusToPaid(orderId)), HttpStatus.OK);
     }

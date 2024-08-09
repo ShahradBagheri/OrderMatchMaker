@@ -36,10 +36,10 @@ public class OrderServiceImpl implements OrderService {
         if (order.getOrderState() == OrderState.WAITING_FOR_SUGGESTIONS) {
 
             if (!priceValidation(order))
-                throw new InvalidPriceException("invalid price!");
+                throw new CustomExceptions.InvalidPriceException("invalid price!");
 
             if (!dateValidation(order.getStartingDate()))
-                throw new InvalidTimeException("invalid time!");
+                throw new CustomExceptions.InvalidTimeException("invalid time!");
         }
         return orderRepository.save(order);
 
@@ -57,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
     public Order findById(Long id) {
 
         return orderRepository.findById(id).orElseThrow(
-                () -> new OrderNotFoundException("order not found!")
+                () -> new CustomExceptions.OrderNotFoundException("order not found!")
         );
     }
 
@@ -81,7 +81,7 @@ public class OrderServiceImpl implements OrderService {
     public Order choseOffer(Long offerId, Long orderId) {
 
         Offer offer = offerRepository.findById(offerId).orElseThrow(
-                () -> new OfferNotFoundException("offer not found")
+                () -> new CustomExceptions.OfferNotFoundException("offer not found")
         );
 
         Order order = findById(orderId);
@@ -91,7 +91,7 @@ public class OrderServiceImpl implements OrderService {
             order.setSelectedOffer(offer);
             return register(order);
         }
-        throw new ExpertHasNoOfferForOfferException("expert has no offer for offer");
+        throw new CustomExceptions.ExpertHasNoOfferForOfferException("expert has no offer for offer");
     }
 
     @Override
@@ -116,7 +116,7 @@ public class OrderServiceImpl implements OrderService {
             order.setOrderState(OrderState.STARTED);
             return register(order);
         }
-        throw new NotTheCorrectTimeToChangeStatusException("not the correct time to change status!");
+        throw new CustomExceptions.NotTheCorrectTimeToChangeStatusException("not the correct time to change status!");
     }
 
     @Override
@@ -138,7 +138,7 @@ public class OrderServiceImpl implements OrderService {
             }
             return register(order);
         }
-        throw new NotTheCorrectTimeToChangeStatusException("not the correct time to change status!");
+        throw new CustomExceptions.NotTheCorrectTimeToChangeStatusException("not the correct time to change status!");
     }
 
     @Override
@@ -161,7 +161,7 @@ public class OrderServiceImpl implements OrderService {
         double expertBalance = expert.getUser().getWallet().getCredit();
 
         if (order.getSelectedOffer().getSuggestedPrice() > customerBalance)
-            throw new InsufficientFundException("not enough money");
+            throw new CustomExceptions.InsufficientFundException("not enough money");
 
         customer.getUser().getWallet().setCredit(customerBalance - order.getSelectedOffer().getSuggestedPrice());
         expert.getUser().getWallet().setCredit(expertBalance + order.getSelectedOffer().getSuggestedPrice() * 70 / 100);

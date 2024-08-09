@@ -32,7 +32,7 @@ class OfferServiceImplTest {
     private OrderServiceImpl orderService;
 
     @Test
-    void validOfferShouldSave() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException {
+    void validOfferShouldSave() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.OrderNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -88,7 +88,7 @@ class OfferServiceImplTest {
     }
 
     @Test
-    void offerWithNoExpertShouldNotSave() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException {
+    void offerWithNoExpertShouldNotSave() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.OrderNotFoundException {
 
         SubService subService = SubService.builder()
                 .name("noExpertOfferTest")
@@ -132,7 +132,7 @@ class OfferServiceImplTest {
     }
 
     @Test
-    void invalidTimeShouldNotSave() throws InvalidPriceException, InvalidTimeException {
+    void invalidTimeShouldNotSave() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -183,11 +183,11 @@ class OfferServiceImplTest {
                 .completionDate(LocalDateTime.now().plusDays(3))
                 .build();
 
-        assertThatThrownBy(() -> offerService.register(offer)).isInstanceOf(InvalidTimeException.class);
+        assertThatThrownBy(() -> offerService.register(offer)).isInstanceOf(CustomExceptions.InvalidTimeException.class);
     }
 
     @Test
-    void invalidPriceShouldNotBeSaved() throws InvalidPriceException, InvalidTimeException {
+    void invalidPriceShouldNotBeSaved() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -238,11 +238,11 @@ class OfferServiceImplTest {
                 .completionDate(LocalDateTime.now().plusDays(3))
                 .build();
 
-        assertThatThrownBy(() -> offerService.register(offer)).isInstanceOf(InvalidPriceException.class);
+        assertThatThrownBy(() -> offerService.register(offer)).isInstanceOf(CustomExceptions.InvalidPriceException.class);
     }
 
     @Test
-    void shouldFindOffer() throws InvalidPriceException, InvalidTimeException, OfferNotFoundException, OrderNotFoundException {
+    void shouldFindOffer() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.OfferNotFoundException, CustomExceptions.OrderNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -298,7 +298,7 @@ class OfferServiceImplTest {
     }
 
     @Test
-    void offerShouldGetDeleted() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException {
+    void offerShouldGetDeleted() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.OrderNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -353,17 +353,17 @@ class OfferServiceImplTest {
         long id = offer.getId();
 
         offerService.delete(offer);
-        assertThatThrownBy(() -> offerService.findById(id)).isInstanceOf(OfferNotFoundException.class);
+        assertThatThrownBy(() -> offerService.findById(id)).isInstanceOf(CustomExceptions.OfferNotFoundException.class);
     }
 
     @Test
     void findByIdShouldThrowNotFound(){
 
-        assertThatThrownBy(() -> offerService.findById(10000L)).isInstanceOf(OfferNotFoundException.class);
+        assertThatThrownBy(() -> offerService.findById(10000L)).isInstanceOf(CustomExceptions.OfferNotFoundException.class);
     }
 
     @Test
-    void shouldFindAll() throws InvalidPriceException, InvalidTimeException, OrderNotFoundException {
+    void shouldFindAll() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.OrderNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -421,7 +421,7 @@ class OfferServiceImplTest {
     }
 
     @Test
-    void findAllByCustomerOrderByPrice() throws InvalidPriceException, InvalidTimeException, CustomerNotFoundException, OrderNotFoundException {
+    void findAllByCustomerOrderByPrice() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.CustomerNotFoundException, CustomExceptions.OrderNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
@@ -500,7 +500,7 @@ class OfferServiceImplTest {
     }
 
     @Test
-    void findAllByCustomerOrderByScore() throws InvalidPriceException, InvalidTimeException, CustomerNotFoundException, OrderNotFoundException {
+    void findAllByCustomerOrderByScore() throws CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.CustomerNotFoundException, CustomExceptions.OrderNotFoundException {
         User user = User.builder()
                 .firstname("shahrad")
                 .lastname("bagheri")
