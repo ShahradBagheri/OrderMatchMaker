@@ -35,4 +35,6 @@ public interface AdminService {
     LocalDateTime customerSignedUpTime(Long customerId);
 
     LocalDateTime expertSignedUpTime(Long expertId);
+
+    List<Expert> loadAWaitingConfirmationExperts();
 }

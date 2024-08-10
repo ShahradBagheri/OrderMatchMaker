@@ -14,6 +14,7 @@ import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.model.VerificationToken;
 import com.example.maktabproject.model.enums.ExpertStatus;
+import com.example.maktabproject.model.enums.Role;
 import com.example.maktabproject.service.Impl.CustomerServiceImpl;
 import com.example.maktabproject.service.Impl.ExpertServiceImpl;
 import com.example.maktabproject.service.Impl.UserServiceImpl;
@@ -92,6 +93,11 @@ public class UserController {
         User user = verificationToken.getUser();
         user.setEnabled(true);
         userService.register(user);
+        if(user.getRole().equals(Role.ROLE_EXPERT)){
+            Expert expert = expertService.findByUser(user.getId());
+            expert.setExpertStatus(ExpertStatus.AWAITING_CONFIRMATION);
+            expertService.register(expert);
+        }
         return "DONE!";
     }
 }

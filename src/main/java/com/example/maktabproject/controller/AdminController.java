@@ -1,5 +1,6 @@
 package com.example.maktabproject.controller;
 
+import com.example.maktabproject.model.*;
 import com.example.maktabproject.model.dto.expert.ExpertMapper;
 import com.example.maktabproject.model.dto.expert.ExpertResponseDto;
 import com.example.maktabproject.model.dto.mainSevice.MainServiceMapper;
@@ -14,10 +15,6 @@ import com.example.maktabproject.model.dto.subService.SubServiceResponseDto;
 import com.example.maktabproject.model.dto.user.UserFilterRequestDto;
 import com.example.maktabproject.model.dto.user.UserMapper;
 import com.example.maktabproject.model.dto.user.UserResponseDto;
-import com.example.maktabproject.model.MainService;
-import com.example.maktabproject.model.Order;
-import com.example.maktabproject.model.SubService;
-import com.example.maktabproject.model.User;
 import com.example.maktabproject.model.enums.ExpertStatus;
 import com.example.maktabproject.service.AdminService;
 import com.example.maktabproject.service.Impl.MainServiceServiceImpl;
@@ -68,6 +65,13 @@ public class AdminController {
         mainServiceService.delete(mainService);
     }
 
+    @PostMapping("/remove/subService/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void removeSubService(@PathVariable Long id){
+        SubService subService = subServiceService.findById(id);
+        subServiceService.delete(subService);
+    }
+
     @PostMapping("/register/subService")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SubServiceResponseDto> registerSubService(@RequestBody SubServiceRequestDto subServiceRequestDto) {
@@ -106,6 +110,16 @@ public class AdminController {
                                                                       @RequestParam Long subServiceId) {
 
         return new ResponseEntity<>(expertMapper.expertToDto(adminService.removeExpertSubService(expertId, subServiceId)), HttpStatus.OK);
+    }
+
+    @GetMapping("/expert/loadNotConfirm")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<ExpertResponseDto>> loadAllAWaitingConfirmationExperts(){
+        List<ExpertResponseDto> notEnabledExperts = adminService.loadAWaitingConfirmationExperts()
+                .stream()
+                .map(expertMapper::expertToDto)
+                .toList();
+        return new ResponseEntity<>(notEnabledExperts, HttpStatus.OK);
     }
 
     @PostMapping("/expert/approveExpert")

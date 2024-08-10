@@ -12,6 +12,7 @@ import com.example.maktabproject.repository.ExpertRepository;
 import com.example.maktabproject.repository.OrderRepository;
 import com.example.maktabproject.repository.UserRepository;
 import com.example.maktabproject.service.AdminService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -175,5 +177,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public LocalDateTime expertSignedUpTime(Long expertId) {
         return expertService.findById(expertId).getUser().getRegistrationDate();
+    }
+
+    @Override
+    @Transactional
+    public List<Expert> loadAWaitingConfirmationExperts() {
+        Optional<List<Expert>> experts = expertRepository.findByExpertStatus(ExpertStatus.AWAITING_CONFIRMATION);
+        return experts.orElse(null);
     }
 }
