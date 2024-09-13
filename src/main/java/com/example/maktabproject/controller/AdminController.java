@@ -1,6 +1,8 @@
 package com.example.maktabproject.controller;
 
 import com.example.maktabproject.model.*;
+import com.example.maktabproject.model.dto.customer.CustomerMapper;
+import com.example.maktabproject.model.dto.customer.CustomerResponseDto;
 import com.example.maktabproject.model.dto.expert.ExpertMapper;
 import com.example.maktabproject.model.dto.expert.ExpertResponseDto;
 import com.example.maktabproject.model.dto.mainSevice.EditMainServiceRequestDto;
@@ -18,6 +20,8 @@ import com.example.maktabproject.model.dto.user.UserResponseDto;
 import com.example.maktabproject.model.enums.ExpertStatus;
 import com.example.maktabproject.model.view.OrderView;
 import com.example.maktabproject.service.AdminService;
+import com.example.maktabproject.service.CustomerService;
+import com.example.maktabproject.service.ExpertService;
 import com.example.maktabproject.service.Impl.MainServiceServiceImpl;
 import com.example.maktabproject.service.Impl.SubServiceServiceImpl;
 import jakarta.validation.Valid;
@@ -43,6 +47,9 @@ public class AdminController {
     private final ExpertMapper expertMapper;
     private final UserMapper userMapper;
     private final OrderMapper orderMapper;
+    private final ExpertService expertService;
+    private final CustomerService customerService;
+    private final CustomerMapper customerMapper;
 
     @GetMapping("/allMainService")
     @PreAuthorize("hasRole('ADMIN')")
@@ -50,6 +57,20 @@ public class AdminController {
 
         List<MainService> mainServiceList = mainServiceService.findAll();
         return mainServiceList.stream().map(mainServiceMapper::mainServiceToDto).toList();
+    }
+
+    @GetMapping("/allExperts")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<ExpertResponseDto> getAllExperts(){
+        List<Expert> experts = expertService.findAll();
+        return experts.stream().map(expertMapper::expertToDto).toList();
+    }
+
+    @GetMapping("/allCustomer")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<CustomerResponseDto> getAllCustomers(){
+        List<Customer> customers = customerService.findAll();
+        return customers.stream().map(customerMapper::customerToDto).toList();
     }
 
     @PostMapping("/register/mainService")
@@ -184,9 +205,9 @@ public class AdminController {
     }
 
     @PostMapping("/mainService/edit")
-    public ResponseEntity<Long> editMainService(@RequestBody EditMainServiceRequestDto editMainServiceDto){
-        MainService mainService = mainServiceService.findById(editMainServiceDto.mainServiceId());
-        mainService.setName(editMainServiceDto.mainServiceName());
+    public ResponseEntity<Long> editMainService(@RequestBody @Valid EditMainServiceRequestDto editMainServiceDto){
+        MainService mainService = mainServiceService.findById(editMainServiceDto.id());
+        mainService.setName(editMainServiceDto.name());
         mainServiceService.register(mainService);
         return new ResponseEntity<>(mainService.getId(), HttpStatus.OK);
     }

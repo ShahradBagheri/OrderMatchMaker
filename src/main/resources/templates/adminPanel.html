@@ -12,11 +12,23 @@
     <button class="control-panel-button" onclick="showForm('verify-user-form')">
         <i class="fas fa-user-check"></i> <span>Approve Experts</span>
     </button>
+    <button class="control-panel-button" onclick="showForm('assign-expert-form')">
+        <i class="fas fa-user-tie"></i> <span>Assign Expert</span>
+    </button>
+    <button class="control-panel-button" onclick="showForm('discharge-expert-form')">
+        <i class="fas fa-user-minus"></i> <span>Discharge Expert</span>
+    </button>
+    <button class="control-panel-button" onclick="showForm('edit-mainservice-form')">
+        <i class="fas fa-wrench"></i> <span>Edit MainService</span>
+    </button>
     <button class="control-panel-button" onclick="showForm('edit-subservice-form')">
-        <i class="fas fa-edit"></i> <span>Edit SubService Base Price</span>
+        <i class="fas fa-sliders-h"></i> <span>Edit SubService</span>
     </button>
     <button class="control-panel-button" onclick="showForm('user-search-form')">
         <i class="fas fa-search"></i> <span>Search Users</span>
+    </button>
+    <button class="control-panel-button" onclick="showForm('search-orders-form')">
+        <i class="fas fa-receipt"></i> <span>Search Orders</span>
     </button>
     <button class="control-panel-button toggle-text-button" onclick="toggleText()">
         <i class="fas fa-arrows-alt-h"></i> <span>Toggle Text</span>
@@ -109,66 +121,152 @@
     </div>
 </div>
 
-    <div class="content-container" id="user-search-form">
-        <div class="container">
-            <h2>Search Users</h2>
-            <div>
-                <label for="role">Role</label>
-                <select id="role" name="role">
-                    <option value="">Select Role</option>
-                    <option value="ROLE_ADMIN">Admin</option>
-                    <option value="ROLE_CUSTOMER">User</option>
-                    <option value="ROLE_EXPERT">Expert</option>
-                </select>
+<div class="content-container" id="user-search-form">
+    <div class="container">
+        <h2>Search Users</h2>
+        <div>
+            <label for="role">Role</label>
+            <select id="role" name="role">
+                <option value="">Select Role</option>
+                <option value="ROLE_CUSTOMER">User</option>
+                <option value="ROLE_EXPERT">Expert</option>
+            </select>
 
-                <label for="firstname">First Name</label>
-                <input type="text" id="firstname" name="firstname">
+            <label for="firstname">First Name</label>
+            <input type="text" id="firstname" name="firstname">
 
-                <label for="lastname">Last Name</label>
-                <input type="text" id="lastname" name="lastname">
+            <label for="lastname">Last Name</label>
+            <input type="text" id="lastname" name="lastname">
 
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email">
 
-                <label for="beforeCreationDate">Before Creation Date</label>
-                <input type="datetime-local" id="beforeCreationDate" name="beforeCreationDate">
+            <label for="beforeCreationDate">Before Creation Date</label>
+            <input type="datetime-local" id="beforeCreationDate" name="beforeCreationDate">
 
-                <label for="afterCreationDate">After Creation Date</label>
-                <input type="datetime-local" id="afterCreationDate" name="afterCreationDate">
+            <label for="afterCreationDate">After Creation Date</label>
+            <input type="datetime-local" id="afterCreationDate" name="afterCreationDate">
 
-                <label for="subservice">SubService</label>
-                <select id="subservice" name="subservice">
-                    <!-- Options will be populated dynamically with JavaScript based on available SubServices -->
-                </select>
+            <label for="subservice">SubService</label>
+            <select id="subservice" name="subservice">
+            </select>
 
-                <label for="scoreHigher">Score Higher Than</label>
-                <input type="number" id="scoreHigher" name="scoreHigher" step="0.1">
+            <label for="scoreHigher">Score Higher Than</label>
+            <input type="number" id="scoreHigher" name="scoreHigher" step="0.1">
 
-                <label for="scoreLower">Score Lower Than</label>
-                <input type="number" id="scoreLower" name="scoreLower" step="0.1">
+            <label for="scoreLower">Score Lower Than</label>
+            <input type="number" id="scoreLower" name="scoreLower" step="0.1">
 
-                <button type="button" onclick="searchUsers()">Search</button>
-            </div>
-        </div>
-        <div class="table-container">
-            <table class="user-table">
-                <thead>
-                <tr>
-                    <th>Role</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Creation Date</th>
-                    <th>SubService</th>
-                    <th>Score</th>
-                </tr>
-                </thead>
-                <tbody id="user-table-body">
-                <!-- Search results will be populated here -->
-                </tbody>
-            </table>
+            <button type="button" onclick="searchUsers()">Search</button>
         </div>
     </div>
+    <div class="table-container">
+        <table class="user-table">
+            <thead>
+            <tr>
+                <th>Role</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Creation Date</th>
+                <th>SubService</th>
+                <th>Score</th>
+            </tr>
+            </thead>
+            <tbody id="user-table-body">
+            <!-- Search results will be populated here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="content-container" id="edit-subservice-form">
+    <div class="container">
+        <h2>Edit SubService</h2>
+        <div>
+            <label for="edit-subservice-select">SubService</label>
+            <select id="edit-subservice-select" name="id">
+            </select>
+
+            <label for="edit-subservice-mainservice-select">Select MainService</label>
+            <select id="edit-subservice-mainservice-select" name="mainserviceId">
+            </select>
+
+            <label for="edit-subservice-name">SubService Name</label>
+            <input type="text" id="edit-subservice-name" name="name">
+
+            <label for="edit-subservice-price">Base Price</label>
+            <input type="number" id="edit-subservice-price" name="basePrice">
+
+            <button onclick="updateSubService()">Update SubService</button>
+        </div>
+    </div>
+</div>
+
+<div class="content-container" id="edit-mainservice-form">
+    <div class="container">
+        <h2>Edit MainService</h2>
+        <div>
+            <label for="edit-mainservice-select">Select MainService</label>
+            <select id="edit-mainservice-select" name="id">
+            </select>
+
+            <label for="edit-mainservice-name">SubService Name</label>
+            <input type="text" id="edit-mainservice-name" name="name">
+
+            <button onclick="updateMainService()">Update MainService</button>
+        </div>
+    </div>
+</div>
+
+<div class="content-container" id="search-orders-form">
+    <div class="container">
+        <h2>Search Orders</h2>
+        <div>
+            <label for="customerId">Customer:</label>
+            <select id="customerId" name="customerId">
+            </select>
+            <br><br>
+
+            <label for="expertId">Expert:</label>
+            <select id="expertId" name="expertId">
+            </select>
+            <br><br>
+
+            <label for="startAfter">Start After:</label>
+            <input type="datetime-local" id="startAfter" name="startAfter">
+            <br><br>
+
+            <label for="startBefore">Start Before:</label>
+            <input type="datetime-local" id="startBefore" name="startBefore">
+            <br><br>
+
+            <label for="orderState">Order State:</label>
+            <select id="orderState" name="orderState">
+                <option value="">Select order state</option>
+                <option value="WAITING_FOR_SUGGESTIONS">Waiting for Suggestions</option>
+                <option value="WAITING_TO_SELECT_SUGGESTION">Waiting to Select Suggestion</option>
+                <option value="WAITING_FOR_EXPERT">Waiting for Expert</option>
+                <option value="STARTED">Started</option>
+                <option value="FINISHED">Finished</option>
+                <option value="PAID">Paid</option>
+            </select>
+            <br><br>
+
+            <label for="mainServiceId">MainService:</label>
+            <select id="mainServiceId" name="mainServiceId">
+            </select>
+            <br><br>
+
+            <label for="subServiceId">SubService:</label>
+            <select id="subServiceId" name="subServiceId">
+            </select>
+            <br><br>
+
+            <button onclick="searchOrders()">Search Orders</button>
+        </div>
+    </div>
+</div>
 </div>
 
 </body>
@@ -349,6 +447,10 @@
     </style>
 
     <script>
+        const emptyOption = document.createElement('option');
+        emptyOption.value = null;
+        emptyOption.textContent = "Select one";
+
         let mainServices = [];
         let subServices = [];
         let experts = [];
@@ -401,6 +503,27 @@
                     option.textContent = service.name;
                     mainserviceSelect.appendChild(option);
                 });
+
+                const editMainService = document.getElementById('edit-mainservice-select');
+                editMainService.innerHTML = '';
+                editMainService.appendChild(emptyOption);
+                data.forEach(service => {
+                    const option = document.createElement('option');
+                    option.value = service.id;
+                    option.textContent = service.name;
+                    editMainService.appendChild(option);
+                });
+
+                const subServiceEditMainService = document.getElementById('edit-subservice-mainservice-select');
+                subServiceEditMainService.innerHTML = '';
+                subServiceEditMainService.appendChild(emptyOption);
+                data.forEach(service => {
+                    const option = document.createElement('option');
+                    option.value = service.id;
+                    option.textContent = service.name;
+                    subServiceEditMainService.appendChild(option);
+                });
+
                 const mainServiceTableBody = document.getElementById('mainservice-table-body');
                 mainServiceTableBody.innerHTML = '';
                 mainServices.forEach(service => {
@@ -457,10 +580,12 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({name: name,
+                body: JSON.stringify({
+                    name: name,
                     mainServiceId: mainServiceId,
                     basePrice: basePrice,
-                    comment: comment}),
+                    comment: comment
+                }),
             }).then(response => {
                 if (!response.ok) {
                     alert("This subService has already been registered!")
@@ -495,9 +620,18 @@
                     `;
                 subServiceTableBody.appendChild(row);
             });
+
+            const subServiceEdit = document.getElementById('edit-subservice-select');
+            subServiceEdit.innerHTML = '';
+            data.forEach(service => {
+                const option = document.createElement('option');
+                option.value = service.id;
+                option.textContent = service.name;
+                subServiceEdit.appendChild(option);
+            });
         }
 
-        function removeSubService(serviceId){
+        function removeSubService(serviceId) {
             fetch("/admin/remove/subService/".concat(serviceId), {method: "POST"})
                 .then(response => {
                     if (!response.ok) {
@@ -603,8 +737,71 @@
                 fetchExperts()
             })
         }
-    </script>
 
+        function updateSubService() {
+            const id = document.getElementById('edit-subservice-select').value;
+            const mainServiceId = document.getElementById('edit-subservice-mainservice-select').value;
+            const name = document.getElementById('edit-subservice-name').value;
+            const basePrice = document.getElementById('edit-subservice-price').value;
+
+            fetch('/admin/subService/edit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: id,
+                    name: name,
+                    basePrice: basePrice,
+                    mainServiceId: mainServiceId
+                }),
+            }).then(response => {
+                if (!response.ok) {
+                    alert("Failed to update SubService");
+                    throw new Error('Network response was not ok');
+                } else {
+                    alert("SubService Updated!");
+                }
+                fetchSubServices();
+            });
+
+            document.getElementById('edit-subservice-select').selectedIndex = 0;
+            document.getElementById('edit-subservice-mainservice-select').selectedIndex = 0;
+            document.getElementById('edit-subservice-name').value = '';
+            document.getElementById('edit-subservice-price').value = '';
+        }
+
+        function updateMainService() {
+            const id = document.getElementById('edit-mainservice-select').value;
+            const name = document.getElementById('edit-mainservice-name').value;
+
+            fetch('/admin/mainService/edit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: id,
+                    name: name,
+                }),
+            }).then(response => {
+                if (!response.ok) {
+                    alert("Failed to update MainService");
+                    throw new Error('Network response was not ok');
+                } else {
+                    alert("MainService Updated!");
+                }
+                fetchMainServices();
+            });
+
+            document.getElementById('edit-mainservice-select').selectedIndex = 0;
+            document.getElementById('edit-mainservice-name').value = '';
+        }
+
+        function searchOrders(){
+
+        }
+    </script>
 
 
 </head>

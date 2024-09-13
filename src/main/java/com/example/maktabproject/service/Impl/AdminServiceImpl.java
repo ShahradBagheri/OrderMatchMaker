@@ -158,7 +158,7 @@ public class AdminServiceImpl implements AdminService {
             orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("subServiceId"), orderViewFilterCriteriaDto.mainServiceId()));
 
         if (orderViewFilterCriteriaDto.subServiceId() != null)
-            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("mainServiceId"), orderViewFilterCriteriaDto.subServiceId()));
+            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("id"), orderViewFilterCriteriaDto.subServiceId()));
 
         return orderViewRepository.findAll(orderSpecification);
     }
