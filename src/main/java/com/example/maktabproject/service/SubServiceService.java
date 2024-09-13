@@ -20,4 +20,6 @@ public interface SubServiceService {
     SubService removeMainService(Long subServiceId) throws CustomExceptions.SubServiceNotFoundException, CustomExceptions.MainServiceNotFoundException;
 
     List<SubService> findByMainService(Long mainServiceId) throws CustomExceptions.MainServiceNotFoundException;
+
+    List<SubService> findByExpertId(Long expertId);
 }

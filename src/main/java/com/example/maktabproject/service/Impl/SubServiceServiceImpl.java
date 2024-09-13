@@ -78,4 +78,11 @@ public class SubServiceServiceImpl implements SubServiceService {
 
         return subServiceRepository.findAllByMainService(mainService);
     }
+
+    @Override
+    public List<SubService> findByExpertId(Long expertId) {
+        return subServiceRepository.findAllByExperts_Id(expertId);
+    }
+
+
 }

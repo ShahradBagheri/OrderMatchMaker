@@ -1,6 +1,7 @@
 package com.example.maktabproject.service.Impl;
 
 import com.example.maktabproject.model.dto.order.OrderFilterCriteriaDto;
+import com.example.maktabproject.model.dto.order.OrderViewFilterCriteriaDto;
 import com.example.maktabproject.model.dto.user.UserFilterCriteriaDto;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Order;
@@ -8,8 +9,10 @@ import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.model.enums.ExpertStatus;
 import com.example.maktabproject.model.enums.OrderState;
+import com.example.maktabproject.model.view.OrderView;
 import com.example.maktabproject.repository.ExpertRepository;
 import com.example.maktabproject.repository.OrderRepository;
+import com.example.maktabproject.repository.OrderViewRepository;
 import com.example.maktabproject.repository.UserRepository;
 import com.example.maktabproject.service.AdminService;
 import jakarta.transaction.Transactional;
@@ -32,6 +35,7 @@ public class AdminServiceImpl implements AdminService {
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
     private final CustomerServiceImpl customerService;
+    private final OrderViewRepository orderViewRepository;
 
     @Override
     public Expert addExpertSubService(Long expertId, Long subServiceId) {
@@ -95,15 +99,15 @@ public class AdminServiceImpl implements AdminService {
             expertSpecification = expertSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.lessThan(root.get("score"), userFilterCriteriaDto.scoreLower()));
 
         if (userFilterCriteriaDto.subService() != null)
-            expertSpecification = expertSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.isMember(userFilterCriteriaDto.subService(), root.get("subServices")));
+            expertSpecification = expertSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.isMember(userFilterCriteriaDto.subService(), root.get("subService")));
 
-        if (userFilterCriteriaDto.firstname() != null)
+        if (userFilterCriteriaDto.firstname() != null && !userFilterCriteriaDto.firstname().isBlank())
             userSpecification = userSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("firstname"), "%" + userFilterCriteriaDto.firstname() + "%"));
 
-        if (userFilterCriteriaDto.lastname() != null)
+        if (userFilterCriteriaDto.lastname() != null && !userFilterCriteriaDto.lastname().isBlank())
             userSpecification = userSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("lastname"), "%" + userFilterCriteriaDto.lastname() + "%"));
 
-        if (userFilterCriteriaDto.email() != null)
+        if (userFilterCriteriaDto.email() != null && !userFilterCriteriaDto.email().isBlank())
             userSpecification = userSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("email"), "%" + userFilterCriteriaDto.email() + "%"));
 
         if (userFilterCriteriaDto.afterCreationDate() != null)
@@ -131,8 +135,36 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Order> filterOrders(OrderFilterCriteriaDto orderFilterCriteriaDto) {
+    public List<OrderView> filterOrderViews(OrderViewFilterCriteriaDto orderViewFilterCriteriaDto) {
 
+        Specification<OrderView> orderSpecification = Specification.where(null);
+
+        if (orderViewFilterCriteriaDto.customerId() != null)
+            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("customerId"), orderViewFilterCriteriaDto.customerId()));
+
+        if (orderViewFilterCriteriaDto.expertId() != null)
+            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("expertId"), orderViewFilterCriteriaDto.expertId()));
+
+        if (orderViewFilterCriteriaDto.startAfter() != null)
+            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("startingDate"), orderViewFilterCriteriaDto.startAfter()));
+
+        if (orderViewFilterCriteriaDto.startBefore() != null)
+            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("startingDate"), orderViewFilterCriteriaDto.startBefore()));
+
+        if (orderViewFilterCriteriaDto.orderState() != null)
+            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("orderState"), orderViewFilterCriteriaDto.orderState()));
+
+        if (orderViewFilterCriteriaDto.mainServiceId() != null)
+            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("subServiceId"), orderViewFilterCriteriaDto.mainServiceId()));
+
+        if (orderViewFilterCriteriaDto.subServiceId() != null)
+            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("mainServiceId"), orderViewFilterCriteriaDto.subServiceId()));
+
+        return orderViewRepository.findAll(orderSpecification);
+    }
+
+    @Override
+    public List<Order> filterOrders(OrderFilterCriteriaDto orderFilterCriteriaDto) {
         Specification<Order> orderSpecification = Specification.where(null);
 
         if (orderFilterCriteriaDto.customer() != null)

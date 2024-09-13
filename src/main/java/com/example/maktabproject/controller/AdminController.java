@@ -3,12 +3,12 @@ package com.example.maktabproject.controller;
 import com.example.maktabproject.model.*;
 import com.example.maktabproject.model.dto.expert.ExpertMapper;
 import com.example.maktabproject.model.dto.expert.ExpertResponseDto;
+import com.example.maktabproject.model.dto.mainSevice.EditMainServiceRequestDto;
 import com.example.maktabproject.model.dto.mainSevice.MainServiceMapper;
 import com.example.maktabproject.model.dto.mainSevice.MainServiceRequestDto;
 import com.example.maktabproject.model.dto.mainSevice.MainServiceResponseDto;
-import com.example.maktabproject.model.dto.order.OrderFilterRequestDto;
-import com.example.maktabproject.model.dto.order.OrderMapper;
-import com.example.maktabproject.model.dto.order.OrderResponseDto;
+import com.example.maktabproject.model.dto.order.*;
+import com.example.maktabproject.model.dto.subService.SubServiceEditRequestDto;
 import com.example.maktabproject.model.dto.subService.SubServiceMapper;
 import com.example.maktabproject.model.dto.subService.SubServiceRequestDto;
 import com.example.maktabproject.model.dto.subService.SubServiceResponseDto;
@@ -16,9 +16,11 @@ import com.example.maktabproject.model.dto.user.UserFilterRequestDto;
 import com.example.maktabproject.model.dto.user.UserMapper;
 import com.example.maktabproject.model.dto.user.UserResponseDto;
 import com.example.maktabproject.model.enums.ExpertStatus;
+import com.example.maktabproject.model.view.OrderView;
 import com.example.maktabproject.service.AdminService;
 import com.example.maktabproject.service.Impl.MainServiceServiceImpl;
 import com.example.maktabproject.service.Impl.SubServiceServiceImpl;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -129,7 +131,7 @@ public class AdminController {
         return new ResponseEntity<>(expertMapper.expertToDto(adminService.updateExpertStatus(expertId, ExpertStatus.APPROVED)), HttpStatus.OK);
     }
 
-    @GetMapping("/users/filter")
+    @PostMapping("/users/filter")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserResponseDto>> filterAllUsers(@RequestBody UserFilterRequestDto userFilterRequestDto) {
 
@@ -139,10 +141,18 @@ public class AdminController {
 
     @GetMapping("/orders/filter")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<OrderResponseDto>> filterAllUsers(@RequestBody OrderFilterRequestDto orderFilterRequestDto) {
+    public ResponseEntity<List<OrderResponseDto>> filterAllOrders(@RequestBody OrderFilterRequestDto orderFilterRequestDto) {
 
         List<Order> orders = adminService.filterOrders(orderMapper.dtoToCriteria(orderFilterRequestDto));
         return new ResponseEntity<>(orders.stream().map(orderMapper::orderToDto).toList(), HttpStatus.OK);
+    }
+
+    @PostMapping("/orderView/filter")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<OrderViewResponseDto>> filterAllOrderViews(@RequestBody OrderViewFilterCriteriaDto orderViewFilterCriteriaDto) {
+
+        List<OrderView> orders = adminService.filterOrderViews(orderViewFilterCriteriaDto);
+        return new ResponseEntity<>(orders.stream().map(orderMapper::viewToDto).toList(), HttpStatus.OK);
     }
 
     @GetMapping("/customer/numberOfOrders")
@@ -171,5 +181,29 @@ public class AdminController {
     public ResponseEntity<LocalDateTime> expertRegistrationDate(@RequestParam Long expertId) {
 
         return new ResponseEntity<>(adminService.expertSignedUpTime(expertId), HttpStatus.OK);
+    }
+
+    @PostMapping("/mainService/edit")
+    public ResponseEntity<Long> editMainService(@RequestBody EditMainServiceRequestDto editMainServiceDto){
+        MainService mainService = mainServiceService.findById(editMainServiceDto.mainServiceId());
+        mainService.setName(editMainServiceDto.mainServiceName());
+        mainServiceService.register(mainService);
+        return new ResponseEntity<>(mainService.getId(), HttpStatus.OK);
+    }
+
+    @PostMapping("/subService/edit")
+    public ResponseEntity<Long> editMainService(@RequestBody @Valid SubServiceEditRequestDto subServiceEditRequestDto){
+        SubService subService = subServiceService.findById(subServiceEditRequestDto.id());
+        if(subServiceEditRequestDto.name() != null && !subServiceEditRequestDto.name().isBlank())
+            subService.setName(subServiceEditRequestDto.name());
+        if(subServiceEditRequestDto.basePrice() != null)
+            subService.setBasePrice(subServiceEditRequestDto.basePrice());
+        if(subServiceEditRequestDto.mainServiceId() != null){
+            MainService mainService = mainServiceService.findById(subServiceEditRequestDto.mainServiceId());
+            if(mainService != null)
+                subService.setMainService(mainService);
+        }
+        subServiceService.register(subService);
+        return new ResponseEntity<>(subService.getId(), HttpStatus.OK);
     }
 }

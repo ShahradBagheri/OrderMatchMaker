@@ -2,12 +2,14 @@ package com.example.maktabproject.service;
 
 import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.dto.order.OrderFilterCriteriaDto;
+import com.example.maktabproject.model.dto.order.OrderViewFilterCriteriaDto;
 import com.example.maktabproject.model.dto.user.UserFilterCriteriaDto;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.SubService;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.model.enums.ExpertStatus;
+import com.example.maktabproject.model.view.OrderView;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,6 +29,8 @@ public interface AdminService {
     List<User> filterUsers(UserFilterCriteriaDto userFilterCriteriaDto);
 
     List<Order> filterOrders(OrderFilterCriteriaDto orderFilterCriteriaDto);
+
+    List<OrderView> filterOrderViews(OrderViewFilterCriteriaDto orderViewFilterCriteriaDto);
 
     Long customerOrderSubmits(Long customerId);
 

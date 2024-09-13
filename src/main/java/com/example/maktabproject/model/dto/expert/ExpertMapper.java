@@ -6,6 +6,8 @@ import com.example.maktabproject.model.Wallet;
 import com.example.maktabproject.model.enums.Role;
 import org.springframework.stereotype.Component;
 
+import java.util.Base64;
+
 @Component
 public class ExpertMapper {
 
@@ -34,6 +36,11 @@ public class ExpertMapper {
                 .email(expert.getUser().getEmail())
                 .role(expert.getUser().getRole())
                 .username(expert.getUser().getUsername())
+                .imageBase64(expert.getImageData() != null ? encodeToBase64(expert.getImageData()): "null")
                 .build();
+    }
+
+    public String encodeToBase64(byte[] byteArray) {
+        return Base64.getEncoder().encodeToString(byteArray);
     }
 }

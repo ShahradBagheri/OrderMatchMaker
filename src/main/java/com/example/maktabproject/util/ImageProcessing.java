@@ -25,22 +25,6 @@ public class ImageProcessing {
         }
     }
 
-    public void bytesToImage(byte[] imageData) {
-        try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(imageData);
-
-            BufferedImage image = ImageIO.read(inputStream);
-
-            inputStream.close();
-
-            File outputFile = new File("output_image.jpg");
-            ImageIO.write(image, "jpg", outputFile);
-            System.out.println("Image saved to: " + outputFile.getAbsolutePath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public boolean validImageSize(long fileSize) {
         long sizeLimit = 300 * 1024;
 

@@ -45,18 +45,7 @@ public class OrderController {
         return new ResponseEntity<>(orderListDto, HttpStatus.OK);
     }
 
-    @PostMapping("/selectOffer")
-    @PreAuthorize("hasRole('CUSTOMER')")
-    public void selectOffer(@RequestParam Long offerId, @RequestParam Long orderId) {
 
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Customer customer = customerService.findByUsername(username);
-
-        if (!Objects.equals(orderService.findById(orderId).getCustomer().getId(), customer.getId()))
-            throw new CustomExceptions.NotOrderOwnerException("you dont own this order!");
-
-        orderService.choseOffer(offerId, orderId);
-    }
 
     @PostMapping("/changeState/started")
     @PreAuthorize("hasRole('CUSTOMER')")

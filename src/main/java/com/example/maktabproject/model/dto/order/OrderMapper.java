@@ -2,6 +2,7 @@ package com.example.maktabproject.model.dto.order;
 
 import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.*;
+import com.example.maktabproject.model.view.OrderView;
 import com.example.maktabproject.service.Impl.CustomerServiceImpl;
 import com.example.maktabproject.service.Impl.ExpertServiceImpl;
 import com.example.maktabproject.service.Impl.MainServiceServiceImpl;
@@ -64,6 +65,24 @@ public class OrderMapper {
                 .orderState(orderFilterRequestDto.orderState())
                 .subService(subService)
                 .mainService(mainService)
+                .build();
+    }
+
+    public OrderViewResponseDto viewToDto(OrderView orderView){
+        return OrderViewResponseDto.builder()
+                .id(orderView.getId())
+                .orderDetails(orderView.getOrderDetails())
+                .orderAddress(orderView.getOrderAddress())
+                .orderState(orderView.getOrderState())
+                .subServiceName(orderView.getSubServiceName())
+                .mainServiceName(orderView.getMainServiceName())
+                .subServiceBasePrice(orderView.getSubServiceBasePrice())
+                .orderStartingDate(orderView.getOrderStartingDate())
+                .offerCompletionDate(orderView.getOfferCompletionDate())
+                .orderStartingDate(orderView.getOfferStartingDate())
+                .offerSuggestedPrice(orderView.getOfferSuggestedPrice())
+                .customerUsername(orderView.getCustomerUsername())
+                .expertUsernames(orderView.getExpertUsernames())
                 .build();
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString(exclude = "subServices")
+@ToString(exclude = "subService")
 @Entity
 public class MainService {
 
