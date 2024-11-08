@@ -5,6 +5,8 @@ import com.example.maktabproject.model.dto.customer.CustomerMapper;
 import com.example.maktabproject.model.dto.customer.CustomerResponseDto;
 import com.example.maktabproject.model.dto.expert.ExpertMapper;
 import com.example.maktabproject.model.dto.expert.ExpertResponseDto;
+import com.example.maktabproject.model.dto.expertSubService.ExpertSubServiceViewMapper;
+import com.example.maktabproject.model.dto.expertSubService.ExpertSubServiceViewResponseDto;
 import com.example.maktabproject.model.dto.mainSevice.EditMainServiceRequestDto;
 import com.example.maktabproject.model.dto.mainSevice.MainServiceMapper;
 import com.example.maktabproject.model.dto.mainSevice.MainServiceRequestDto;
@@ -18,10 +20,12 @@ import com.example.maktabproject.model.dto.user.UserFilterRequestDto;
 import com.example.maktabproject.model.dto.user.UserMapper;
 import com.example.maktabproject.model.dto.user.UserResponseDto;
 import com.example.maktabproject.model.enums.ExpertStatus;
+import com.example.maktabproject.model.view.ExpertSubServiceView;
 import com.example.maktabproject.model.view.OrderView;
 import com.example.maktabproject.service.AdminService;
 import com.example.maktabproject.service.CustomerService;
 import com.example.maktabproject.service.ExpertService;
+import com.example.maktabproject.service.ExpertSubServiceViewService;
 import com.example.maktabproject.service.Impl.MainServiceServiceImpl;
 import com.example.maktabproject.service.Impl.SubServiceServiceImpl;
 import jakarta.validation.Valid;
@@ -45,11 +49,13 @@ public class AdminController {
     private final MainServiceMapper mainServiceMapper;
     private final SubServiceMapper subServiceMapper;
     private final ExpertMapper expertMapper;
+    private final ExpertSubServiceViewMapper expertSubServiceViewMapper;
     private final UserMapper userMapper;
     private final OrderMapper orderMapper;
     private final ExpertService expertService;
     private final CustomerService customerService;
     private final CustomerMapper customerMapper;
+    private final ExpertSubServiceViewService expertSubServiceViewService;
 
     @GetMapping("/allMainService")
     @PreAuthorize("hasRole('ADMIN')")
@@ -127,7 +133,7 @@ public class AdminController {
         return new ResponseEntity<>(expertMapper.expertToDto(adminService.addExpertSubService(expertId, subServiceId)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/expert/removeToSubService")
+    @PostMapping("/expert/removeToSubService")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ExpertResponseDto> removeExpertToSubService(@RequestParam Long expertId,
                                                                       @RequestParam Long subServiceId) {
@@ -205,6 +211,7 @@ public class AdminController {
     }
 
     @PostMapping("/mainService/edit")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Long> editMainService(@RequestBody @Valid EditMainServiceRequestDto editMainServiceDto){
         MainService mainService = mainServiceService.findById(editMainServiceDto.id());
         mainService.setName(editMainServiceDto.name());
@@ -213,6 +220,7 @@ public class AdminController {
     }
 
     @PostMapping("/subService/edit")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Long> editMainService(@RequestBody @Valid SubServiceEditRequestDto subServiceEditRequestDto){
         SubService subService = subServiceService.findById(subServiceEditRequestDto.id());
         if(subServiceEditRequestDto.name() != null && !subServiceEditRequestDto.name().isBlank())
@@ -226,5 +234,12 @@ public class AdminController {
         }
         subServiceService.register(subService);
         return new ResponseEntity<>(subService.getId(), HttpStatus.OK);
+    }
+
+    @GetMapping("/expertSubServiceView/findAll")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<ExpertSubServiceViewResponseDto>> filterAllOrderViews() {
+        List<ExpertSubServiceView> expertSubServiceViews = expertSubServiceViewService.findAll();
+        return new ResponseEntity<>(expertSubServiceViews.stream().map(expertSubServiceViewMapper::viewToDto).toList(), HttpStatus.OK);
     }
 }

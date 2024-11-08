@@ -15,9 +15,6 @@
     <button class="control-panel-button" onclick="showForm('assign-expert-form')">
         <i class="fas fa-user-tie"></i> <span>Assign Expert</span>
     </button>
-<!--    <button class="control-panel-button" onclick="showForm('discharge-expert-form')">-->
-<!--        <i class="fas fa-user-minus"></i> <span>Discharge Expert</span>-->
-<!--    </button>-->
     <button class="control-panel-button" onclick="showForm('edit-mainservice-form')">
         <i class="fas fa-wrench"></i> <span>Edit MainService</span>
     </button>
@@ -121,6 +118,83 @@
     </div>
 </div>
 
+<div class="content-container" id="assign-expert-form">
+    <div class="container">
+        <h2>Assign Expert</h2>
+    </div>
+    <div class="table-container">
+        <div class="container">
+            <label for="assign-expert-expert-select">Expert</label>
+            <select id="assign-expert-expert-select" name="expertId">
+            </select>
+
+            <label for="assign-expert-subservice-select">SubService</label>
+            <select id="assign-expert-subservice-select" name="subServiceId">
+            </select>
+
+            <button onclick="assignExpert()">Assign Expert</button>
+        </div>
+
+        <div class="table-container">
+            <table class="search-order-table">
+                <thead>
+                <tr>
+                    <th>Expert Firstname</th>
+                    <th>Expert Lastname</th>
+                    <th>Expert Email</th>
+                    <th>Sub Service Name</th>
+                    <th>Sub Service Base Price</th>
+                    <th>Remove</th>
+                </tr>
+                </thead>
+                <tbody id="assign-expert-table">
+                <!-- Search results will be populated here -->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<div class="content-container" id="edit-subservice-form">
+    <div class="container">
+        <h2>Edit SubService</h2>
+        <div>
+            <label for="edit-subservice-select">SubService</label>
+            <select id="edit-subservice-select" name="id">
+            </select>
+
+            <label for="edit-subservice-mainservice-select">Select MainService</label>
+            <select id="edit-subservice-mainservice-select" name="mainserviceId">
+            </select>
+
+            <label for="edit-subservice-name">SubService Name</label>
+            <input type="text" id="edit-subservice-name" name="name">
+
+            <label for="edit-subservice-price">Base Price</label>
+            <input type="number" id="edit-subservice-price" name="basePrice">
+
+            <button onclick="updateSubService()">Update SubService</button>
+        </div>
+    </div>
+</div>
+
+<div class="content-container" id="edit-mainservice-form">
+    <div class="container">
+        <h2>Edit MainService</h2>
+        <div>
+            <label for="edit-mainservice-select">Select MainService</label>
+            <select id="edit-mainservice-select" name="id">
+            </select>
+
+            <label for="edit-mainservice-name">SubService Name</label>
+            <input type="text" id="edit-mainservice-name" name="name">
+
+            <button onclick="updateMainService()">Update MainService</button>
+        </div>
+    </div>
+</div>
+
 <div class="content-container" id="user-search-form">
     <div class="container">
         <h2>Search Users</h2>
@@ -177,45 +251,6 @@
 
             </tbody>
         </table>
-    </div>
-</div>
-
-<div class="content-container" id="edit-subservice-form">
-    <div class="container">
-        <h2>Edit SubService</h2>
-        <div>
-            <label for="edit-subservice-select">SubService</label>
-            <select id="edit-subservice-select" name="id">
-            </select>
-
-            <label for="edit-subservice-mainservice-select">Select MainService</label>
-            <select id="edit-subservice-mainservice-select" name="mainserviceId">
-            </select>
-
-            <label for="edit-subservice-name">SubService Name</label>
-            <input type="text" id="edit-subservice-name" name="name">
-
-            <label for="edit-subservice-price">Base Price</label>
-            <input type="number" id="edit-subservice-price" name="basePrice">
-
-            <button onclick="updateSubService()">Update SubService</button>
-        </div>
-    </div>
-</div>
-
-<div class="content-container" id="edit-mainservice-form">
-    <div class="container">
-        <h2>Edit MainService</h2>
-        <div>
-            <label for="edit-mainservice-select">Select MainService</label>
-            <select id="edit-mainservice-select" name="id">
-            </select>
-
-            <label for="edit-mainservice-name">SubService Name</label>
-            <input type="text" id="edit-mainservice-name" name="name">
-
-            <button onclick="updateMainService()">Update MainService</button>
-        </div>
     </div>
 </div>
 
@@ -474,10 +509,12 @@
         let subServices = [];
         let experts = [];
         let allExperts = [];
+        let allExpertSubServices = [];
         fetchMainServices();
         fetchSubServices();
         fetchExperts();
         fetchCustomers();
+        fetchExpertSubServices();
 
         document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll('.content-container').forEach(function (container) {
@@ -493,8 +530,14 @@
         }
 
         function logout() {
-            window.location.href = '/logout';
 
+            fetch('/perform_logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            window.location.href = '/static/login';
         }
 
         function toggleText() {
@@ -666,9 +709,11 @@
             const subServiceEdit = document.getElementById('edit-subservice-select');
             const searchOrderSubServiceSelect = document.getElementById('search-orders-subServiceId');
             const searchUserSubServiceSelect = document.getElementById('search-users-subServiceId');
+            const assignExpertSubServiceSelect = document.getElementById('assign-expert-subservice-select');
             subServiceEdit.innerHTML = '';
             searchOrderSubServiceSelect.innerHTML = '';
             searchUserSubServiceSelect.innerHTML = '';
+            assignExpertSubServiceSelect.innerHTML = '';
             searchOrderSubServiceSelect.appendChild(emptyOption2);
             searchUserSubServiceSelect.appendChild(emptyOption3);
             data.forEach(service => {
@@ -681,9 +726,13 @@
                 const option3 = document.createElement('option');
                 option3.value = service.id;
                 option3.textContent = service.name;
+                const option4 = document.createElement('option');
+                option4.value = service.id;
+                option4.textContent = service.name;
                 subServiceEdit.appendChild(option1);
                 searchUserSubServiceSelect.appendChild(option2);
                 searchOrderSubServiceSelect.appendChild(option3);
+                assignExpertSubServiceSelect.appendChild(option4);
             });
 
         }
@@ -746,13 +795,19 @@
             emptyOption.value = null;
             emptyOption.textContent = "Select one";
             const expertSelect = document.getElementById('search-orders-expertId');
+            const assignExpertSelect = document.getElementById('assign-expert-expert-select');
             expertSelect.innerHTML = '';
+            assignExpertSelect.innerHTML = '';
             expertSelect.appendChild(emptyOption)
             allExperts.forEach(service => {
-                const option = document.createElement('option');
-                option.value = service.id;
-                option.textContent = service.username;
-                expertSelect.appendChild(option);
+                const option1 = document.createElement('option');
+                option1.value = service.id;
+                option1.textContent = service.username;
+                const option2 = document.createElement('option');
+                option2.value = service.id;
+                option2.textContent = service.username;
+                expertSelect.appendChild(option1);
+                assignExpertSelect.appendChild(option2);
             });
         }
 
@@ -967,6 +1022,101 @@
                 option.textContent = service.username;
                 customerSelect.appendChild(option);
             });
+        }
+
+        function assignExpert(){
+            const subServiceId = document.getElementById('assign-expert-subservice-select').value;
+            const expertId = document.getElementById('assign-expert-expert-select').value;
+
+            const params = new URLSearchParams();
+            params.append('expertId', expertId);
+            params.append('subServiceId', subServiceId);
+
+            fetch('/admin/expert/addToSubService', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: params
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle the response
+                    console.log('Success:', data);
+                    fetchExpertSubServices();
+                    alert('Expert successfully added to SubService!');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to add expert to SubService');
+                });
+        }
+
+        async function fetchExpertSubServices(){
+            const response = await fetch("/admin/expertSubServiceView/findAll");
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            let data = await response.json();
+            allExpertSubServices = data.map(json => ({
+                id: json.id,
+                expertId: json.expertId,
+                expertFirstname: json.expertFirstname,
+                expertLastname: json.expertLastname,
+                expertEmail: json.expertEmail,
+                subServiceId: json.subServiceId,
+                subServiceName: json.subServiceName,
+                subServiceBasePrice: json.subServiceBasePrice
+            }))
+            const assignExpertTable = document.getElementById('assign-expert-table');
+            assignExpertTable.innerHTML = '';
+            allExpertSubServices.forEach(service => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${service.expertFirstname}</td>
+                    <td>${service.expertLastname}</td>
+                    <td>${service.expertEmail}</td>
+                    <td>${service.subServiceName}</td>
+                    <td>${service.subServiceBasePrice}</td>
+                    <td><button class="remove-button" onclick="removeExpertSubService(${service.subServiceId},${service.expertId})">Remove</button></td>
+                    `;
+                assignExpertTable.appendChild(row);
+            });
+
+        }
+
+        function removeExpertSubService(subServiceId, expertId) {
+            const params = new URLSearchParams();
+            params.append('expertId', expertId);
+            params.append('subServiceId', subServiceId);
+
+            fetch('/admin/expert/removeToSubService', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: params
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    fetchExpertSubServices();
+                    alert('Expert successfully removed from SubService!');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to remove expert from SubService');
+                });
         }
     </script>
 

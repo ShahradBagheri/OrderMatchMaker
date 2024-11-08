@@ -42,7 +42,7 @@ public class SecurityConfig {
                         logout
                                 .logoutUrl("/perform_logout")
                                 .deleteCookies("JSESSIONID")
-                                .logoutSuccessUrl("/login.html?logout=true")
+                                .logoutSuccessUrl("/static/login")
                 )
                 ;
 
