@@ -26,6 +26,7 @@ public class OrderView {
 
     private String orderDetails;
     private String orderAddress;
+    @Enumerated(EnumType.STRING)
     private OrderState orderState;
     private String subServiceName;
     private String mainServiceName;
@@ -35,7 +36,7 @@ public class OrderView {
     private LocalDateTime offerStartingDate;
     private Double offerSuggestedPrice;
     private String customerUsername;
-    private String expertUsernames;
+    private String expertUsername;
     private Long customerId;
     private Long expertId;
     private Long subServiceId;

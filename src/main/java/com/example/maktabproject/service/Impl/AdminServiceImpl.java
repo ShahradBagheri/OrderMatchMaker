@@ -139,17 +139,17 @@ public class AdminServiceImpl implements AdminService {
 
         Specification<OrderView> orderSpecification = Specification.where(null);
 
-        if (orderViewFilterCriteriaDto.customerId() != null)
+        if (orderViewFilterCriteriaDto.customerId() != null && orderViewFilterCriteriaDto.customerId() > 0)
             orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("customerId"), orderViewFilterCriteriaDto.customerId()));
 
-        if (orderViewFilterCriteriaDto.expertId() != null)
+        if (orderViewFilterCriteriaDto.expertId() != null && orderViewFilterCriteriaDto.expertId() > 0)
             orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("expertId"), orderViewFilterCriteriaDto.expertId()));
 
         if (orderViewFilterCriteriaDto.startAfter() != null)
-            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("startingDate"), orderViewFilterCriteriaDto.startAfter()));
+            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("orderStartingDate"), orderViewFilterCriteriaDto.startAfter()));
 
         if (orderViewFilterCriteriaDto.startBefore() != null)
-            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("startingDate"), orderViewFilterCriteriaDto.startBefore()));
+            orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("orderStartingDate"), orderViewFilterCriteriaDto.startBefore()));
 
         if (orderViewFilterCriteriaDto.orderState() != null)
             orderSpecification = orderSpecification.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("orderState"), orderViewFilterCriteriaDto.orderState()));

@@ -82,7 +82,7 @@ public class OrderMapper {
                 .orderStartingDate(orderView.getOfferStartingDate())
                 .offerSuggestedPrice(orderView.getOfferSuggestedPrice())
                 .customerUsername(orderView.getCustomerUsername())
-                .expertUsernames(orderView.getExpertUsernames())
+                .expertUsernames(orderView.getExpertUsername())
                 .build();
     }
 }

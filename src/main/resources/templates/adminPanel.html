@@ -15,9 +15,9 @@
     <button class="control-panel-button" onclick="showForm('assign-expert-form')">
         <i class="fas fa-user-tie"></i> <span>Assign Expert</span>
     </button>
-    <button class="control-panel-button" onclick="showForm('discharge-expert-form')">
-        <i class="fas fa-user-minus"></i> <span>Discharge Expert</span>
-    </button>
+<!--    <button class="control-panel-button" onclick="showForm('discharge-expert-form')">-->
+<!--        <i class="fas fa-user-minus"></i> <span>Discharge Expert</span>-->
+<!--    </button>-->
     <button class="control-panel-button" onclick="showForm('edit-mainservice-form')">
         <i class="fas fa-wrench"></i> <span>Edit MainService</span>
     </button>
@@ -147,8 +147,8 @@
             <label for="afterCreationDate">After Creation Date</label>
             <input type="datetime-local" id="afterCreationDate" name="afterCreationDate">
 
-            <label for="subservice">SubService</label>
-            <select id="subservice" name="subservice">
+            <label for="search-users-subServiceId">SubService</label>
+            <select id="search-users-subServiceId" name="subservice">
             </select>
 
             <label for="scoreHigher">Score Higher Than</label>
@@ -174,7 +174,7 @@
             </tr>
             </thead>
             <tbody id="user-table-body">
-            <!-- Search results will be populated here -->
+
             </tbody>
         </table>
     </div>
@@ -223,26 +223,26 @@
     <div class="container">
         <h2>Search Orders</h2>
         <div>
-            <label for="customerId">Customer:</label>
-            <select id="customerId" name="customerId">
+            <label for="search-orders-customerId">Customer:</label>
+            <select id="search-orders-customerId" name="customerId">
             </select>
             <br><br>
 
-            <label for="expertId">Expert:</label>
-            <select id="expertId" name="expertId">
+            <label for="search-orders-expertId">Expert:</label>
+            <select id="search-orders-expertId" name="expertId">
             </select>
             <br><br>
 
-            <label for="startAfter">Start After:</label>
-            <input type="datetime-local" id="startAfter" name="startAfter">
+            <label for="search-orders-startAfter">Start After:</label>
+            <input type="datetime-local" id="search-orders-startAfter" name="startAfter">
             <br><br>
 
-            <label for="startBefore">Start Before:</label>
-            <input type="datetime-local" id="startBefore" name="startBefore">
+            <label for="search-orders-startBefore">Start Before:</label>
+            <input type="datetime-local" id="search-orders-startBefore" name="startBefore">
             <br><br>
 
-            <label for="orderState">Order State:</label>
-            <select id="orderState" name="orderState">
+            <label for="search-orders-orderState">Order State:</label>
+            <select id="search-orders-orderState" name="orderState">
                 <option value="">Select order state</option>
                 <option value="WAITING_FOR_SUGGESTIONS">Waiting for Suggestions</option>
                 <option value="WAITING_TO_SELECT_SUGGESTION">Waiting to Select Suggestion</option>
@@ -253,18 +253,40 @@
             </select>
             <br><br>
 
-            <label for="mainServiceId">MainService:</label>
-            <select id="mainServiceId" name="mainServiceId">
+            <label for="search-orders-mainServiceId">MainService:</label>
+            <select id="search-orders-mainServiceId" name="mainServiceId">
             </select>
             <br><br>
 
-            <label for="subServiceId">SubService:</label>
-            <select id="subServiceId" name="subServiceId">
+            <label for="search-orders-subServiceId">SubService:</label>
+            <select id="search-orders-subServiceId" name="subServiceId">
             </select>
             <br><br>
 
             <button onclick="searchOrders()">Search Orders</button>
         </div>
+    </div>
+    <div class="table-container">
+        <table class="search-order-table">
+            <thead>
+            <tr>
+                <th>Order Details</th>
+                <th>Order Address</th>
+                <th>Order State</th>
+                <th>Sub Service Name</th>
+                <th>Main Service Name</th>
+                <th>Sub Service Base Price</th>
+                <th>Order Starting Date</th>
+                <th>Offer Completion Date</th>
+                <th>Offer Suggested Price</th>
+                <th>Customer Username</th>
+                <th>Expert Username</th>
+            </tr>
+            </thead>
+            <tbody id="search-order-table">
+            <!-- Search results will be populated here -->
+            </tbody>
+        </table>
     </div>
 </div>
 </div>
@@ -447,16 +469,15 @@
     </style>
 
     <script>
-        const emptyOption = document.createElement('option');
-        emptyOption.value = null;
-        emptyOption.textContent = "Select one";
 
         let mainServices = [];
         let subServices = [];
         let experts = [];
+        let allExperts = [];
         fetchMainServices();
         fetchSubServices();
         fetchExperts();
+        fetchCustomers();
 
         document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll('.content-container').forEach(function (container) {
@@ -503,10 +524,8 @@
                     option.textContent = service.name;
                     mainserviceSelect.appendChild(option);
                 });
-
                 const editMainService = document.getElementById('edit-mainservice-select');
                 editMainService.innerHTML = '';
-                editMainService.appendChild(emptyOption);
                 data.forEach(service => {
                     const option = document.createElement('option');
                     option.value = service.id;
@@ -514,14 +533,28 @@
                     editMainService.appendChild(option);
                 });
 
+                const emptyOption2 = document.createElement('option');
+                emptyOption2.value = null;
+                emptyOption2.textContent = "Select one";
+                emptyOption2.selected = true;
+                const emptyOption3 = document.createElement('option');
+                emptyOption3.value = null;
+                emptyOption3.textContent = "Select one";
+                emptyOption3.selected = true;
                 const subServiceEditMainService = document.getElementById('edit-subservice-mainservice-select');
+                const searchOrdersMainService =  document.getElementById('search-orders-mainServiceId');
                 subServiceEditMainService.innerHTML = '';
-                subServiceEditMainService.appendChild(emptyOption);
+                subServiceEditMainService.appendChild(emptyOption2);
+                searchOrdersMainService.appendChild(emptyOption3);
                 data.forEach(service => {
-                    const option = document.createElement('option');
-                    option.value = service.id;
-                    option.textContent = service.name;
-                    subServiceEditMainService.appendChild(option);
+                    const option1 = document.createElement('option');
+                    option1.value = service.id;
+                    option1.textContent = service.name;
+                    const option2 = document.createElement('option');
+                    option2.value = service.id;
+                    option2.textContent = service.name;
+                    subServiceEditMainService.appendChild(option1);
+                    searchOrdersMainService.appendChild(option2);
                 });
 
                 const mainServiceTableBody = document.getElementById('mainservice-table-body');
@@ -534,6 +567,7 @@
         `;
                     mainServiceTableBody.appendChild(row);
                 });
+
             } catch (error) {
                 console.error('There has been a problem with your fetch operation:', error);
             }
@@ -620,15 +654,38 @@
                     `;
                 subServiceTableBody.appendChild(row);
             });
+            const emptyOption2 = document.createElement('option');
+            emptyOption2.value = null;
+            emptyOption2.textContent = "Select one";
+            emptyOption2.selected = true;
+            const emptyOption3 = document.createElement('option');
+            emptyOption3.value = null;
+            emptyOption3.textContent = "Select one";
+            emptyOption3.selected = true;
 
             const subServiceEdit = document.getElementById('edit-subservice-select');
+            const searchOrderSubServiceSelect = document.getElementById('search-orders-subServiceId');
+            const searchUserSubServiceSelect = document.getElementById('search-users-subServiceId');
             subServiceEdit.innerHTML = '';
+            searchOrderSubServiceSelect.innerHTML = '';
+            searchUserSubServiceSelect.innerHTML = '';
+            searchOrderSubServiceSelect.appendChild(emptyOption2);
+            searchUserSubServiceSelect.appendChild(emptyOption3);
             data.forEach(service => {
-                const option = document.createElement('option');
-                option.value = service.id;
-                option.textContent = service.name;
-                subServiceEdit.appendChild(option);
+                const option1 = document.createElement('option');
+                option1.value = service.id;
+                option1.textContent = service.name;
+                const option2 = document.createElement('option');
+                option2.value = service.id;
+                option2.textContent = service.name;
+                const option3 = document.createElement('option');
+                option3.value = service.id;
+                option3.textContent = service.name;
+                subServiceEdit.appendChild(option1);
+                searchUserSubServiceSelect.appendChild(option2);
+                searchOrderSubServiceSelect.appendChild(option3);
             });
+
         }
 
         function removeSubService(serviceId) {
@@ -671,6 +728,31 @@
                     <td><button class="remove-button" onclick="confirmExpert(${service.id})">Confirm</button></td>
                     `;
                 expertTableBody.appendChild(row);
+            });
+            const responseAll = await fetch("/admin/allExperts");
+            if (!responseAll.ok) {
+                throw new Error('Network response was not ok');
+            }
+            let dataAll = await responseAll.json();
+            allExperts = dataAll.map(service => ({
+                id: service.id,
+                firstname: service.firstname,
+                lastname: service.lastname,
+                username: service.username,
+                email: service.email,
+                imageBase64: service.imageBase64
+            }))
+            const emptyOption = document.createElement('option');
+            emptyOption.value = null;
+            emptyOption.textContent = "Select one";
+            const expertSelect = document.getElementById('search-orders-expertId');
+            expertSelect.innerHTML = '';
+            expertSelect.appendChild(emptyOption)
+            allExperts.forEach(service => {
+                const option = document.createElement('option');
+                option.value = service.id;
+                option.textContent = service.username;
+                expertSelect.appendChild(option);
             });
         }
 
@@ -799,7 +881,92 @@
         }
 
         function searchOrders(){
+            const customerId = document.getElementById('search-orders-customerId').value;
+            const expertId = document.getElementById('search-orders-expertId').value;
+            let startAfter = document.getElementById('search-orders-startAfter').value;
+            let startBefore = document.getElementById('search-orders-startBefore').value;
+            let orderState = document.getElementById('search-orders-orderState').value;
+            const mainServiceId = document.getElementById('search-orders-mainServiceId').value;
+            const subServiceId = document.getElementById('search-orders-subServiceId').value;
 
+            if(orderState === ""){
+                orderState = null;
+            }
+            if (startAfter) {
+                startAfter = startAfter + ":00";
+            }
+            if (startBefore) {
+                startBefore = startBefore + ":00";
+            }
+
+            fetch('/admin/orderView/filter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    customerId: customerId,
+                    expertId: expertId,
+                    startAfter: startAfter,
+                    startBefore: startBefore,
+                    orderState: orderState,
+                    mainServiceId: mainServiceId,
+                    subServiceId: subServiceId
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const userTableBody = document.getElementById('search-order-table');
+                    userTableBody.innerHTML = '';
+
+                    data.forEach(order => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                        <td>${order.orderDetails}</td>
+                        <td>${order.orderAddress}</td>
+                        <td>${order.orderState}</td>
+                        <td>${order.subServiceName}</td>
+                        <td>${order.mainServiceName}</td>
+                        <td>${order.subServiceBasePrice}</td>
+                        <td>${order.orderStartingDate}</td>
+                        <td>${order.offerCompletionDate}</td>
+                        <td>${order.offerSuggestedPrice}</td>
+                        <td>${order.customerUsername}</td>
+                        <td>${order.expertUsernames}</td>
+                    `;
+                        userTableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error searching users:', error);
+                });
+        }
+
+        async function fetchCustomers() {
+            const emptyOption = document.createElement('option');
+            emptyOption.value = null;
+            emptyOption.textContent = "Select one";
+            const responseAll = await fetch("/admin/allCustomer");
+            if (!responseAll.ok) {
+                throw new Error('Network response was not ok');
+            }
+            let dataAll = await responseAll.json();
+            allExperts = dataAll.map(service => ({
+                id: service.id,
+                firstname: service.firstname,
+                lastname: service.lastname,
+                username: service.username,
+                email: service.email
+            }))
+            const customerSelect = document.getElementById('search-orders-customerId');
+            customerSelect.innerHTML = '';
+            customerSelect.appendChild(emptyOption)
+            allExperts.forEach(service => {
+                const option = document.createElement('option');
+                option.value = service.id;
+                option.textContent = service.username;
+                customerSelect.appendChild(option);
+            });
         }
     </script>
 
