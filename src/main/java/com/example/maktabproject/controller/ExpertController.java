@@ -31,7 +31,8 @@ public class ExpertController {
     @PostMapping("/changePassword")
     @PreAuthorize("hasRole('EXPERT')")
     public ResponseEntity<ExpertResponseDto> changePassword(@RequestParam String newPassword) {
-
+        if(!newPassword.matches("^(?=.*[a-zA-Z])(?=.*\\d).{8,}$"))
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Expert expert = expertService.findByUsername(username);
 

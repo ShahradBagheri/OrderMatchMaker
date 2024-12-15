@@ -7,6 +7,7 @@ import com.example.maktabproject.model.dto.offer.OfferRequestDto;
 import com.example.maktabproject.model.dto.offer.OfferResponseDto;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Offer;
+import com.example.maktabproject.model.dto.offer.OfferViewResponseDto;
 import com.example.maktabproject.model.enums.ExpertStatus;
 import com.example.maktabproject.service.Impl.CustomerServiceImpl;
 import com.example.maktabproject.service.Impl.ExpertServiceImpl;
@@ -56,7 +57,7 @@ public class OfferController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Long customerId = customerService.findByUsername(username).getId();
 
-        return new ResponseEntity<>(offerService.findByCustomerScoreOrder(customerId).stream().map(offerMapper::offerToDto).toList(), HttpStatus.OK);
+        return new ResponseEntity<>(offerService.findForCustomerScoreOrder(customerId).stream().map(offerMapper::offerToDto).toList(), HttpStatus.OK);
     }
 
     @GetMapping("/findAllByPrice")
@@ -66,7 +67,27 @@ public class OfferController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Long customerId = customerService.findByUsername(username).getId();
 
-        return new ResponseEntity<>(offerService.findByCustomerPriceOrder(customerId).stream().map(offerMapper::offerToDto).toList(), HttpStatus.OK);
+        return new ResponseEntity<>(offerService.findForCustomerPriceOrder(customerId).stream().map(offerMapper::offerToDto).toList(), HttpStatus.OK);
+    }
+
+    @PostMapping("/findAllViewByScore")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<List<OfferViewResponseDto>> findAllViewOfferByScore() {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Long customerId = customerService.findByUsername(username).getId();
+
+        return new ResponseEntity<>(offerService.findAllViewsForCustomerScoreOrder(customerId).stream().map(offerMapper::offerViewToDto).toList(), HttpStatus.OK);
+    }
+
+    @PostMapping("/findAllViewByPrice")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<List<OfferViewResponseDto>> findAllViewOfferByPrice() {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Long customerId = customerService.findByUsername(username).getId();
+
+        return new ResponseEntity<>(offerService.findAllViewsForCustomerPriceOrder(customerId).stream().map(offerMapper::offerViewToDto).toList(), HttpStatus.OK);
     }
 
     @PostMapping("/selectOffer")

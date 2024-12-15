@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<div class="sidebar" id="sidebar">
+    <button class="control-panel-button" onclick="showForm('changePassword-form')">
+        <i class="fas fa-tools"></i> <span>Change Password</span>
+    </button>
+    <button class="control-panel-button" onclick="showForm('submitOrder-form')">
+        <i class="fas fa-tools"></i> <span>Submit Order</span>
+    </button>
+    <button class="control-panel-button" onclick="showForm('allOrders-form')">
+        <i class="fas fa-tools"></i> <span>My Orders</span>
+    </button>
+    <button class="control-panel-button" onclick="showForm('active-offers-form')">
+        <i class="fas fa-tools"></i> <span>Active Offers</span>
+    </button>
+</div>
+
+<button class="logout-button" onclick="logout()">
+    <i class="fas fa-sign-out-alt"></i> Log Out
+</button>
+
+<div class="balance-container" id="balance-container">
+    <span>Balance: $<span id="balance-amount">-</span></span>
+</div>
+
+<div class="content-container" id="changePassword-form">
+    <div class="container">
+        <h2>Change Password</h2>
+        <div>
+            <label for="new-password">New Password</label>
+            <input type="text" id="new-password" name="password" required>
+            <button onclick="changePassword()">Change Password</button>
+        </div>
+    </div>
+</div>
+
+<div class="content-container" id="submitOrder-form">
+    <div class="container">
+        <h2>Submit Order</h2>
+        <div>
+            <label for="submitOrder-mainService-select">MainService</label>
+            <select id="submitOrder-mainService-select" name="id">
+            </select>
+
+            <label for="submitOrder-subService-select">SubService</label>
+            <select id="submitOrder-subService-select" name="id">
+            </select>
+
+            <label for="submitOrder-suggestedPrice">Suggested Price</label>
+            <input type="number" step="0.01" id="submitOrder-suggestedPrice" name="suggestedPrice" required>
+
+            <label for="submitOrder-order-startDate">Start Date</label>
+            <input type="datetime-local" id="submitOrder-order-startDate" name="orderStartDate">
+
+            <label for="submitOrder-order-address">Address</label>
+            <input type="text" id="submitOrder-order-address" name="address" required>
+
+            <label for="submitOrder-order-details">Details</label>
+            <input type="text" id="submitOrder-order-details" name="details" required>
+
+            <button onclick="submitOrder()">Submit Order</button>
+        </div>
+    </div>
+</div>
+
+<div class="content-container" id="allOrders-form">
+    <div class="container">
+        <h2>My Orders</h2>
+        <div>
+            <label for="search-orders-orderState">Order State:</label>
+            <select id="search-orders-orderState" name="orderState">
+                <option value="">Select order state</option>
+                <option value="WAITING_FOR_SUGGESTIONS">Waiting for Suggestions</option>
+                <option value="WAITING_TO_SELECT_SUGGESTION">Waiting to Select Suggestion</option>
+                <option value="WAITING_FOR_EXPERT">Waiting for Expert</option>
+                <option value="STARTED">Started</option>
+                <option value="FINISHED">Finished</option>
+                <option value="PAID">Paid</option>
+            </select>
+
+            <button onclick="searchOrders()">Find Order</button>
+        </div>
+        <div class="table-container">
+            <table class="orders-table">
+                <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Order Details</th>
+                    <th>Order Address</th>
+                    <th>Order State</th>
+                    <th>Sub Service Name</th>
+                    <th>Main Service Name</th>
+                    <th>Sub Service Base Price</th>
+                    <th>Order Starting Date</th>
+                    <th>Offer Completion Date</th>
+                    <th>Offer Suggested Price</th>
+                    <th>Customer Username</th>
+                    <th>Expert Username</th>
+                </tr>
+                </thead>
+                <tbody id="find-orders-table">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="content-container" id="active-offers-form">
+    <div class="container">
+        <h2>Active Offers</h2>
+        <div>
+            <button onclick="findOffer(1)">Find Offers Ordered By Price</button>
+            <button onclick="findOffer(2)">Find Offers Ordered By Score</button>
+        </div>
+        <div class="table-container">
+            <table class="offers-table">
+                <thead>
+                <tr>
+                    <th>Order Details</th>
+                    <th>Order Address</th>
+                    <th>Order State</th>
+                    <th>Sub Service Name</th>
+                    <th>Main Service Name</th>
+                    <th>Sub Service Base Price</th>
+                    <th>Order Starting Date</th>
+                    <th>Offer Completion Date</th>
+                    <th>Offer Suggested Price</th>
+                    <th>Expert Username</th>
+                    <th>Expert Score</th>
+                </tr>
+                </thead>
+                <tbody id="active-offers-table">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Control Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #34495e;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            transition: width 0.3s ease;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .control-panel-button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease, padding 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .control-panel-button i {
+            margin-right: 10px;
+            transition: margin-right 0.3s ease, font-size 0.3s ease;
+        }
+
+        .control-panel-button.hide-text i {
+            margin-right: 0;
+            font-size: 1.5em;
+        }
+
+        .control-panel-button.hide-text span {
+            display: none;
+        }
+
+        .control-panel-button:hover {
+            background-color: #1a252f;
+        }
+
+        .control-panel-button.toggle-text-button:hover {
+            background-color: #2c3e50;
+        }
+
+        .control-panel-button.hide-text {
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        .toggle-text-button {
+            background-color: #2c3e50;
+            margin-top: auto;
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #c0392b;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background-color: #e74c3c;
+        }
+
+        .balance-container {
+            position: absolute;
+            top: 10px;
+            right: 100px;
+            color: #2c3e50;
+            background-color: #ecf0f1;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-container {
+            display: none;
+            margin: auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        .container h2 {
+            margin-top: 0;
+            color: #333;
+            text-align: center;
+        }
+
+        .container label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .container input, .container select, .container button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .container button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+
+        .container button:hover {
+            background-color: #218838;
+        }
+
+        .table-container {
+            width: 100%;
+            margin-top: 20px;
+            overflow-x: auto;
+            box-sizing: border-box;
+        }
+
+        table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+    <script>
+
+        let mainService = [];
+        let subServices = [];
+
+        fetchSubServices();
+        fetchMainService();
+
+
+        document.getElementById('submitOrder-mainService-select').addEventListener('change', handleSubmitOrderMainServiceChange);
+        document.addEventListener('DOMContentLoaded', fetchBalance);
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.content-container').forEach(function (container) {
+                container.style.display = 'none';
+            });
+        });
+
+
+        function showForm(formId) {
+            document.querySelectorAll('.content-container').forEach(function (container) {
+                container.style.display = 'none';
+            });
+            document.getElementById(formId).style.display = 'block';
+        }
+
+        async function handleSubmitOrderMainServiceChange() {
+            document.getElementById('submitOrder-subService-select').innerHTML = '';
+            const response = await fetch("/services/subService/loadALl/" + document.getElementById('submitOrder-mainService-select').value);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            let data = await response.json();
+            const subServiceSelect = document.getElementById('submitOrder-subService-select');
+            data.forEach(service => {
+                const option1 = document.createElement('option');
+                option1.value = service.id;
+                option1.textContent = service.name;
+                subServiceSelect.appendChild(option1);
+
+            });
+        }
+
+        async function fetchMainService() {
+            const response = await fetch("/services/mainService/loadAll");
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            let data = await response.json();
+            mainServices = data.map(service => ({
+                id: service.id,
+                name: service.name
+            }));
+            const mainServiceSelect = document.getElementById('submitOrder-mainService-select');
+            mainServiceSelect.innerHTML = '';
+
+            data.forEach(service => {
+                const option = document.createElement('option');
+                option.value = service.id;
+                option.textContent = service.name;
+                mainServiceSelect.appendChild(option);
+            });
+        }
+
+        async function fetchSubServices() {
+            const response = await fetch("/services/subService/loadALl");
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            let data = await response.json();
+            subServices = data.map(service => ({
+                id: service.id,
+                name: service.name,
+                basePrice: service.basePrice,
+                comment: service.comment,
+                mainServiceName: service.mainServiceName
+            }))
+            const subServiceSelect = document.getElementById('subservice-select');
+            data.forEach(service => {
+                const option1 = document.createElement('option');
+                option1.value = service.id;
+                option1.textContent = service.name;
+                subServiceSelect.appendChild(option1);
+
+            });
+        }
+
+        async function changePassword() {
+            const newPassword = document.getElementById('new-password').value;
+
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({newPassword: newPassword})
+            };
+            await fetch('/customer/changePassword', options).then(response => {
+                if (response.ok) {
+                    alert("Your Password has changed!")
+                    document.getElementById('new-password').value = '';
+                } else {
+                    alert("Failed to change password!")
+                }
+            });
+        }
+
+        async function fetchBalance() {
+            try {
+                const response = await fetch('/customer/balance', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                document.getElementById('balance-amount').textContent = await response.json();
+            } catch (error) {
+                console.error('Error fetching the balance:', error);
+            }
+
+        }
+
+        async function submitOrder() {
+            var subServiceId = document.getElementById('submitOrder-subService-select').value
+            var suggestedPrice = document.getElementById('submitOrder-suggestedPrice').value
+            var startDate = document.getElementById('submitOrder-order-startDate').value
+            var address = document.getElementById('submitOrder-order-address').value
+            var details = document.getElementById('submitOrder-order-details').value
+
+            fetch('/customer/order/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    subServiceId: subServiceId,
+                    suggestedPrice: suggestedPrice,
+                    details: details,
+                    startingDate: startDate,
+                    address: address
+                }),
+            }).then(response => {
+                if (!response.ok) {
+                    alert("Failed to submit order!");
+                    throw new Error('Network response was not ok');
+                } else {
+                    alert("Order Submitted!");
+                    document.getElementById('submitOrder-subService-select').selectedIndex = 0;
+                    document.getElementById('submitOrder-suggestedPrice').value = '';
+                    document.getElementById('submitOrder-order-startDate').value = '';
+                    document.getElementById('submitOrder-order-address').value = '';
+                    document.getElementById('submitOrder-order-details').value = '';
+                }
+                fetchSubServices();
+            });
+
+
+        }
+
+        function searchOrders() {
+            let orderState = document.getElementById('search-orders-orderState').value;
+            if (orderState === "") {
+                orderState = null;
+            }
+
+            fetch('/customer/filter/orderView', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    orderState: orderState
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const ordersTableBody = document.getElementById('find-orders-table');
+                    ordersTableBody.innerHTML = '';
+
+                    data.forEach(order => {
+                        const row = document.createElement('tr');
+                        if(order.orderState === 'WAITING_FOR_EXPERT')
+                            row.innerHTML = `<td><button onclick="searchOrders()">Order Started</button></td>`;
+                        else if(order.orderState === 'STARTED')
+                            row.innerHTML = `<td><button onclick="searchOrders()">Order Finished</button></td>`;
+                        else if(order.orderState === 'FINISHED')
+                            row.innerHTML = `<td><button onclick="searchOrders()">Pay</button></td>`;
+                        else
+                            row.innerHTML = `<td>${order.orderDetails}</td>`;
+                        row.innerHTML += `
+                        <td>${order.orderDetails}</td>
+                        <td>${order.orderAddress}</td>
+                        <td>${order.orderState}</td>
+                        <td>${order.subServiceName}</td>
+                        <td>${order.mainServiceName}</td>
+                        <td>${order.subServiceBasePrice}</td>
+                        <td>${order.orderStartingDate}</td>
+                        <td>${order.offerCompletionDate}</td>
+                        <td>${order.offerSuggestedPrice}</td>
+                        <td>${order.customerUsername}</td>
+                        <td>${order.expertUsernames}</td>
+                    `;
+                        ordersTableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error searching orders:', error);
+                });
+        }
+
+        function findOffer(type) {
+            var api;
+            if(type === 1)
+                api = '/offer/findAllViewByScore'
+            else
+                api = '/offer/findAllViewByPrice'
+
+            fetch(api, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const ordersTableBody = document.getElementById('active-offers-table');
+                    ordersTableBody.innerHTML = '';
+
+                    data.forEach(order => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                        <td>${order.orderDetails}</td>
+                        <td>${order.orderAddress}</td>
+                        <td>${order.orderState}</td>
+                        <td>${order.subServiceName}</td>
+                        <td>${order.mainServiceName}</td>
+                        <td>${order.subServiceBasePrice}</td>
+                        <td>${order.orderStartingDate}</td>
+                        <td>${order.offerCompletionDate}</td>
+                        <td>${order.offerSuggestedPrice}</td>
+                        <td>${order.expertUsernames}</td>
+                        <td>${order.score}</td>
+                    `;
+                        ordersTableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error searching users:', error);
+                });
+
+
+        }
+
+    </script>
+</head>
+</html>

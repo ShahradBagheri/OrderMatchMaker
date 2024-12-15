@@ -3,6 +3,8 @@ package com.example.maktabproject.service;
 import com.example.maktabproject.model.dto.user.UserOrderFilterRequestDto;
 import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.Order;
+import com.example.maktabproject.model.view.OrderView;
+import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,6 +36,9 @@ public interface OrderService {
     Order statusToPaid(Long orderId) throws CustomExceptions.OrderNotFoundException, CustomExceptions.InsufficientFundException, CustomExceptions.CustomerNotFoundException, CustomExceptions.ExpertNotFoundException, CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException;
 
     List<Order> filterOrderCustomer(Long customerId, UserOrderFilterRequestDto userOrderFilterRequestDto);
+
+    @Transactional
+    List<OrderView> filterOrderViewCustomer(Long customerId, UserOrderFilterRequestDto userOrderFilterRequestDto);
 
     List<Order> filterOrderExpert(Long expertId, UserOrderFilterRequestDto userOrderFilterRequestDto);
 }

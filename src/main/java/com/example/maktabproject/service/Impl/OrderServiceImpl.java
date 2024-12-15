@@ -7,8 +7,10 @@ import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.enums.OrderState;
+import com.example.maktabproject.model.view.OrderView;
 import com.example.maktabproject.repository.OfferRepository;
 import com.example.maktabproject.repository.OrderRepository;
+import com.example.maktabproject.repository.OrderViewRepository;
 import com.example.maktabproject.service.ExpertService;
 import com.example.maktabproject.service.OrderService;
 import jakarta.transaction.Transactional;
@@ -26,6 +28,7 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final OrderViewRepository orderViewRepository;
     private final OfferRepository offerRepository;
     private final ExpertService expertService;
     private final CustomerServiceImpl customerService;
@@ -175,11 +178,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public List<Order> filterOrderCustomer(Long customerId, UserOrderFilterRequestDto userOrderFilterRequestDto) {
-
         if (userOrderFilterRequestDto.orderState() == null)
             return orderRepository.findAllByCustomer_Id(customerId);
-
         return orderRepository.findAllByCustomer_IdAndOrderState(customerId, userOrderFilterRequestDto.orderState());
+    }
+
+    @Override
+    @Transactional
+    public List<OrderView> filterOrderViewCustomer(Long customerId, UserOrderFilterRequestDto userOrderFilterRequestDto) {
+        if (userOrderFilterRequestDto.orderState() == null)
+            return orderViewRepository.findAllByCustomerId(customerId);
+        return orderViewRepository.findAllByCustomerIdAndOrderState(customerId, userOrderFilterRequestDto.orderState());
     }
 
     @Override

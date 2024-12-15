@@ -4,7 +4,9 @@ import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Offer;
 import com.example.maktabproject.model.enums.OrderState;
+import com.example.maktabproject.model.view.OfferView;
 import com.example.maktabproject.repository.OfferRepository;
+import com.example.maktabproject.repository.OfferViewRepository;
 import com.example.maktabproject.service.CustomerService;
 import com.example.maktabproject.service.OfferService;
 import jakarta.transaction.Transactional;
@@ -23,6 +25,7 @@ public class OfferServiceImpl implements OfferService {
     private final OfferRepository offerRepository;
     private final CustomerService customerService;
     private final OrderServiceImpl orderService;
+    private final OfferViewRepository offerViewRepository;
 
     @Override
     public Offer register(Offer offer) {
@@ -69,18 +72,18 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     @Transactional
-    public List<Offer> findByCustomerPriceOrder(Long customerId) {
+    public List<Offer> findForCustomerPriceOrder(Long customerId) {
 
         Customer customer = customerService.findById(customerId);
-        return offerRepository.findByOrder_CustomerOrderBySuggestedPrice(customer);
+        return offerRepository.findByOrder_CustomerAndOrder_orderStateOrderBySuggestedPrice(customer,OrderState.WAITING_TO_SELECT_SUGGESTION);
     }
 
     @Override
     @Transactional
-    public List<Offer> findByCustomerScoreOrder(Long customerId) {
+    public List<Offer> findForCustomerScoreOrder(Long customerId) {
 
         Customer customer = customerService.findById(customerId);
-        return offerRepository.findByOrder_CustomerOrderByExpert_Score(customer);
+        return offerRepository.findByOrder_CustomerAndOrder_orderStateOrderByExpert_Score(customer,OrderState.WAITING_TO_SELECT_SUGGESTION);
     }
 
     @Override
@@ -92,5 +95,15 @@ public class OfferServiceImpl implements OfferService {
     @Override
     public boolean dateValidation(LocalDateTime localDateTime) {
         return localDateTime.isAfter(LocalDateTime.now());
+    }
+
+    @Override
+    public List<OfferView> findAllViewsForCustomerPriceOrder(Long customerId) {
+        return offerViewRepository.findAllByCustomerIdAndOrderStateOrderByOfferSuggestedPrice(customerId,OrderState.WAITING_TO_SELECT_SUGGESTION);
+    }
+
+    @Override
+    public List<OfferView> findAllViewsForCustomerScoreOrder(Long customerId) {
+        return offerViewRepository.findAllByCustomerIdAndOrderStateOrderByScore(customerId,OrderState.WAITING_TO_SELECT_SUGGESTION);
     }
 }

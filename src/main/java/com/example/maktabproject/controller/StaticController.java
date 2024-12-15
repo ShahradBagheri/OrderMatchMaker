@@ -37,8 +37,6 @@ public class StaticController {
     private final ExpertMapper expertMapper;
     private final ExpertServiceImpl expertService;
     private final ImageProcessing imageProcessing;
-    private final MainServiceServiceImpl mainServiceService;
-    private final MainServiceMapper mainServiceMapper;
 
     @GetMapping("/login")
     @PostMapping("/login")
@@ -86,5 +84,17 @@ public class StaticController {
     @PreAuthorize("hasRole('ADMIN')")
     public String adminPanel(){
         return "adminPanel";
+    }
+
+    @GetMapping(value = "/expertPanel")
+    @PreAuthorize("hasRole('EXPERT')")
+    public String expertPanel(){
+        return "expertPanel";
+    }
+
+    @GetMapping(value = "/customerPanel")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public String customerPanel(){
+        return "customerPanel";
     }
 }

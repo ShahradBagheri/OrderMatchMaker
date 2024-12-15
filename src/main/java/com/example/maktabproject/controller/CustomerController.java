@@ -5,6 +5,7 @@ import com.example.maktabproject.model.dto.customer.CustomerResponseDto;
 import com.example.maktabproject.model.dto.order.OrderMapper;
 import com.example.maktabproject.model.dto.order.OrderRequestDto;
 import com.example.maktabproject.model.dto.order.OrderResponseDto;
+import com.example.maktabproject.model.dto.order.OrderViewResponseDto;
 import com.example.maktabproject.model.dto.rating.RatingRequestDto;
 import com.example.maktabproject.model.dto.rating.RatingResponseDto;
 import com.example.maktabproject.model.dto.user.RatingMapper;
@@ -17,6 +18,7 @@ import com.example.maktabproject.service.Impl.CustomerServiceImpl;
 import com.example.maktabproject.service.Impl.OrderServiceImpl;
 import com.example.maktabproject.service.Impl.RatingServiceImpl;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +43,8 @@ public class CustomerController {
     @PostMapping("/changePassword")
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<CustomerResponseDto> changePassword(@RequestParam String newPassword) {
-
+        if(!newPassword.matches("^(?=.*[a-zA-Z])(?=.*\\d).{8,}$"))
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Long customerId = customerService.findByUsername(username).getId();
 
@@ -86,7 +89,21 @@ public class CustomerController {
                 .stream()
                 .map(orderMapper::orderToDto)
                 .toList()
-                , HttpStatus.OK);
+                ,HttpStatus.OK);
+    }
+
+    @PostMapping("/filter/orderView")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<List<OrderViewResponseDto>> filterOrdersViews(@RequestBody UserOrderFilterRequestDto userOrderFilterRequestDto) {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Customer customer = customerService.findByUsername(username);
+
+        return new ResponseEntity<>(orderService.filterOrderViewCustomer(customer.getId(), userOrderFilterRequestDto)
+                .stream()
+                .map(orderMapper::viewToDto)
+                .toList()
+                ,HttpStatus.OK);
     }
 
     @GetMapping("/balance")

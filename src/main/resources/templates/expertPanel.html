@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<div class="sidebar" id="sidebar">
+    <button class="control-panel-button" onclick="showForm('changePassword-form')">
+        <i class="fas fa-tools"></i> <span>Change Password</span>
+    </button>
+</div>
+
+<button class="logout-button" onclick="logout()">
+    <i class="fas fa-sign-out-alt"></i> Log Out
+</button>
+
+<div class="balance-container" id="balance-container">
+    <span>Balance: $<span id="balance-amount">-</span></span>
+</div>
+
+<div class="content-container" id="changePassword-form">
+    <div class="container">
+        <h2>Change Password</h2>
+        <div>
+            <label for="new-password">New Password</label>
+            <input type="text" id="new-password" name="password" required>
+            <button onclick="changePassword()">Change Password</button>
+        </div>
+    </div>
+</div>
+</body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expert Control Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #34495e;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            transition: width 0.3s ease;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .control-panel-button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease, padding 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .control-panel-button i {
+            margin-right: 10px;
+            transition: margin-right 0.3s ease, font-size 0.3s ease;
+        }
+
+        .control-panel-button.hide-text i {
+            margin-right: 0;
+            font-size: 1.5em;
+        }
+
+        .control-panel-button.hide-text span {
+            display: none;
+        }
+
+        .control-panel-button:hover {
+            background-color: #1a252f;
+        }
+
+        .control-panel-button.toggle-text-button:hover {
+            background-color: #2c3e50;
+        }
+
+        .control-panel-button.hide-text {
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        .toggle-text-button {
+            background-color: #2c3e50;
+            margin-top: auto;
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #c0392b;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background-color: #e74c3c;
+        }
+
+        .balance-container {
+            position: absolute;
+            top: 10px;
+            right: 100px;
+            color: #2c3e50;
+            background-color: #ecf0f1;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-container {
+            display: none;
+            margin: auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        .container h2 {
+            margin-top: 0;
+            color: #333;
+            text-align: center;
+        }
+
+        .container label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .container input, .container select, .container button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .container button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+
+        .container button:hover {
+            background-color: #218838;
+        }
+
+        .table-container {
+            width: 100%;
+            margin-top: 20px;
+            overflow-x: auto;
+            box-sizing: border-box;
+        }
+
+        table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', fetchBalance);
+
+        async function changePassword() {
+            const newPassword = document.getElementById('new-password').value;
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({ newPassword: newPassword })
+            };
+            await fetch('/expert/changePassword', options).then(response => {
+                if (response.ok) {
+                    alert("Your Password has changed!")
+                    document.getElementById('new-password').value = '';
+                } else {
+                    alert("Failed to change password!")
+                }
+            });
+        }
+
+        async function fetchBalance() {
+            try {
+                const response = await fetch('/expert/balance', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                document.getElementById('balance-amount').textContent = data;
+            } catch (error) {
+                console.error('Error fetching the balance:', error);
+            }
+
+        }
+    </script>
+</head>
+</html>

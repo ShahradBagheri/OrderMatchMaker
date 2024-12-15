@@ -496,7 +496,7 @@ class OfferServiceImplTest {
 
         offer = offerService.register(offer);
         offer2 = offerService.register(offer2);
-        assertThat(offerService.findByCustomerPriceOrder(customer.getId()).stream().map(Offer::getId)).isEqualTo(List.of(offer.getId(),offer2.getId()));
+        assertThat(offerService.findForCustomerPriceOrder(customer.getId()).stream().map(Offer::getId)).isEqualTo(List.of(offer.getId(),offer2.getId()));
     }
 
     @Test
@@ -575,6 +575,6 @@ class OfferServiceImplTest {
 
         offer = offerService.register(offer);
         offer2 = offerService.register(offer2);
-        assertThat(offerService.findByCustomerScoreOrder(customer.getId()).stream().map(Offer::getId)).isEqualTo(List.of(offer2.getId(),offer.getId()));
+        assertThat(offerService.findForCustomerScoreOrder(customer.getId()).stream().map(Offer::getId)).isEqualTo(List.of(offer2.getId(),offer.getId()));
     }
 }

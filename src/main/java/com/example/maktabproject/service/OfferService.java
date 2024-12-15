@@ -2,6 +2,7 @@ package com.example.maktabproject.service;
 
 import com.example.maktabproject.exception.*;
 import com.example.maktabproject.model.Offer;
+import com.example.maktabproject.model.view.OfferView;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,11 +17,15 @@ public interface OfferService {
 
     List<Offer> findAll();
 
-    List<Offer> findByCustomerPriceOrder(Long customerId) throws CustomExceptions.CustomerNotFoundException;
+    List<Offer> findForCustomerPriceOrder(Long customerId) throws CustomExceptions.CustomerNotFoundException;
 
-    List<Offer> findByCustomerScoreOrder(Long customerId) throws CustomExceptions.CustomerNotFoundException;
+    List<Offer> findForCustomerScoreOrder(Long customerId) throws CustomExceptions.CustomerNotFoundException;
 
     boolean priceValidation(Offer offer);
 
     boolean dateValidation(LocalDateTime localDateTime);
+
+    List<OfferView> findAllViewsForCustomerPriceOrder(Long customerId);
+
+    List<OfferView> findAllViewsForCustomerScoreOrder(Long customerId);
 }
