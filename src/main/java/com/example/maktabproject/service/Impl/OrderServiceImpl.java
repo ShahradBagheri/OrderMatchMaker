@@ -81,13 +81,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order choseOffer(Long offerId, Long orderId) {
+    public Order choseOffer(Long offerId) {
 
         Offer offer = offerRepository.findById(offerId).orElseThrow(
                 () -> new CustomExceptions.OfferNotFoundException("offer not found")
         );
 
-        Order order = findById(orderId);
+        Order order = findById(offer.getOrder().getId());
 
         if (order.getOffers().stream().map(Offer::getId).toList().contains(offerId)) {
             order.setOrderState(OrderState.WAITING_FOR_EXPERT);
@@ -115,7 +115,7 @@ public class OrderServiceImpl implements OrderService {
     public Order statusToStarted(Long orderId) {
 
         Order order = findById(orderId);
-        if (LocalDateTime.now().isAfter(offerRepository.findByExpertAndOrder(order.getSelectedOffer().getExpert(), order).getStartingDate())) {
+        if (LocalDateTime.now().isAfter(offerRepository.findById(order.getSelectedOffer().getId()).orElseThrow().getStartingDate())) {
             order.setOrderState(OrderState.STARTED);
             return register(order);
         }

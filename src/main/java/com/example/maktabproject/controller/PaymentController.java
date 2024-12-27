@@ -4,9 +4,11 @@ import com.example.maktabproject.exception.CustomExceptions;
 import com.example.maktabproject.model.dto.user.PaymentRequestDto;
 import com.example.maktabproject.model.User;
 import com.example.maktabproject.service.Impl.UserServiceImpl;
+import com.example.maktabproject.service.UserService;
 import com.wf.captcha.SpecCaptcha;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -24,12 +26,12 @@ public class PaymentController {
 
     @PostMapping("/submit")
     public String payment(@RequestBody @Valid PaymentRequestDto paymentRequestDto) {
-
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         String captchaText = captchaMap.get(paymentRequestDto.captchaId());
         if (!paymentRequestDto.captcha().toUpperCase().equals(captchaText))
             throw new CustomExceptions.InvalidCaptchaException("failed captcha");
 
-        User user = userService.findById(paymentRequestDto.userId());
+        User user = userService.findByUsername(username);
         user.getWallet().setCredit(user.getWallet().getCredit() + paymentRequestDto.amount());
         userService.register(user);
         return "MONEY ADDED!";

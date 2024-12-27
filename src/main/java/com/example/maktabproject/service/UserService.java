@@ -10,4 +10,6 @@ public interface UserService {
     User login(String email, String password) throws CustomExceptions.IncorrectCredentialsException;
 
     User findById(Long id) throws CustomExceptions.UserNotFoundException;
+
+    User findByUsername(String username);
 }

@@ -21,7 +21,7 @@ public interface OrderService {
 
     List<Order> findOrdersForExpert(Long expertId) throws CustomExceptions.ExpertNotFoundException;
 
-    Order choseOffer(Long offerId, Long orderId) throws CustomExceptions.OrderNotFoundException, CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.ExpertHasNoOfferForOfferException, CustomExceptions.ExpertNotFoundException, CustomExceptions.OfferNotFoundException;
+    Order choseOffer(Long offerId) throws CustomExceptions.OrderNotFoundException, CustomExceptions.InvalidPriceException, CustomExceptions.InvalidTimeException, CustomExceptions.ExpertHasNoOfferForOfferException, CustomExceptions.ExpertNotFoundException, CustomExceptions.OfferNotFoundException;
 
     boolean priceValidation(Order order);
 

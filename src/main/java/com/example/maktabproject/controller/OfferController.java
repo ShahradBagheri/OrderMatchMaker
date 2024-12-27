@@ -92,14 +92,14 @@ public class OfferController {
 
     @PostMapping("/selectOffer")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public void selectOffer(@RequestParam Long offerId, @RequestParam Long orderId) {
+    public void selectOffer(@RequestParam Long offerId) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Customer customer = customerService.findByUsername(username);
-
-        if (!Objects.equals(orderService.findById(orderId).getCustomer().getId(), customer.getId()))
+        Offer offer = offerService.findById(offerId);
+        if (!Objects.equals(orderService.findById(offer.getOrder().getId()).getCustomer().getId(), customer.getId()))
             throw new CustomExceptions.NotOrderOwnerException("you dont own this order!");
 
-        orderService.choseOffer(offerId, orderId);
+        orderService.choseOffer(offerId);
     }
 }
