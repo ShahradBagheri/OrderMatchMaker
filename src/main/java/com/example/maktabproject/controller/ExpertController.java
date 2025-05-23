@@ -4,6 +4,7 @@ import com.example.maktabproject.model.dto.expert.ExpertMapper;
 import com.example.maktabproject.model.dto.expert.ExpertResponseDto;
 import com.example.maktabproject.model.dto.order.OrderMapper;
 import com.example.maktabproject.model.dto.order.OrderResponseDto;
+import com.example.maktabproject.model.dto.order.OrderViewResponseDto;
 import com.example.maktabproject.model.dto.user.UserOrderFilterRequestDto;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.enums.ExpertStatus;
@@ -70,6 +71,23 @@ public class ExpertController {
                 .map(orderMapper::orderToDto)
                 .toList()
                 , HttpStatus.OK);
+    }
+
+    @PostMapping("/filter/orderView")
+    @PreAuthorize("hasRole('EXPERT')")
+    public ResponseEntity<List<OrderViewResponseDto>> filterOrderViews(@RequestBody UserOrderFilterRequestDto userOrderFilterRequestDto) {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Expert expert = expertService.findByUsername(username);
+
+        if(expert.getExpertStatus() != ExpertStatus.APPROVED)
+            return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+
+        return new ResponseEntity<>(orderService.filterOrderViewCustomer(expert.getId(), userOrderFilterRequestDto)
+                .stream()
+                .map(orderMapper::viewToDto)
+                .toList()
+                ,HttpStatus.OK);
     }
 
     @GetMapping("/balance")

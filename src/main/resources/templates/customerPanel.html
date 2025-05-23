@@ -742,6 +742,16 @@
             })
         }
 
+        function logout() {
+            fetch('/perform_logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            window.location.href = '/static/login';
+        }
+
     </script>
 </head>
 </html>

@@ -41,4 +41,6 @@ public interface OrderService {
     List<OrderView> filterOrderViewCustomer(Long customerId, UserOrderFilterRequestDto userOrderFilterRequestDto);
 
     List<Order> filterOrderExpert(Long expertId, UserOrderFilterRequestDto userOrderFilterRequestDto);
+
+    List<OrderView> filterOrderViewExpert(Long expertId, UserOrderFilterRequestDto userOrderFilterRequestDto);
 }

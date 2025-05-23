@@ -200,4 +200,13 @@ public class OrderServiceImpl implements OrderService {
 
         return orderRepository.findAllBySelectedOffer_Expert_IdAndOrderState(expertId, userOrderFilterRequestDto.orderState());
     }
+
+    @Override
+    @Transactional
+    public List<OrderView> filterOrderViewExpert(Long expertId, UserOrderFilterRequestDto userOrderFilterRequestDto) {
+        if (userOrderFilterRequestDto.orderState() == null)
+            return orderViewRepository.findAllByExpertId(expertId);
+
+        return orderViewRepository.findAllByExpertIdAndOrderState(expertId, userOrderFilterRequestDto.orderState());
+    }
 }

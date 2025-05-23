@@ -5,6 +5,9 @@
     <button class="control-panel-button" onclick="showForm('changePassword-form')">
         <i class="fas fa-tools"></i> <span>Change Password</span>
     </button>
+    <button class="control-panel-button" onclick="showForm('viewRelatedOrders-form')">
+        <i class="fas fa-tools"></i> <span>View my orders</span>
+    </button>
 </div>
 
 <button class="logout-button" onclick="logout()">
@@ -22,6 +25,47 @@
             <label for="new-password">New Password</label>
             <input type="text" id="new-password" name="password" required>
             <button onclick="changePassword()">Change Password</button>
+        </div>
+    </div>
+</div>
+
+<div class="content-container" id="viewRelatedOrders-form">
+    <div class="container">
+        <h2>View Related Orders</h2>
+        <div>
+            <label for="search-orders-orderState">Order State:</label>
+            <select id="search-orders-orderState" name="orderState">
+                <option value="">Select order state</option>
+                <option value="WAITING_FOR_SUGGESTIONS">Waiting for Suggestions</option>
+                <option value="WAITING_TO_SELECT_SUGGESTION">Waiting to Select Suggestion</option>
+                <option value="WAITING_FOR_EXPERT">Waiting for Expert</option>
+                <option value="STARTED">Started</option>
+                <option value="FINISHED">Finished</option>
+                <option value="PAID">Paid</option>
+            </select>
+
+            <button onclick="findExpertOrders()">Find Order</button>
+        </div>
+        <div class="table-container">
+            <table class="orders-table">
+                <thead>
+                <tr>
+                    <th>Order Details</th>
+                    <th>Order Address</th>
+                    <th>Order State</th>
+                    <th>Sub Service Name</th>
+                    <th>Main Service Name</th>
+                    <th>Sub Service Base Price</th>
+                    <th>Order Starting Date</th>
+                    <th>Offer Completion Date</th>
+                    <th>Offer Suggested Price</th>
+                    <th>Customer Username</th>
+                    <th>Expert Username</th>
+                </tr>
+                </thead>
+                <tbody id="find-orders-table">
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -213,7 +257,67 @@
         }
     </style>
     <script>
-        document.addEventListener('DOMContentLoaded', fetchBalance);
+
+    document.addEventListener('DOMContentLoaded', fetchBalance);
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.content-container').forEach(function (container) {
+            container.style.display = 'none';
+        });
+    });
+
+
+    function showForm(formId) {
+        document.querySelectorAll('.content-container').forEach(function (container) {
+            container.style.display = 'none';
+        });
+        document.getElementById(formId).style.display = 'block';
+    }
+
+
+    function findExpertOrders() {
+        let orderState = document.getElementById('search-orders-orderState').value;
+        if (orderState === "") {
+            orderState = null;
+        }
+
+        fetch('/expert/filter/orderView', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                orderState: orderState
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                const ordersTableBody = document.getElementById('find-orders-table');
+                ordersTableBody.innerHTML = '';
+
+                data.forEach(order => {
+                    const row = document.createElement('tr');
+                    row.innerHTML += `
+                        <td>${order.orderDetails}</td>
+                        <td>${order.orderAddress}</td>
+                        <td>${order.orderState}</td>
+                        <td>${order.subServiceName}</td>
+                        <td>${order.mainServiceName}</td>
+                        <td>${order.subServiceBasePrice}</td>
+                        <td>${order.orderStartingDate}</td>
+                        <td>${order.offerCompletionDate}</td>
+                        <td>${order.offerSuggestedPrice}</td>
+                        <td>${order.customerUsername}</td>
+                        <td>${order.expertUsernames}</td>
+                    `;
+                    ordersTableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error searching orders:', error);
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchBalance);
 
         async function changePassword() {
             const newPassword = document.getElementById('new-password').value;
@@ -252,6 +356,16 @@
                 console.error('Error fetching the balance:', error);
             }
 
+        }
+
+        function logout() {
+            fetch('/perform_logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            window.location.href = '/static/login';
         }
     </script>
 </head>
