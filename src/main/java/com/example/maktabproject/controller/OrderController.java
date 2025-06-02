@@ -6,7 +6,9 @@ import com.example.maktabproject.model.dto.order.OrderResponseDto;
 import com.example.maktabproject.model.Customer;
 import com.example.maktabproject.model.Expert;
 import com.example.maktabproject.model.Order;
+import com.example.maktabproject.model.dto.order.OrderViewResponseDto;
 import com.example.maktabproject.model.enums.ExpertStatus;
+import com.example.maktabproject.model.view.OrderView;
 import com.example.maktabproject.service.Impl.CustomerServiceImpl;
 import com.example.maktabproject.service.Impl.ExpertServiceImpl;
 import com.example.maktabproject.service.Impl.OrderServiceImpl;
@@ -42,6 +44,21 @@ public class OrderController {
 
         List<Order> ordersForExpert = orderService.findOrdersForExpert(expert.getId());
         List<OrderResponseDto> orderListDto = ordersForExpert.stream().map(orderMapper::orderToDto).toList();
+        return new ResponseEntity<>(orderListDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/findViewForExpert")
+    @PreAuthorize("hasRole('EXPERT')")
+    public ResponseEntity<List<OrderViewResponseDto>> findViewOrderForExpert() {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Expert expert = expertService.findByUsername(username);
+
+        if(expert.getExpertStatus() != ExpertStatus.APPROVED)
+            return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+
+        List<OrderView> ordersForExpert = orderService.findOrderViewsForExpert(expert.getId());
+        List<OrderViewResponseDto> orderListDto = ordersForExpert.stream().map(orderMapper::viewToDto).toList();
         return new ResponseEntity<>(orderListDto, HttpStatus.OK);
     }
 

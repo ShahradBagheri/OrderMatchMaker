@@ -6,7 +6,10 @@
         <i class="fas fa-tools"></i> <span>Change Password</span>
     </button>
     <button class="control-panel-button" onclick="showForm('viewRelatedOrders-form')">
-        <i class="fas fa-tools"></i> <span>View my orders</span>
+        <i class="fas fa-tools"></i> <span>View My Orders</span>
+    </button>
+    <button class="control-panel-button" onclick="showForm('findOrders-form')">
+        <i class="fas fa-tools"></i> <span>Find Orders</span>
     </button>
 </div>
 
@@ -69,6 +72,52 @@
         </div>
     </div>
 </div>
+
+<div class="content-container" id="findOrders-form">
+    <div class="container">
+        <h2>Find Orders</h2>
+        <div>
+            <button onclick="findOrdersToOffer()">Find Orders</button>
+        </div>
+        <div class="table-container">
+            <table class="orders-to-offer-table">
+                <thead>
+                <tr>
+                    <th>Offer</th>
+                    <th>Order Details</th>
+                    <th>Order Address</th>
+                    <th>Order State</th>
+                    <th>Sub Service Name</th>
+                    <th>Main Service Name</th>
+                    <th>Sub Service Base Price</th>
+                    <th>Order Starting Date</th>
+                    <th>Customer Username</th>
+                </tr>
+                </thead>
+                <tbody id="find-orders-to-offer-table">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="offer-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <h2>Submit Offer</h2>
+        <label for="completion-date">Completion Date:</label>
+        <input type="date" id="completion-date" required>
+
+        <label for="start-date">Start Date:</label>
+        <input type="date" id="start-date" required>
+
+        <label for="suggested-price">Suggested Price ($):</label>
+        <input type="number" id="suggested-price" min="0" required>
+
+        <button onclick="submitOffer()">Submit</button>
+        <button onclick="closeModal()" style="background-color:#c0392b;">Cancel</button>
+    </div>
+</div>
+
 </body>
 <head>
     <meta charset="UTF-8">
@@ -255,6 +304,26 @@
         tr:hover {
             background-color: #f1f1f1;
         }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+        }
     </style>
     <script>
 
@@ -271,6 +340,39 @@
             container.style.display = 'none';
         });
         document.getElementById(formId).style.display = 'block';
+    }
+
+    function findOrdersToOffer() {
+        fetch('/order/findViewForExpert', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                const ordersTableBody = document.getElementById('find-orders-to-offer-table');
+                ordersTableBody.innerHTML = '';
+
+                data.forEach(order => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td><button onclick="actionOffer(${order.id})">Offer</button></td>`;
+                    row.innerHTML += `
+                        <td>${order.orderDetails}</td>
+                        <td>${order.orderAddress}</td>
+                        <td>${order.orderState}</td>
+                        <td>${order.subServiceName}</td>
+                        <td>${order.mainServiceName}</td>
+                        <td>${order.subServiceBasePrice}</td>
+                        <td>${order.orderStartingDate}</td>
+                        <td>${order.customerUsername}</td>
+                    `;
+                    ordersTableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error searching orders:', error);
+            });
     }
 
 
@@ -367,6 +469,63 @@
             })
             window.location.href = '/static/login';
         }
+
+    let currentOrderId = null;
+
+    function actionOffer(id) {
+        currentOrderId = id;
+        document.getElementById('offer-modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('offer-modal').style.display = 'none';
+        clearOfferForm();
+    }
+
+    function clearOfferForm() {
+        document.getElementById('completion-date').value = '';
+        document.getElementById('start-date').value = '';
+        document.getElementById('suggested-price').value = '';
+    }
+
+    async function submitOffer() {
+        const completionDate = document.getElementById('completion-date').value;
+        const startDate = document.getElementById('start-date').value;
+        const price = document.getElementById('suggested-price').value;
+
+        if (!completionDate || !startDate || !price) {
+            alert("All fields are required.");
+            return;
+        }
+
+        const payload = {
+            orderId: currentOrderId,
+            completionDate: completionDate,
+            startDate: startDate,
+            suggestedPrice: parseFloat(price)
+        };
+
+        try {
+            const response = await fetch('/offer/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                alert("Offer submitted!");
+                closeModal();
+                findOrdersToOffer(); // Refresh the main table
+            } else {
+                alert("Failed to submit offer.");
+            }
+        } catch (error) {
+            console.error('Error submitting offer:', error);
+            alert("An error occurred.");
+        }
+    }
     </script>
 </head>
 </html>

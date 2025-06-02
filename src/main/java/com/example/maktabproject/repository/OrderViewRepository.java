@@ -18,4 +18,6 @@ public interface OrderViewRepository extends JpaRepository<OrderView, Long> {
     List<OrderView> findAllByExpertIdAndOrderState(Long expertId, OrderState orderStateL);
 
     List<OrderView> findAllByExpertId(Long expertId);
+
+    List<OrderView> findBySubServiceIdInAndOrderStateOrOrderState(List<Long> subServices, OrderState orderState1, OrderState orderState2);
 }

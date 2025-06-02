@@ -43,4 +43,6 @@ public interface OrderService {
     List<Order> filterOrderExpert(Long expertId, UserOrderFilterRequestDto userOrderFilterRequestDto);
 
     List<OrderView> filterOrderViewExpert(Long expertId, UserOrderFilterRequestDto userOrderFilterRequestDto);
+
+    List<OrderView> findOrderViewsForExpert(Long expertId) throws CustomExceptions.ExpertNotFoundException;
 }

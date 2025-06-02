@@ -79,7 +79,7 @@ public class OrderMapper {
                 .subServiceBasePrice(orderView.getSubServiceBasePrice())
                 .orderStartingDate(orderView.getOrderStartingDate())
                 .offerCompletionDate(orderView.getOfferCompletionDate())
-                .orderStartingDate(orderView.getOfferStartingDate())
+                .orderStartingDate(orderView.getOrderStartingDate())
                 .offerSuggestedPrice(orderView.getOfferSuggestedPrice())
                 .customerUsername(orderView.getCustomerUsername())
                 .expertUsernames(orderView.getExpertUsername())

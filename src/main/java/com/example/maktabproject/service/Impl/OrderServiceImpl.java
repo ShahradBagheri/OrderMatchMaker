@@ -1,11 +1,8 @@
 package com.example.maktabproject.service.Impl;
 
+import com.example.maktabproject.model.*;
 import com.example.maktabproject.model.dto.user.UserOrderFilterRequestDto;
 import com.example.maktabproject.exception.*;
-import com.example.maktabproject.model.Customer;
-import com.example.maktabproject.model.Expert;
-import com.example.maktabproject.model.Offer;
-import com.example.maktabproject.model.Order;
 import com.example.maktabproject.model.enums.OrderState;
 import com.example.maktabproject.model.view.OrderView;
 import com.example.maktabproject.repository.OfferRepository;
@@ -208,5 +205,14 @@ public class OrderServiceImpl implements OrderService {
             return orderViewRepository.findAllByExpertId(expertId);
 
         return orderViewRepository.findAllByExpertIdAndOrderState(expertId, userOrderFilterRequestDto.orderState());
+    }
+
+    @Override
+    public List<OrderView> findOrderViewsForExpert(Long expertId) throws CustomExceptions.ExpertNotFoundException {
+        Expert expert = expertService.findById(expertId);
+        return orderViewRepository.findBySubServiceIdInAndOrderStateOrOrderState(expert.getSubServices()
+                .stream()
+                .map(SubService::getId)
+                .toList(), OrderState.WAITING_FOR_SUGGESTIONS, OrderState.WAITING_TO_SELECT_SUGGESTION);
     }
 }
