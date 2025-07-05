@@ -83,7 +83,7 @@ public class ExpertController {
         if(expert.getExpertStatus() != ExpertStatus.APPROVED)
             return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
 
-        return new ResponseEntity<>(orderService.filterOrderViewCustomer(expert.getId(), userOrderFilterRequestDto)
+        return new ResponseEntity<>(orderService.filterOrderViewExpert(expert.getId(), userOrderFilterRequestDto)
                 .stream()
                 .map(orderMapper::viewToDto)
                 .toList()

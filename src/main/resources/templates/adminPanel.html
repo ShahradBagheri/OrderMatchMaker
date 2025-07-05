@@ -148,7 +148,6 @@
                 </tr>
                 </thead>
                 <tbody id="assign-expert-table">
-                <!-- Search results will be populated here -->
                 </tbody>
             </table>
         </div>
@@ -187,7 +186,7 @@
             <select id="edit-mainservice-select" name="id">
             </select>
 
-            <label for="edit-mainservice-name">SubService Name</label>
+            <label for="edit-mainservice-name">New MainService Name</label>
             <input type="text" id="edit-mainservice-name" name="name">
 
             <button onclick="updateMainService()">Update MainService</button>
@@ -644,6 +643,7 @@
                 }
                 mainServices = [];
                 fetchMainServices()
+                document.getElementById("mainservice-name").innerHTML = "";
             })
         }
 
@@ -664,11 +664,18 @@
                     comment: comment
                 }),
             }).then(response => {
+                document.getElementById("mainservice-select").selectedIndex = 0;
+                document.getElementById("subservice-name").value = "";
+                document.getElementById("subservice-price").value = "";
+                document.getElementById("subservice-comment").value = "";
+                subServices = [];
+                fetchSubServices();
                 if (!response.ok) {
                     alert("This subService has already been registered!")
                     throw new Error('Network response was not ok');
                 }
             })
+
         }
 
         async function fetchSubServices() {

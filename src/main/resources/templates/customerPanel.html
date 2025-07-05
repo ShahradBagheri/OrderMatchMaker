@@ -356,7 +356,7 @@
 
         fetchSubServices();
         fetchMainService();
-        prepareCaptcha()
+        prepareCaptcha();
 
 
         document.getElementById('submitOrder-mainService-select').addEventListener('change', handleSubmitOrderMainServiceChange);
@@ -533,29 +533,35 @@
                     const ordersTableBody = document.getElementById('find-orders-table');
                     ordersTableBody.innerHTML = '';
 
+                    // Helper function to handle nulls
+                    const safe = value => (value === null || value === undefined ? '-' : value);
+
                     data.forEach(order => {
                         const row = document.createElement('tr');
-                        if(order.orderState === 'WAITING_FOR_EXPERT')
+
+                        if (order.orderState === 'WAITING_FOR_EXPERT')
                             row.innerHTML = `<td><button onclick="changeOrderStateToStarted(${order.id})">Order Started</button></td>`;
-                        else if(order.orderState === 'STARTED')
+                        else if (order.orderState === 'STARTED')
                             row.innerHTML = `<td><button onclick="changeOrderStateToFinished(${order.id})">Order Finished</button></td>`;
-                        else if(order.orderState === 'FINISHED')
+                        else if (order.orderState === 'FINISHED')
                             row.innerHTML = `<td><button onclick="changeOrderStateToPaid(${order.id})">Pay</button></td>`;
                         else
                             row.innerHTML = `<td>-</td>`;
+
                         row.innerHTML += `
-                        <td>${order.orderDetails}</td>
-                        <td>${order.orderAddress}</td>
-                        <td>${order.orderState}</td>
-                        <td>${order.subServiceName}</td>
-                        <td>${order.mainServiceName}</td>
-                        <td>${order.subServiceBasePrice}</td>
-                        <td>${order.orderStartingDate}</td>
-                        <td>${order.offerCompletionDate}</td>
-                        <td>${order.offerSuggestedPrice}</td>
-                        <td>${order.customerUsername}</td>
-                        <td>${order.expertUsernames}</td>
-                    `;
+                <td>${safe(order.orderDetails)}</td>
+                <td>${safe(order.orderAddress)}</td>
+                <td>${safe(order.orderState)}</td>
+                <td>${safe(order.subServiceName)}</td>
+                <td>${safe(order.mainServiceName)}</td>
+                <td>${safe(order.subServiceBasePrice)}</td>
+                <td>${safe(order.orderStartingDate)}</td>
+                <td>${safe(order.offerCompletionDate)}</td>
+                <td>${safe(order.offerSuggestedPrice)}</td>
+                <td>${safe(order.customerUsername)}</td>
+                <td>${safe(order.expertUsernames)}</td>
+            `;
+
                         ordersTableBody.appendChild(row);
                     });
                 })
@@ -566,49 +572,49 @@
 
         function findOffer(type) {
             var api;
-            if(type === 1)
-                api = '/offer/findAllViewByScore'
+            if (type === 1)
+                api = '/offer/findAllViewByScore';
             else
-                api = '/offer/findAllViewByPrice'
+                api = '/offer/findAllViewByPrice';
 
             fetch(api, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                })
+                body: JSON.stringify({})
             })
                 .then(response => response.json())
                 .then(data => {
                     const ordersTableBody = document.getElementById('active-offers-table');
                     ordersTableBody.innerHTML = '';
 
+                    const safe = value => (value === null || value === undefined ? '-' : value);
+
                     data.forEach(offer => {
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                        <td><button onclick="selectOffer(${offer.id})">Select Offer</button></td>
-                        <td>${offer.orderDetails}</td>
-                        <td>${offer.orderAddress}</td>
-                        <td>${offer.orderState}</td>
-                        <td>${offer.subServiceName}</td>
-                        <td>${offer.mainServiceName}</td>
-                        <td>${offer.subServiceBasePrice}</td>
-                        <td>${offer.orderStartingDate}</td>
-                        <td>${offer.offerCompletionDate}</td>
-                        <td>${offer.offerSuggestedPrice}</td>
-                        <td>${offer.expertUsernames}</td>
-                        <td>${offer.score}</td>
-                    `;
+                <td><button onclick="selectOffer(${offer.id})">Select Offer</button></td>
+                <td>${safe(offer.orderDetails)}</td>
+                <td>${safe(offer.orderAddress)}</td>
+                <td>${safe(offer.orderState)}</td>
+                <td>${safe(offer.subServiceName)}</td>
+                <td>${safe(offer.mainServiceName)}</td>
+                <td>${safe(offer.subServiceBasePrice)}</td>
+                <td>${safe(offer.orderStartingDate)}</td>
+                <td>${safe(offer.offerCompletionDate)}</td>
+                <td>${safe(offer.offerSuggestedPrice)}</td>
+                <td>${safe(offer.expertUsernames)}</td>
+                <td>${safe(offer.score)}</td>
+            `;
                         ordersTableBody.appendChild(row);
                     });
                 })
                 .catch(error => {
                     console.error('Error searching users:', error);
                 });
-
-
         }
+
 
         function changeOrderStateToStarted(id){
             const params = new URLSearchParams();
@@ -737,6 +743,12 @@
                     throw new Error('Network response was not ok');
                 } else {
                     alert("MONEY ADDED!");
+                    document.getElementById("captcha-answer").value = "";
+                    document.getElementById("card-number").value = "";
+                    document.getElementById("cvv2").value = "";
+                    document.getElementById("second-password").value = "";
+                    document.getElementById("amount").value = "";
+                    prepareCaptcha();
                 }
                 fetchBalance();
             })
