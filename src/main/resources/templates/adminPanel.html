@@ -201,7 +201,7 @@
             <label for="role">Role</label>
             <select id="role" name="role">
                 <option value="">Select Role</option>
-                <option value="ROLE_CUSTOMER">User</option>
+                <option value="ROLE_CUSTOMER">Customer</option>
                 <option value="ROLE_EXPERT">Expert</option>
             </select>
 
@@ -586,7 +586,6 @@
                 const subServiceEditMainService = document.getElementById('edit-subservice-mainservice-select');
                 const searchOrdersMainService =  document.getElementById('search-orders-mainServiceId');
                 subServiceEditMainService.innerHTML = '';
-                subServiceEditMainService.appendChild(emptyOption2);
                 searchOrdersMainService.appendChild(emptyOption3);
                 data.forEach(service => {
                     const option1 = document.createElement('option');
@@ -825,7 +824,7 @@
             const email = document.getElementById('email').value;
             const beforeCreationDate = document.getElementById('beforeCreationDate').value;
             const afterCreationDate = document.getElementById('afterCreationDate').value;
-            const subservice = document.getElementById('subservice').value;
+            const subservice = document.getElementById('search-users-subServiceId').value;
             const scoreHigher = document.getElementById('scoreHigher').value;
             const scoreLower = document.getElementById('scoreLower').value;
 

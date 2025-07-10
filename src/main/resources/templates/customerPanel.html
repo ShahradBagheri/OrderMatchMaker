@@ -145,19 +145,25 @@
     <div class="container">
         <h2>Increase Balance</h2>
         <div>
-            <input type="text" class="form-control" placeholder="Card Number" id="card-number" aria-label="Username"
-                   aria-describedby="basic-addon1">
-            <input type="text" class="form-control" placeholder="CVV2" id="cvv2" aria-label="Username"
-                   aria-describedby="basic-addon1">
-            <input type="text" class="form-control" placeholder="Second Password" id="second-password" aria-label="Username"
-                   aria-describedby="basic-addon1">
-            <input type="text" class="form-control" placeholder="Amount" id="amount" aria-label="Username"
-                   aria-describedby="basic-addon1">
-            <img alt="Captcha" id="captchaImage"/>
-            <input type="text" class="form-control" placeholder="captcha" id="captcha-answer" aria-label="Username"
-                   aria-describedby="basic-addon1">
-            <input type="hidden", id="captcha-id" name="captcha-id">
-            <button class="btn btn-success" onclick="myFunction()" id="send-button">send</button>
+            <label for="card-number">Card Number</label>
+            <input type="text" id="card-number" placeholder="12-digit card number (e.g. 123456789012)" maxlength="12">
+
+            <label for="cvv2">CVV2</label>
+            <input type="text" id="cvv2" placeholder="4-digit CVV2 (e.g. 1234)" maxlength="4">
+
+            <label for="second-password">Second Password</label>
+            <input type="text" id="second-password" placeholder="8-digit second password" maxlength="8">
+
+            <label for="amount">Amount</label>
+            <input type="text" id="amount" placeholder="Enter amount (e.g. 10000.00)">
+
+            <label for="captcha-answer">Captcha</label>
+            <img alt="Captcha" id="captchaImage" style="display:block; margin: 10px 0; height: 50px; border-radius: 5px;"/>
+            <input type="text" id="captcha-answer" placeholder="Enter the captcha shown above">
+
+            <input type="hidden" id="captcha-id" name="captcha-id">
+
+            <button onclick="myFunction()" id="send-button">Send</button>
         </div>
     </div>
 </div>
@@ -479,9 +485,17 @@
         async function submitOrder() {
             var subServiceId = document.getElementById('submitOrder-subService-select').value
             var suggestedPrice = document.getElementById('submitOrder-suggestedPrice').value
-            var startDate = document.getElementById('submitOrder-order-startDate').value
+            var startDateStr = document.getElementById('submitOrder-order-startDate').value;
             var address = document.getElementById('submitOrder-order-address').value
             var details = document.getElementById('submitOrder-order-details').value
+
+            const now = new Date();
+            const startDate = new Date(startDateStr);
+
+            if (!startDateStr || startDate < now) {
+                alert("❌ Start Date must be set and cannot be before the current time.");
+                return;
+            }
 
             fetch('/customer/order/submit', {
                 method: 'POST',
@@ -497,7 +511,7 @@
                 }),
             }).then(response => {
                 if (!response.ok) {
-                    alert("Failed to submit order!");
+                    alert("Price is lower than the base amount!");
                     throw new Error('Network response was not ok');
                 } else {
                     alert("Order Submitted!");
